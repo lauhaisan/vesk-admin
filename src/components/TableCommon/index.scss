@@ -1,0 +1,39 @@
+.tableCommon {
+  .bx--data-table-header {
+    background-color: transparent;
+  }
+  //   .bx--data-table th {
+  //     background-color: yellow;
+  //   }
+
+  .bx--data-table td {
+    background-color: #f0f2f5;
+  }
+
+  .viewAction {
+    width: 7rem;
+    display: flex;
+    justify-content: space-around;
+    &__icon {
+      font-size: 16px;
+      &--review {
+        color: rgb(24, 144, 255);
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+      &--delete {
+        color: rgb(240, 72, 100);
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+      &--edit {
+        color: rgb(250, 204, 20);
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}

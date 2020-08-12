@@ -21,14 +21,14 @@ class Home extends Component {
     clearData();
   }
   render() {
-    const {
-      // loading,
-      // listProduct,
-      // messageError,
-      // clearData,
-      // getAllProduct
-      history
-    } = this.props;
+    // const {
+    // loading,
+    // listProduct,
+    // messageError,
+    // clearData,
+    //   // getAllProduct
+    //   history
+    // } = this.props;
     return (
       <div className="container_page_home">
         <TitlePage title="Home" />
