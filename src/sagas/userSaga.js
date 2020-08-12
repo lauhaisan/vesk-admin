@@ -1,5 +1,5 @@
 import { takeLatest, call, put, delay } from "redux-saga/effects";
-import { signUpAPI, signInAPI, logoutAPI, getMyInfoAPI } from "../service/user";
+import { signUpAPI, signInAPI, logoutAPI, getMyInfoAPI, getUserInfoAPI } from "../service/user";
 import { setToken } from "../utils/token";
 import { USER } from "../constant";
 
@@ -65,9 +65,20 @@ function* getMyInfo() {
   yield put({ type: "GET_MY_INFO_SUCCESS", data: resp });
 }
 
+function* getUserInfo(object) {
+  console.log("getUserInfo ",object.data)
+  const resp = yield call(getUserInfoAPI(object.data));
+  if (resp.statusCode !== 200) {
+    yield put({ type: "GET_USER_FAIL" });
+    return;
+  }
+  yield put({ type: "GET_USER_SUCCESS", data: resp });
+}
+
 export const userSaga = [
   takeLatest(USER.SIGNUP, handleSignUp),
   takeLatest(USER.SIGNIN, handleSignIn),
   takeLatest(USER.LOGOUT, handleLogout),
-  takeLatest(USER.GET_MY_INFO, getMyInfo)
+  takeLatest(USER.GET_MY_INFO, getMyInfo),
+  takeLatest(USER.GET_USER_INFO, getUserInfo),
 ];

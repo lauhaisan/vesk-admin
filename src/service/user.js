@@ -19,5 +19,8 @@ const logoutAPI = async () => {
 const getMyInfoAPI = async () => {
   return request(URL.GET_MY_INFO);
 };
-
-export { signUpAPI, signInAPI, logoutAPI, getMyInfoAPI };
+const getUserInfoAPI = async (payload) => {
+  const URL_WITH_PARAMS=`${URL.GET_USER_INFO}?userId=${payload.id}`
+  return request(URL_WITH_PARAMS);
+};
+export { signUpAPI, signInAPI, logoutAPI, getMyInfoAPI, getUserInfoAPI };

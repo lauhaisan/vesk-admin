@@ -1,9 +1,10 @@
 import { getToken } from "../utils/token";
 // import handleRefreshToken from "../utils/refreshToken";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
+const BASE_URL_AUTH = process.env.REACT_APP_BASE_URL_AUTH;
+const BASE_URL_API = process.env.REACT_APP_BASE_URL_API;
 const request = async (url, method = "GET", payload, notAuth) => {
+  const BASE_URL= notAuth ?BASE_URL_AUTH:BASE_URL_API;
   const urlAPI = `${BASE_URL}${url}`;
   const payloadRequestRefreshToken = { urlAPI, method, payload };
   const { token } = await getToken();
@@ -12,7 +13,7 @@ const request = async (url, method = "GET", payload, notAuth) => {
   if (!notAuth) {
     headers = {
       ...headers,
-      Authorization: `Bearer ${token}`
+      Authorization: token
     };
   }
   const requestOptions = {

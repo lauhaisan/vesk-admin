@@ -4,7 +4,7 @@ const URL = {
   LOGOUT: "/user/logout",
   REFRESH_TOKEN: "/user/refresh-token",
   GET_MY_INFO: "/user/get-my-info",
-
+  GET_USER_INFO: "/v1/vesk/users/my-info",
   PRODUCT: "/products"
 };
 

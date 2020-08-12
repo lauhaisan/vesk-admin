@@ -1,10 +1,13 @@
 import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
-
+import { USER } from "../../constant";
+import { connect } from "react-redux";
 class Users extends React.Component {
   _actionReview = item => {
-    console.log("Review", item);
+    const {getUserInfo} = this.props;
+    console.log("item ",item)
+    getUserInfo({id:"69b8dbe6-a17e-44f5-b0ca-3757a6916492"})
   };
 
   _actionDelete = item => {
@@ -123,4 +126,17 @@ class Users extends React.Component {
     );
   }
 }
-export default Users;
+
+const mapStateToProps = ({
+  user: {loading, listUser, userInfo } = {}
+}) => ({
+  loading, listUser, userInfo
+});
+
+const mapDispatchToProps = dispatch => ({
+  getUserInfo: (data) =>
+    dispatch({ type: USER.GET_USER_INFO, data  }),
+  // updateStateReducer: data => dispatch({ type: "UPDATE_STATE", data })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
