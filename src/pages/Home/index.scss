@@ -1,25 +1,16 @@
 .container_page_home {
-  width: 80%;
+  min-height: 100vh;
   height: auto;
   box-sizing: border-box;
   padding: 1rem;
   .bx--row {
-    margin-top: -1rem;
     .bx--col {
-      height: 120px;
-      margin-top: 2rem;
-      .item__video {
-        &__img {
-          width: 210px;
-          height: auto;
-        }
-        &__title {
-          font-size: 1rem;
-          font-weight: 600;
-        }
-        &:hover {
-          transform: scale(1.05);
-        }
+      .test__item {
+        width: 150px;
+        height: 100px;
+        box-sizing: border-box;
+        padding: 40;
+        background-color: cyan;
       }
     }
   }

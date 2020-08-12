@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { getToken } from "../../utils/token";
 import "./index.scss";
 
 class LeftMenu extends PureComponent {
@@ -60,6 +62,10 @@ class BasicLayout extends Component {
 
   render() {
     const { children, history, expiredToken } = this.props;
+    const { token } = getToken();
+    if (!token) {
+      return <Redirect to="/signin" />;
+    }
     return (
       <Fragment>
         <div className="container_basic_layout">
@@ -67,16 +73,7 @@ class BasicLayout extends Component {
           <div className="body">
             <LeftMenu />
             <div style={{ width: "100%" }}>
-              <div className="content">
-                <div style={{ width: "100%" }}>{children}</div>
-                <div className="ads">
-                  <img
-                    src={require("../../images/ad-tall-226x455-01.jpg")}
-                    alt="ads"
-                    className="ads__img"
-                  />
-                </div>
-              </div>
+              <div className="content">{children}</div>
               <Footer />
             </div>
           </div>

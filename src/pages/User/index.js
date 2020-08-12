@@ -16,7 +16,7 @@ const {
   TableSelectRow,
   TableToolbar,
   TableBatchActions,
-  TableBatchAction,
+  TableBatchAction
   // TableToolbarSearch,
   // TableToolbarContent,
   // TableToolbarMenu,
@@ -24,7 +24,7 @@ const {
 } = DataTable;
 
 class Users extends React.Component {
-  batchActionClick = (row) => {
+  batchActionClick = row => {
     console.log("row", row);
   };
 
@@ -32,29 +32,29 @@ class Users extends React.Component {
     // const { history } = this.props;
     const headerData = [
       {
-        header: "Name",
-        key: "name",
+        header: "Name123",
+        key: "protocol"
       },
       {
         header: "Protocol",
-        key: "protocol",
+        key: "protocol"
       },
       {
         header: "Port",
-        key: "port",
+        key: "port"
       },
       {
         header: "Rule",
-        key: "rule",
+        key: "rule"
       },
       {
         header: "Attached Groups",
-        key: "attached_groups",
+        key: "attached_groups"
       },
       {
         header: "Status",
-        key: "status",
-      },
+        key: "status"
+      }
     ];
     const rowData = [
       {
@@ -64,7 +64,7 @@ class Users extends React.Component {
         port: 3000,
         protocol: "HTTP",
         rule: "Round robin",
-        status: "Disabled",
+        status: "Disabled"
       },
       {
         attached_groups: "Maureens VM Groups",
@@ -73,7 +73,7 @@ class Users extends React.Component {
         port: 443,
         protocol: "HTTP",
         rule: "Round robin",
-        status: "Starting",
+        status: "Starting"
       },
       {
         attached_groups: "Andrews VM Groups",
@@ -82,7 +82,7 @@ class Users extends React.Component {
         port: 80,
         protocol: "HTTP",
         rule: "DNS delegation",
-        status: "Active",
+        status: "Active"
       },
       {
         attached_groups: "Marcs VM Groups",
@@ -91,7 +91,7 @@ class Users extends React.Component {
         port: 3000,
         protocol: "HTTP",
         rule: "Round robin",
-        status: "Disabled",
+        status: "Disabled"
       },
       {
         attached_groups: "Mels VM Groups",
@@ -100,7 +100,7 @@ class Users extends React.Component {
         port: 443,
         protocol: "HTTP",
         rule: "Round robin",
-        status: "Starting",
+        status: "Starting"
       },
       {
         attached_groups: "Ronjas VM Groups",
@@ -109,8 +109,8 @@ class Users extends React.Component {
         port: 80,
         protocol: "HTTP",
         rule: "DNS delegation",
-        status: "Active",
-      },
+        status: "Active"
+      }
     ];
 
     return (
@@ -119,10 +119,8 @@ class Users extends React.Component {
         <div
           style={{
             backgroundColor: "#fff",
-            width: "76%",
-            height: "200vh",
             cursor: "pointer",
-            marginTop: "20px",
+            marginTop: "20px"
           }}
           // onClick={() => history.push("/users/1")}
         >
@@ -137,7 +135,7 @@ class Users extends React.Component {
               getSelectionProps,
               getBatchActionProps,
               // onInputChange,
-              selectedRows,
+              selectedRows
             }) => (
               <TableContainer title="DataTable with batch actions">
                 <TableToolbar>
@@ -191,7 +189,7 @@ class Users extends React.Component {
                   <TableHead>
                     <TableRow>
                       <TableSelectAll {...getSelectionProps()} />
-                      {headers.map((header) => (
+                      {headers.map(header => (
                         <TableHeader {...getHeaderProps({ header })}>
                           {header.header}
                         </TableHeader>
@@ -199,13 +197,13 @@ class Users extends React.Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {rows.map(row => (
                       <TableRow
                         key={row.id}
                         onClick={() => console.log("onRow", row)}
                       >
                         <TableSelectRow {...getSelectionProps({ row })} />
-                        {row.cells.map((cell) => (
+                        {row.cells.map(cell => (
                           <TableCell key={cell.id}>{cell.value}</TableCell>
                         ))}
                       </TableRow>

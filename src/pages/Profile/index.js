@@ -8,7 +8,7 @@ class Profile extends Component {
     // const { history } = this.props;
     const { data } = getToken();
     return (
-      <div style={{ backgroundColor: "#fff", width: "76%", height: "500px" }}>
+      <div style={{ backgroundColor: "#fff", height: "500px" }}>
         <TitlePage title={`${data.userName} | Profile`} />
         <h1>This is profile {data.userName}</h1>
       </div>

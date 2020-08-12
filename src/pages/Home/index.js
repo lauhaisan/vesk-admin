@@ -27,29 +27,24 @@ class Home extends Component {
       // messageError,
       // clearData,
       // getAllProduct
-      dummyListVideo,
       history
     } = this.props;
     return (
       <div className="container_page_home">
         <TitlePage title="Home" />
         <div className="bx--row">
-          {dummyListVideo.map(item => (
-            <div
-              className="bx--col"
-              key={item._id}
-              onClick={() => history.push(`detail/${item._id}`)}
-            >
-              <div className="item__video">
-                <img
-                  src={item.img}
-                  alt={`Video ${item.title}`}
-                  className="item__video__img"
-                />
-                <p className="item__video__title">{item.title}</p>
-              </div>
-            </div>
-          ))}
+          <div className="bx--col">
+            <div className="test__item">Block 1</div>
+          </div>
+          <div className="bx--col">
+            <div className="test__item">Block 1</div>
+          </div>
+          <div className="bx--col">
+            <div className="test__item">Block 1</div>
+          </div>
+          <div className="bx--col">
+            <div className="test__item">Block 1</div>
+          </div>
         </div>
       </div>
     );

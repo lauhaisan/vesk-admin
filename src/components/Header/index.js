@@ -30,7 +30,7 @@ class ComponentHeader extends Component {
 
   render() {
     const { history } = this.props;
-    const { token, data = {} } = getToken();
+    const { data = {} } = getToken();
 
     const rightMenuSignIn = (
       <Fragment>
@@ -58,28 +58,7 @@ class ComponentHeader extends Component {
         </div>
       </Fragment>
     );
-    const rightMenuNotSignIn = (
-      <Fragment>
-        <div
-          className="rightMenuLogin rightMenuLogin__text"
-          onClick={() => history.push("/signin")}
-        >
-          Sign In
-        </div>
-        <div
-          className="rightMenuLogin"
-          style={{ padding: "0px", color: "#acb7b8" }}
-        >
-          |
-        </div>
-        <div
-          className="rightMenuLogin rightMenuLogin__text"
-          onClick={() => history.push("/signup")}
-        >
-          Sign Up
-        </div>
-      </Fragment>
-    );
+
     return (
       <div className="rootHeader" style={{ height: "auto" }}>
         <HeaderContainer
@@ -92,9 +71,7 @@ class ComponentHeader extends Component {
                 >
                   <Menu20 />
                 </div> */}
-                <HeaderGlobalBar>
-                  {token ? rightMenuSignIn : rightMenuNotSignIn}
-                </HeaderGlobalBar>
+                <HeaderGlobalBar>{rightMenuSignIn}</HeaderGlobalBar>
               </Header>
             </>
           )}

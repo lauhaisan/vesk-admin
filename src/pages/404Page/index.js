@@ -7,7 +7,6 @@ class NotFoundPage extends Component {
       <div
         style={{
           backgroundColor: "#fff",
-          width: "76%",
           padding: "30px",
           display: "flex",
           flexDirection: "column",
