@@ -1,0 +1,31 @@
+$black-020202: #7d5a5a;
+$gray-383838: #d9adad;
+$white: #fff;
+
+@mixin background($position, $color1, $color2) {
+  background-image: linear-gradient(to $position, $color1, $color2);
+}
+
+.btnLoading {
+  .bx--btn--primary {
+    color: $white;
+    background: linear-gradient(135deg, #ff253a 0%, #ff8453 100%);
+    min-height: 20px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-weight: 600;
+    &:active,
+    &:disabled {
+      opacity: 0.5;
+    }
+    &:focus {
+      border: none;
+      background-color: $black-020202;
+      color: $white;
+    }
+  }
+
+  .bx--inline-loading {
+    width: 10px;
+  }
+}

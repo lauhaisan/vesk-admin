@@ -1,0 +1,33 @@
+$black-020202: #ff253a;
+$white: #fff;
+
+@mixin _opacity($number) {
+  opacity: $number;
+}
+
+%border {
+  border: 1px solid $black-020202;
+}
+
+.btnOutline {
+  .bx--btn--tertiary {
+    @extend %border;
+    color: $black-020202;
+    min-height: 20px;
+    border-radius: 4px;
+    &:hover {
+      @include _opacity(0.7);
+      background-color: $white;
+      color: $black-020202;
+    }
+    &:active {
+      @include _opacity(0.5);
+      outline: none;
+    }
+    &:focus {
+      @extend %border;
+      background-color: $white;
+      color: $black-020202;
+    }
+  }
+}

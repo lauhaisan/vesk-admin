@@ -1,0 +1,81 @@
+$white: #fff;
+
+%center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin widthHeight($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+.content-signIn {
+  width: 400px;
+  background-color: #faf2f2;
+  border-radius: 6px;
+  box-shadow: 0 30px 50px 0 rgba(45, 44, 101, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .viewTitleSignIn {
+    width: 41%;
+    text-align: center;
+    font : {
+      size: 22px;
+      weight: 900;
+    }
+    color: #7d5a5a;
+  }
+
+  .viewImage {
+    @include widthHeight(30%, auto);
+    margin-top: 20px;
+  }
+
+  .form {
+    width: 90%;
+    align-items: center;
+    .bx--fieldset {
+      margin-bottom: 10px;
+    }
+
+    .bx--label {
+      color: #7d5a5a;
+      font : {
+        size: 16px;
+        weight: 600;
+      }
+    }
+
+    .bx--text-input {
+      background-color: #faf2f2;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    input:-webkit-autofill,
+    input:focus:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 100px #faf2f2 inset;
+      box-shadow: 0 0 0 100px #faf2f2 inset;
+    }
+  }
+
+  .viewForgotPWD {
+    position: absolute;
+    margin-top: 10px;
+    bottom: 0;
+    @include widthHeight(100%, 50px);
+    @extend %center;
+    background-color: #f3e1e1;
+    border : {
+      bottom-right-radius: 6px;
+      bottom-left-radius: 6px;
+    }
+  }
+}

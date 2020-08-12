@@ -1,0 +1,23 @@
+.container_login_layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  background-image: linear-gradient(to left, #f3e1e1, #7d5a5a);
+  display: grid;
+  place-items: center;
+  .children {
+    animation: fade 1s linear;
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
