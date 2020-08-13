@@ -1,51 +1,12 @@
-import React, { Component, Fragment, PureComponent } from "react";
+import React, { Component, Fragment } from "react";
 import { Modal } from "carbon-components-react";
-import { NavLink } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import SideMenu from "../../components/SideMenu";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { getToken } from "../../utils/token";
 import "./index.scss";
-
-class LeftMenu extends PureComponent {
-  render() {
-    const classNameMenu = "closeLeftPanel";
-    return (
-      <div className={classNameMenu}>
-        <div className={`${classNameMenu}__menu`}>
-          <NavLink
-            exact
-            activeClassName={`${classNameMenu}__menu__itemMenu--active`}
-            to="/"
-            className={`${classNameMenu}__menu__itemMenu`}
-          >
-            <i className="fas fa-home itemMenu__icon"></i>
-            <span className="itemMenu__text">Home</span>
-          </NavLink>
-
-          <NavLink
-            activeClassName={`${classNameMenu}__menu__itemMenu--active`}
-            to="/users"
-            className={`${classNameMenu}__menu__itemMenu`}
-          >
-            <i className="fas fa-users itemMenu__icon"></i>
-            <span className="itemMenu__text">Users</span>
-          </NavLink>
-
-          <NavLink
-            activeClassName={`${classNameMenu}__menu__itemMenu--active`}
-            to="/contact"
-            className={`${classNameMenu}__menu__itemMenu`}
-          >
-            <i className="fas fa-address-book itemMenu__icon"></i>
-            <span className="itemMenu__text">Contact</span>
-          </NavLink>
-        </div>
-      </div>
-    );
-  }
-}
 
 class BasicLayout extends Component {
   hideModal = () => {
@@ -71,12 +32,10 @@ class BasicLayout extends Component {
         <div className="container_basic_layout">
           <Header history={history} />
           <div className="body">
-            <LeftMenu />
-            <div style={{ width: "100%" }}>
-              <div className="content">{children}</div>
-              <Footer />
-            </div>
+            <SideMenu />
+            <div className="content">{children}</div>
           </div>
+          <Footer />
         </div>
         <Modal
           className="some-class"
