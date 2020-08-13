@@ -29,9 +29,7 @@ export default class SideMenu extends PureComponent {
     const { openUser } = this.state;
     const { history } = this.props;
     const classNameMenu = "sideBar";
-    const iconChevronUser = openUser
-      ? "fas fa-chevron-up"
-      : "fas fa-chevron-down";
+    const iconChevronUser = "fas fa-chevron-down";
 
     return (
       <div className={classNameMenu}>
