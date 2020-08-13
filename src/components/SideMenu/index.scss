@@ -6,6 +6,20 @@
   transition: width 0.2s;
   position: fixed;
   &__menu {
+    .menu__parent {
+      padding: 1rem 1rem;
+      color: white;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      &:hover,
+      &:focus {
+        opacity: 0.5;
+      }
+      &__icon {
+        margin-left: 10px;
+      }
+    }
     &__itemMenu {
       display: flex;
       flex-direction: row;
