@@ -48,8 +48,29 @@ class TableCommon extends React.Component {
     );
   };
 
+  renderTableRow = rows => {
+    return rows.map(row => (
+      <TableRow key={row.id}>
+        {row.cells.map(cell => (
+          <TableCell key={cell.id}>
+            {cell.info.header === "action"
+              ? this.renderAction(row)
+              : cell.value}
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
+  };
+
   render() {
-    const { rowData, headerData, title, total = 0, limit = 10 } = this.props;
+    const {
+      rowData,
+      headerData,
+      title,
+      total = 0,
+      limit = 10,
+      loading = false
+    } = this.props;
     const { currentPage } = this.state;
     const totalPage = Math.ceil(total / limit);
 
@@ -71,17 +92,7 @@ class TableCommon extends React.Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map(row => (
-                    <TableRow key={row.id}>
-                      {row.cells.map(cell => (
-                        <TableCell key={cell.id}>
-                          {cell.info.header === "action"
-                            ? this.renderAction(row)
-                            : cell.value}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                  {loading ? <div>Loading...</div> : this.renderTableRow(rows)}
                 </TableBody>
               </Table>
             </TableContainer>
