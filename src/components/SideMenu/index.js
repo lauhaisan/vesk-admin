@@ -27,6 +27,7 @@ export default class SideMenu extends PureComponent {
 
   render() {
     const { openUser } = this.state;
+    const { history } = this.props;
     const classNameMenu = "sideBar";
     const iconChevronUser = openUser
       ? "fas fa-chevron-up"
@@ -35,6 +36,12 @@ export default class SideMenu extends PureComponent {
     return (
       <div className={classNameMenu}>
         <div className={`${classNameMenu}__menu`}>
+          <div className="menu__logo" onClick={() => history.push("/")}>
+            <div className="borderLogo">
+              <i className={`fa fa-paw menu__logo__icon`}></i>
+              <span>Logo</span>
+            </div>
+          </div>
           <NavLink
             exact
             activeClassName={`${classNameMenu}__menu__itemMenu--active`}
@@ -46,8 +53,11 @@ export default class SideMenu extends PureComponent {
           </NavLink>
           <Fragment>
             <div className="menu__parent" onClick={this.handleClickUser}>
-              <span>Users</span>
-              <i className={`${iconChevronUser} menu__parent__icon`}></i>
+              <div className="menu__parent--iconText">
+                <i className="fas fa-users menu__parent__icon"></i>
+                <span className="menu__parent__text">Users</span>
+              </div>
+              <i className={`${iconChevronUser} menu__parent__iconChevron`}></i>
             </div>
             {openUser && (
               <Fragment>
@@ -56,16 +66,16 @@ export default class SideMenu extends PureComponent {
                   to="/users"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
-                  <i className="fas fa-users itemMenu__icon"></i>
-                  <span className="itemMenu__text">Manage</span>
+                  <i className="fas fa-tasks itemMenu__icon--children"></i>
+                  <span className="itemMenu__text--children ">Manage</span>
                 </NavLink>
                 <NavLink
                   activeClassName={`${classNameMenu}__menu__itemMenu--active`}
                   to="/users-exchange/"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
-                  <i className="fas fa-exchange-alt itemMenu__icon"></i>
-                  <span className="itemMenu__text">Exchange</span>
+                  <i className="fas fa-exchange-alt itemMenu__icon--children"></i>
+                  <span className="itemMenu__text--children">Exchange</span>
                 </NavLink>
               </Fragment>
             )}

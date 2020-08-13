@@ -1,23 +1,72 @@
 .sideBar {
-  background: linear-gradient(135deg, #ff516b 0%, #826cfd 100%);
+  background: #2a3f54;
   width: 90px;
-  min-height: 95vh;
+  min-height: 100vh;
   z-index: 1000;
   transition: width 0.2s;
   position: fixed;
+  top: 0;
   &__menu {
+    .menu__logo {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: white;
+      font-weight: 600;
+      height: 3rem;
+      justify-content: center;
+      .borderLogo {
+        border: 1px solid #fff;
+        padding: 0.5rem;
+        border-radius: 4px;
+      }
+      &--iconText {
+        display: flex;
+        align-items: center;
+      }
+      &:hover,
+      &:focus {
+        opacity: 0.5;
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      // &__iconChevron {
+      //   margin: 6px 0px 0px 1rem;
+      //   font-size: 10px;
+      // }
+      // &__text {
+      //   display: none;
+      // }
+      // &__icon {
+      //   font-size: 22px;
+      //   margin-left: 11px;
+      // }
+    }
     .menu__parent {
       padding: 1rem 1rem;
+      align-items: center;
       color: white;
       font-weight: 600;
       display: flex;
       justify-content: space-between;
+      &--iconText {
+        display: flex;
+        align-items: center;
+      }
       &:hover,
       &:focus {
         opacity: 0.5;
       }
+      &__iconChevron {
+        margin: 6px 0px 0px 1rem;
+        font-size: 10px;
+      }
+      &__text {
+        display: none;
+      }
       &__icon {
-        margin-left: 10px;
+        font-size: 22px;
+        margin-left: 11px;
       }
     }
     &__itemMenu {
@@ -33,10 +82,17 @@
       .itemMenu__icon {
         font-size: 22px;
         margin-left: 5px;
+        &--children {
+          font-size: 16px;
+          margin-left: 1rem;
+        }
       }
       .itemMenu__text {
         margin-left: 1rem;
         display: none;
+        &--children {
+          display: none;
+        }
       }
       &:hover {
         opacity: 0.5;
@@ -53,10 +109,20 @@
     width: 225px;
     .sideBar__menu {
       width: 225px;
+      .menu__parent__text {
+        margin-left: 1rem;
+        display: inline-block;
+      }
       .sideBar__menu__itemMenu {
         width: 225px;
         .itemMenu__text {
           display: inline-block;
+        }
+        .itemMenu__text--children {
+          display: inline-block;
+          font-size: 16px;
+          font-weight: normal;
+          margin-left: 1rem;
         }
       }
     }

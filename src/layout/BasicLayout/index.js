@@ -32,7 +32,7 @@ class BasicLayout extends Component {
         <div className="container_basic_layout">
           <Header history={history} />
           <div className="body">
-            <SideMenu />
+            <SideMenu history={history} />
             <div className="content">{children}</div>
           </div>
           <Footer />

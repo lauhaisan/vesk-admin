@@ -18,6 +18,7 @@ $menuColor: #fff;
   .bx--header {
     background-color: $menuColor;
     border-bottom: none;
+    z-index: 1;
   }
 
   .bx--header__nav::before {
