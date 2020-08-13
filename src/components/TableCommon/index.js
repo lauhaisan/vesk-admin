@@ -37,12 +37,12 @@ class TableCommon extends React.Component {
           onClick={() => actionReview(item)}
         ></i>
         <i
-          className="fas fa-trash-alt viewAction__icon viewAction__icon--delete"
-          onClick={() => actionDelete(item)}
-        ></i>
-        <i
           className="fas fa-edit viewAction__icon viewAction__icon--edit"
           onClick={() => actionEdit(item)}
+        ></i>
+        <i
+          className="fas fa-trash-alt viewAction__icon viewAction__icon--delete"
+          onClick={() => actionDelete(item)}
         ></i>
       </div>
     );

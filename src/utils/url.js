@@ -5,7 +5,9 @@ const URL = {
   REFRESH_TOKEN: "/user/refresh-token",
   GET_MY_INFO: "/user/get-my-info",
   GET_USER_INFO: "/v1/vesk/users/my-info",
-  PRODUCT: "/products"
+  PRODUCT: "/products",
+
+  GET_LIST_USER: "/v1/vesk/users/search"
 };
 
 export default URL;

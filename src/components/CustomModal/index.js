@@ -40,7 +40,9 @@ export default class index extends Component {
             />
             <ButtonLoading
               onClick={onSubmit}
-              disabled={loading || isReview}
+              disabled={
+                loading ? "yes" : undefined || isReview ? "yes" : undefined
+              }
               //   loading={loading ? "yes" : undefined}
               type="submit"
               text={textSubmit}
