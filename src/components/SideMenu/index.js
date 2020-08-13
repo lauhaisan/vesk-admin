@@ -27,7 +27,7 @@ export default class SideMenu extends PureComponent {
 
   render() {
     const { openUser } = this.state;
-    const classNameMenu = "closeLeftPanel";
+    const classNameMenu = "sideBar";
     const iconChevronUser = openUser
       ? "fas fa-chevron-up"
       : "fas fa-chevron-down";

@@ -1,4 +1,4 @@
-.closeLeftPanel {
+.sideBar {
   background: linear-gradient(135deg, #ff516b 0%, #826cfd 100%);
   width: 90px;
   min-height: 95vh;
@@ -51,9 +51,9 @@
   }
   &:hover {
     width: 225px;
-    .closeLeftPanel__menu {
+    .sideBar__menu {
       width: 225px;
-      .closeLeftPanel__menu__itemMenu {
+      .sideBar__menu__itemMenu {
         width: 225px;
         .itemMenu__text {
           display: inline-block;
