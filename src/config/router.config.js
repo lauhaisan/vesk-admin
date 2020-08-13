@@ -7,7 +7,7 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import Detail from "../pages/Detail";
 import ForgotPassword from "../pages/ForgotPassword";
-import ComingSoon from "../pages/ComingSoon";
+import ComingSoon from "../pages/ComingSoon";
 const Contact = lazy(() => import("../pages/Contact"));
 // const Home = lazy(() => import("../pages/Home"));
 const Users = lazy(() => import("../pages/User"));
