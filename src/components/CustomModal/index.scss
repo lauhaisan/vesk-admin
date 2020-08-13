@@ -1,0 +1,23 @@
+.customModal {
+  .bx--modal-content {
+    margin-bottom: 1rem;
+  }
+  .bx--modal-container {
+    height: auto;
+  }
+  .bx--modal-container--sm .bx--modal-content {
+    padding-right: 1rem !important;
+  }
+  .bx--modal-close {
+    &:focus,
+    &:hover {
+      border: none;
+      background-color: transparent;
+    }
+  }
+  &__viewBtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

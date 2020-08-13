@@ -1,24 +1,83 @@
 import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
+import CustomModal from "../../components/CustomModal";
 import { USER } from "../../constant";
 import { connect } from "react-redux";
 class Users extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      openModal: false,
+      titleModal: "",
+      userSelected: {},
+      isReview: ""
+    };
+  }
+
   _actionReview = item => {
-    const {getUserInfo} = this.props;
-    console.log("item ",item)
-    getUserInfo({id:"69b8dbe6-a17e-44f5-b0ca-3757a6916492"})
+    this.setState({
+      openModal: true,
+      titleModal: "Review User",
+      userSelected: item,
+      isReview: true
+    });
+    // const { getUserInfo } = this.props;
+    // console.log("item ", item);
+    // getUserInfo({ id: "69b8dbe6-a17e-44f5-b0ca-3757a6916492" });
+  };
+
+  _hideModal = () => {
+    this.setState({
+      openModal: false,
+      userSelected: {},
+      titleModal: "",
+      isReview: ""
+    });
+  };
+
+  _handleSubmit = () => {
+    const { userSelected } = this.state;
+    alert(userSelected.id);
+    //After dispatch API => this._hideModal
   };
 
   _actionDelete = item => {
-    console.log("delete", item);
+    this.setState({
+      openModal: true,
+      titleModal: "Delete User",
+      userSelected: item,
+      isReview: false
+    });
   };
 
   _actionEdit = item => {
-    console.log("edit", item);
+    this.setState({
+      openModal: true,
+      titleModal: "Edit User",
+      userSelected: item,
+      isReview: false
+    });
   };
 
   render() {
+    const { userSelected, openModal, titleModal, isReview } = this.state;
+    // const { loading } = this.props;
+    const contentModal = (
+      <div style={{ height: "250px", width: "100%" }}>
+        ID: {userSelected.id}
+      </div>
+    );
+
+    const contentDeleteModal = (
+      <div style={{ height: "250px", width: "100%" }}>
+        Delete: {userSelected.id}
+      </div>
+    );
+
+    const renderContentModal =
+      titleModal === "Delete User" ? contentDeleteModal : contentModal;
+
     const headerData = [
       {
         header: "Name123",
@@ -122,20 +181,29 @@ class Users extends React.Component {
             actionDelete={this._actionDelete}
           />
         </div>
+        <CustomModal
+          isReview={isReview}
+          open={openModal}
+          // loading={loading}
+          contentModal={renderContentModal}
+          hideModal={this._hideModal}
+          textSubmit={titleModal === "Delete User" ? "Delete" : "Save"}
+          onSubmit={this._handleSubmit}
+          title={titleModal}
+        />
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = ({
-  user: {loading, listUser, userInfo } = {}
-}) => ({
-  loading, listUser, userInfo
+const mapStateToProps = ({ user: { loading, listUser, userInfo } = {} }) => ({
+  loading,
+  listUser,
+  userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserInfo: (data) =>
-    dispatch({ type: USER.GET_USER_INFO, data  }),
+  getUserInfo: data => dispatch({ type: USER.GET_USER_INFO, data })
   // updateStateReducer: data => dispatch({ type: "UPDATE_STATE", data })
 });
 
