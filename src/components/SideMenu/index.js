@@ -64,7 +64,7 @@ export default class SideMenu extends PureComponent {
                   to="/users-exchange/"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
-                  <i className="fas fa-users itemMenu__icon"></i>
+                  <i className="fas fa-exchange-alt itemMenu__icon"></i>
                   <span className="itemMenu__text">Exchange</span>
                 </NavLink>
               </Fragment>
