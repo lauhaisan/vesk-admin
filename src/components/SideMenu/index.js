@@ -70,16 +70,6 @@ export default class SideMenu extends PureComponent {
               </Fragment>
             )}
           </Fragment>
-
-          {/* <NavLink
-            activeClassName={`${classNameMenu}__menu__itemMenu--active`}
-            to="/users"
-            className={`${classNameMenu}__menu__itemMenu`}
-          >
-            <i className="fas fa-users itemMenu__icon"></i>
-            <span className="itemMenu__text">Users</span>
-          </NavLink> */}
-
           <NavLink
             activeClassName={`${classNameMenu}__menu__itemMenu--active`}
             to="/contact"
