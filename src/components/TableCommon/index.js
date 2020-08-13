@@ -81,7 +81,7 @@ class TableCommon extends React.Component {
           headers={headerData}
           render={({ rows, headers, getHeaderProps }) => (
             <TableContainer title={title}>
-              <Table>
+              <Table useZebraStyles>
                 <TableHead>
                   <TableRow>
                     {headers.map(header => (
