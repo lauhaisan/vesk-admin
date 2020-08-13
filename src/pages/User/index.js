@@ -70,8 +70,8 @@ class Users extends React.Component {
     );
 
     const contentDeleteModal = (
-      <div style={{ height: "250px", width: "100%" }}>
-        Delete: {userSelected.id}
+      <div style={{ height: "auto", width: "100%" }}>
+        Are you sure delete userID:{userSelected.id}?
       </div>
     );
 
