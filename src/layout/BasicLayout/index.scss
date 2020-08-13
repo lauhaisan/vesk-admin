@@ -18,10 +18,8 @@ $menuColor: #7d5a5a;
       min-height: 95vh;
       z-index: 1000;
       transition: width 0.2s;
+      position: fixed;
       &__menu {
-        position: fixed;
-        top: 3rem;
-        left: 0;
         &__itemMenu {
           display: flex;
           flex-direction: row;

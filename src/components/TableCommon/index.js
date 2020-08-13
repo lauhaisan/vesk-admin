@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.scss";
-import { DataTable } from "carbon-components-react";
+import { DataTable, PaginationNav } from "carbon-components-react";
 const {
   TableContainer,
   Table,
@@ -11,7 +11,23 @@ const {
   TableHeader
 } = DataTable;
 
-class TableSelect extends React.Component {
+class TableCommon extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 0
+    };
+  }
+
+  onChangePage = value => {
+    // const function pagination from prop:
+    // ex: const { handlePagination} = this.props
+    this.setState({
+      currentPage: value
+    });
+    // Dispatch to handlePagination with param: value +1 because default value = 0
+  };
+
   renderAction = item => {
     const { actionReview, actionEdit, actionDelete } = this.props;
     return (
@@ -33,7 +49,9 @@ class TableSelect extends React.Component {
   };
 
   render() {
-    const { rowData, headerData, title } = this.props;
+    const { rowData, headerData, title, total = 0, limit = 10 } = this.props;
+    const { currentPage } = this.state;
+    const totalPage = Math.ceil(total / limit);
 
     return (
       <div className="tableCommon">
@@ -69,8 +87,17 @@ class TableSelect extends React.Component {
             </TableContainer>
           )}
         />
+        {totalPage > 1 && (
+          <PaginationNav
+            className=""
+            itemsShown={5}
+            page={currentPage}
+            onChange={page => this.onChangePage(page)}
+            totalItems={totalPage}
+          />
+        )}
       </div>
     );
   }
 }
-export default TableSelect;
+export default TableCommon;

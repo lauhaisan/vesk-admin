@@ -1,4 +1,5 @@
 .tableCommon {
+  background-color: #f0f0f0;
   .bx--data-table-header {
     background-color: transparent;
   }
@@ -10,10 +11,18 @@
     background-color: #f0f2f5;
   }
 
-  .viewAction {
-    width: 7rem;
+  .bx--pagination-nav {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    &__page:focus {
+      outline: none;
+    }
+  }
+
+  .viewAction {
+    width: 5rem;
+    display: flex;
+    justify-content: space-between;
     &__icon {
       font-size: 16px;
       &--review {
