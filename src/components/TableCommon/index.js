@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.scss";
-import { DataTable, PaginationNav } from "carbon-components-react";
+import { DataTable, PaginationNav, Loading } from "carbon-components-react";
 const {
   TableContainer,
   Table,
@@ -81,20 +81,31 @@ class TableCommon extends React.Component {
           headers={headerData}
           render={({ rows, headers, getHeaderProps }) => (
             <TableContainer title={title}>
-              <Table useZebraStyles>
-                <TableHead>
-                  <TableRow>
-                    {headers.map(header => (
-                      <TableHeader {...getHeaderProps({ header })}>
-                        {header.header}
-                      </TableHeader>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {loading ? <div>Loading...</div> : this.renderTableRow(rows)}
-                </TableBody>
-              </Table>
+              {loading ? (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "50vh",
+                    display: "grid",
+                    placeItems: "center"
+                  }}
+                >
+                  <Loading withOverlay={false} />
+                </div>
+              ) : (
+                <Table useZebraStyles>
+                  <TableHead>
+                    <TableRow>
+                      {headers.map(header => (
+                        <TableHeader {...getHeaderProps({ header })}>
+                          {header.header}
+                        </TableHeader>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>{this.renderTableRow(rows)}</TableBody>
+                </Table>
+              )}
             </TableContainer>
           )}
         />
