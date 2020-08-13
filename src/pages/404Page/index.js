@@ -19,7 +19,7 @@ class NotFoundPage extends Component {
         <img
           src="https://static.mediacdn.vn/images/4041.gif"
           alt="404"
-          width="100%"
+          width="50%"
           height="auto"
         />
       </div>
