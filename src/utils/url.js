@@ -8,7 +8,7 @@ const URL = {
   PRODUCT: "/products",
 
   GET_LIST_USER: "/v1/vesk/users/search",
-  GET_USER_BY_ID: "/v1/vesk/users/my-info",
+  GET_USER_BY_ID: "/v1/vesk/users/userId"
 };
 
 export default URL;
