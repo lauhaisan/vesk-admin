@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
+import { Form, FormGroup, TextInput } from "carbon-components-react";
 import { USER, LIST_USER } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
@@ -12,7 +13,7 @@ class Users extends React.Component {
       openModal: false,
       titleModal: "",
       userSelected: {},
-      isReview: ""
+      isReview: "",
     };
   }
 
@@ -22,12 +23,12 @@ class Users extends React.Component {
     getListUser(payload);
   }
 
-  _actionReview = item => {
+  _actionReview = (item) => {
     this.setState({
       openModal: true,
       titleModal: "Review User",
       userSelected: item,
-      isReview: true
+      isReview: true,
     });
     // const { getUserInfo } = this.props;
     // console.log("item ", item);
@@ -39,31 +40,32 @@ class Users extends React.Component {
       openModal: false,
       userSelected: {},
       titleModal: "",
-      isReview: ""
+      isReview: "",
     });
   };
 
   _handleSubmit = () => {
-    const { userSelected } = this.state;
-    alert(userSelected.id);
+    // const { userSelected } = this.state;
+    // alert(userSelected.id);
     //After dispatch API => this._hideModal
+    alert("submit form");
   };
 
-  _actionDelete = item => {
+  _actionDelete = (item) => {
     this.setState({
       openModal: true,
       titleModal: "Delete User",
       userSelected: item,
-      isReview: false
+      isReview: false,
     });
   };
 
-  _actionEdit = item => {
+  _actionEdit = (item) => {
     this.setState({
       openModal: true,
       titleModal: "Edit User",
       userSelected: item,
-      isReview: false
+      isReview: false,
     });
   };
 
@@ -72,7 +74,23 @@ class Users extends React.Component {
     const { loading, listUserData = [] } = this.props;
     const contentModal = (
       <div style={{ height: "250px", width: "100%" }}>
-        ID: {userSelected.id}
+        <Form>
+          <FormGroup legendText="">
+            <TextInput
+              disabled={false}
+              // invalid={validationEmail}
+              id="inputEmail"
+              // invalidText={messageValidationEmail}
+              labelText="Email"
+              required
+              light={true}
+              onChange={(event) => this.handleChangeEmail(event.target.value)}
+              placeholder="Email"
+              type="text"
+              value={userSelected.id}
+            />
+          </FormGroup>
+        </Form>
       </div>
     );
 
@@ -88,27 +106,27 @@ class Users extends React.Component {
     const headerData = [
       {
         header: "Email",
-        key: "email"
+        key: "email",
       },
       {
         header: "First Name",
-        key: "firstName"
+        key: "firstName",
       },
       {
         header: "Last Name",
-        key: "lastName"
+        key: "lastName",
       },
       {
         header: "User Name",
-        key: "userName"
+        key: "userName",
       },
-      { header: "Action", key: "action" }
+      { header: "Action", key: "action" },
     ];
 
-    const formatData = listUserData.map(item => {
+    const formatData = listUserData.map((item) => {
       return {
         ...item,
-        id: item.userId
+        id: item.userId,
       };
     });
 
@@ -142,17 +160,17 @@ class Users extends React.Component {
 }
 
 const mapStateToProps = ({
-  listUser: { loading, listUserData, paging, messageError } = {}
+  listUser: { loading, listUserData, paging, messageError } = {},
 }) => ({
   loading,
   listUserData,
   paging,
-  messageError
+  messageError,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getUserInfo: data => dispatch({ type: USER.GET_USER_INFO, data }),
-  getListUser: data => dispatch({ type: LIST_USER.GET_LIST_USER, data })
+const mapDispatchToProps = (dispatch) => ({
+  getUserInfo: (data) => dispatch({ type: USER.GET_USER_INFO, data }),
+  getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
   // updateStateReducer: data => dispatch({ type: "UPDATE_STATE", data })
 });
 
