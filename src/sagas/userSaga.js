@@ -1,10 +1,9 @@
 import { takeLatest, call, put, delay } from "redux-saga/effects";
 import {
   signUpAPI,
-  signInAPI,
-  logoutAPI,
-  getMyInfoAPI,
-  getUserInfoAPI
+  signInAPI
+  // logoutAPI
+  // , getMyInfoAPI
 } from "../service/user";
 import { setToken } from "../utils/token";
 import { USER } from "../constant";
@@ -46,44 +45,33 @@ function* handleSignIn(object) {
   yield call(history.push, "/");
 }
 
-function* handleLogout(object) {
-  const history = object.data;
-  yield delay(500);
-  const resp = yield call(logoutAPI);
-  if (resp.statusCode !== 200) {
-    yield put({ type: "USER_LOGOUT_FAIL", data: resp });
-    return;
-  }
-  setToken(undefined);
-  yield put({ type: "USER_LOGOUT_SUCCESS" });
-  if (history) {
-    yield call(history.push, "/");
-  }
-}
+// function* handleLogout(object) {
+//   const history = object.data;
+//   yield delay(500);
+//   const resp = yield call(logoutAPI);
+//   if (resp.statusCode !== 200) {
+//     yield put({ type: "USER_LOGOUT_FAIL", data: resp });
+//     return;
+//   }
+//   setToken(undefined);
+//   yield put({ type: "USER_LOGOUT_SUCCESS" });
+//   if (history) {
+//     yield call(history.push, "/");
+//   }
+// }
 
-function* getMyInfo() {
-  const resp = yield call(getMyInfoAPI);
-  if (resp.statusCode !== 200) {
-    yield put({ type: "GET_MY_INFO_FAIL" });
-    return;
-  }
-  yield put({ type: "GET_MY_INFO_SUCCESS", data: resp });
-}
-
-function* getUserInfo(object) {
-  console.log("getUserInfo ", object.data);
-  const resp = yield call(getUserInfoAPI(object.data));
-  if (resp.statusCode !== 200) {
-    yield put({ type: "GET_USER_FAIL" });
-    return;
-  }
-  yield put({ type: "GET_USER_SUCCESS", data: resp });
-}
+// function* getMyInfo() {
+//   const resp = yield call(getMyInfoAPI);
+//   if (resp.statusCode !== 200) {
+//     yield put({ type: "GET_MY_INFO_FAIL" });
+//     return;
+//   }
+//   yield put({ type: "GET_MY_INFO_SUCCESS", data: resp });
+// }
 
 export const userSaga = [
   takeLatest(USER.SIGNUP, handleSignUp),
-  takeLatest(USER.SIGNIN, handleSignIn),
-  takeLatest(USER.LOGOUT, handleLogout),
-  takeLatest(USER.GET_MY_INFO, getMyInfo),
-  takeLatest(USER.GET_USER_INFO, getUserInfo)
+  takeLatest(USER.SIGNIN, handleSignIn)
+  // takeLatest(USER.LOGOUT, handleLogout)
+  // takeLatest(USER.GET_MY_INFO, getMyInfo)
 ];

@@ -1,18 +1,19 @@
 import request from "../utils/request";
 import URL from "../utils/url";
 
+// request( param1: url,param2: isAuth, param3: method = "GET",param4: payload)
+
 const getListUserAPI = async payload => {
-  //   const URL_WITH_PARAMS = `${URL.GET_USER_INFO}?userId=${payload.id}`;
-  return request(URL.GET_LIST_USER);
+  return request(URL.GET_LIST_USER, true);
 };
 
 const getUserByIdAPI = async payload => {
   const URL_WITH_PARAMS = `${URL.GET_USER_BY_ID}/${payload}`;
-  return request(URL_WITH_PARAMS);
+  return request(URL_WITH_PARAMS, true);
 };
 
 const editUserAPI = async payload => {
-  return request(URL.EDIT_USER, "PUT", payload);
+  return request(URL.EDIT_USER, true, "PUT", payload);
 };
 
 export { getListUserAPI, getUserByIdAPI, editUserAPI };
