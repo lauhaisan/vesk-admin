@@ -7,7 +7,8 @@ import {
   FormGroup,
   TextInput,
   DatePicker,
-  DatePickerInput
+  DatePickerInput,
+  Loading
 } from "carbon-components-react";
 import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
@@ -113,7 +114,9 @@ class Users extends React.Component {
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetUserById ? (
-          "Loading..."
+          <div className="modalLoading">
+            <Loading withOverlay={false} />
+          </div>
         ) : (
           <Form className="formData">
             <div className="formData__avt">
