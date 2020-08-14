@@ -3,7 +3,7 @@ import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
 import { Form, FormGroup, TextInput } from "carbon-components-react";
-import { USER, LIST_USER } from "../../constant";
+import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 class Users extends React.Component {
@@ -23,25 +23,30 @@ class Users extends React.Component {
     getListUser(payload);
   }
 
+  getUserById = (id) => {
+    const { getUserInfo } = this.props;
+    getUserInfo({ data: id });
+  };
+
   _actionReview = (item) => {
+    this.getUserById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Review User",
       userSelected: item,
       isReview: true,
     });
-    // const { getUserInfo } = this.props;
-    // console.log("item ", item);
-    // getUserInfo({ id: "69b8dbe6-a17e-44f5-b0ca-3757a6916492" });
   };
 
   _hideModal = () => {
+    const { updateStateReducer } = this.props;
     this.setState({
       openModal: false,
       userSelected: {},
       titleModal: "",
       isReview: "",
     });
+    updateStateReducer({ itemUser: {} });
   };
 
   _handleSubmit = () => {
@@ -71,26 +76,35 @@ class Users extends React.Component {
 
   render() {
     const { userSelected, openModal, titleModal, isReview } = this.state;
-    const { loading, listUserData = [] } = this.props;
+    const {
+      loading,
+      listUserData = [],
+      itemUser,
+      loadingGetUserById,
+    } = this.props;
     const contentModal = (
       <div style={{ height: "250px", width: "100%" }}>
-        <Form>
-          <FormGroup legendText="">
-            <TextInput
-              disabled={false}
-              // invalid={validationEmail}
-              id="inputEmail"
-              // invalidText={messageValidationEmail}
-              labelText="Email"
-              required
-              light={true}
-              onChange={(event) => this.handleChangeEmail(event.target.value)}
-              placeholder="Email"
-              type="text"
-              value={userSelected.id}
-            />
-          </FormGroup>
-        </Form>
+        {loadingGetUserById ? (
+          "Loading..."
+        ) : (
+          <Form>
+            <FormGroup legendText="">
+              <TextInput
+                disabled={false}
+                // invalid={validationEmail}
+                id="inputEmail"
+                // invalidText={messageValidationEmail}
+                labelText="Email"
+                required
+                light={true}
+                // onChange={(event) => this.handleChangeEmail(event.target.value)}
+                placeholder="Email"
+                type="text"
+                value={itemUser.email}
+              />
+            </FormGroup>
+          </Form>
+        )}
       </div>
     );
 
@@ -160,18 +174,28 @@ class Users extends React.Component {
 }
 
 const mapStateToProps = ({
-  listUser: { loading, listUserData, paging, messageError } = {},
+  listUser: {
+    loading,
+    listUserData,
+    paging,
+    messageError,
+    loadingGetUserById,
+    itemUser,
+  } = {},
 }) => ({
   loading,
   listUserData,
   paging,
   messageError,
+  loadingGetUserById,
+  itemUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getUserInfo: (data) => dispatch({ type: USER.GET_USER_INFO, data }),
+  getUserInfo: (data) => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
   getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
-  // updateStateReducer: data => dispatch({ type: "UPDATE_STATE", data })
+  updateStateReducer: (data) =>
+    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

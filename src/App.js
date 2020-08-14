@@ -10,9 +10,23 @@ class App extends Component {
       return (
         <Route
           {...rest}
-          render={props => (
+          render={(props) => (
             <Layout {...props}>
-              <Suspense fallback={<Loading withOverlay={false} />}>
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Loading withOverlay={false} />
+                  </div>
+                }
+              >
                 <Component {...props} />
               </Suspense>
             </Layout>
@@ -24,7 +38,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <Switch>
-          {routes.map(route => (
+          {routes.map((route) => (
             <AppRoute
               key={route.path}
               path={route.path}
