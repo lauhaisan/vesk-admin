@@ -14,7 +14,7 @@ export default class index extends Component {
       hideModal,
       onSubmit,
       loading,
-      textSubmit
+      textSubmit,
     } = this.props;
     return (
       <Modal
@@ -30,26 +30,23 @@ export default class index extends Component {
           <div className="customModal__viewBtn">
             <ButtonOutline
               onClick={hideModal}
-              disabled={false}
               text="Cancel"
               style={{
                 margin: "10px 10px 0px",
                 width: "90px",
-                height: "47px"
+                height: "47px",
               }}
             />
             <ButtonLoading
               onClick={onSubmit}
-              disabled={
-                loading ? "yes" : undefined || isReview ? "yes" : undefined
-              }
-              //   loading={loading ? "yes" : undefined}
+              disabled={loading || isReview}
+              loading={loading ? "yes" : undefined}
               type="submit"
               text={textSubmit}
               style={{
                 margin: "10px 0",
                 width: "90px",
-                height: "47px"
+                height: "47px",
               }}
             />
           </div>
