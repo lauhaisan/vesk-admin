@@ -4,6 +4,7 @@ import { Login32 } from "@carbon/icons-react";
 import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
 import TitlePage from "../../components/TitlePage";
+import { USER } from "../../constant";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./index.scss";
@@ -16,26 +17,26 @@ class Login extends Component {
       password: "",
       check: false,
       validationEmail: false,
-      validationPassword: false,
+      validationPassword: false
     };
   }
 
   componentWillUnmount() {
     const { updateStateReducer } = this.props;
     updateStateReducer({
-      messageSignIn: "",
+      messageSignIn: ""
     });
   }
 
-  handleChangePwd = (value) => {
+  handleChangePwd = value => {
     this.setState({ password: value });
   };
 
-  handleChangeEmail = (value) => {
+  handleChangeEmail = value => {
     this.setState({ email: value.toLowerCase() });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     const { email, password } = this.state;
     const { signIn, history } = this.props;
     event.preventDefault();
@@ -45,32 +46,32 @@ class Login extends Component {
     if (emailRegex.test(email) === false) {
       this.setState({
         validationEmail: true,
-        messageValidationEmail: "The email is not valid",
+        messageValidationEmail: "The email is not valid"
       });
       check = true;
     } else {
       this.setState({
         validationEmail: false,
-        messageValidationEmail: "",
+        messageValidationEmail: ""
       });
     }
     if (password.length < 8) {
       this.setState({
         validationPassword: true,
-        messageValidationPwd: "Password must be at least 8 characters",
+        messageValidationPwd: "Password must be at least 8 characters"
       });
       check = true;
     } else {
       this.setState({
         validationPassword: false,
-        messageValidationPwd: "",
+        messageValidationPwd: ""
       });
     }
     this.setState({
-      check,
+      check
     });
     if (!check) {
-      const valueLogin = { name:email, password };
+      const valueLogin = { name: email, password };
       signIn(valueLogin, history);
     }
   };
@@ -83,7 +84,7 @@ class Login extends Component {
       messageValidationPwd,
       email,
       password,
-      check,
+      check
     } = this.state;
     const { loading, isSignInSuccessfully, messageSignIn } = this.props;
 
@@ -112,9 +113,7 @@ class Login extends Component {
                   labelText="Email"
                   required
                   light={true}
-                  onChange={(event) =>
-                    this.handleChangeEmail(event.target.value)
-                  }
+                  onChange={event => this.handleChangeEmail(event.target.value)}
                   placeholder="Email"
                   type="text"
                   value={email}
@@ -129,7 +128,7 @@ class Login extends Component {
                   labelText="Password"
                   placeholder="Password"
                   light={true}
-                  onChange={(event) => this.handleChangePwd(event.target.value)}
+                  onChange={event => this.handleChangePwd(event.target.value)}
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                   required
                   type="password"
@@ -142,7 +141,7 @@ class Login extends Component {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "center",
+                alignItems: "center"
               }}
             >
               <ButtonLoading
@@ -155,7 +154,7 @@ class Login extends Component {
                 style={{
                   margin: "10px 0",
                   width: "140px",
-                  height: "47px",
+                  height: "47px"
                 }}
               />
               <Link to="/signup">Create new account?</Link>
@@ -169,7 +168,7 @@ class Login extends Component {
           <Notification
             status="error"
             message={messageSignIn}
-            title="Sign Up Failed"
+            title="Sign In Failed"
           />
         )}
       </Fragment>
@@ -177,16 +176,17 @@ class Login extends Component {
   }
 }
 const mapStateToProps = ({
-  user: { loading, isSignInSuccessfully = "", messageSignIn = "" } = {},
+  user: { loading, isSignInSuccessfully = "", messageSignIn = "" } = {}
 }) => ({
   loading,
   isSignInSuccessfully,
-  messageSignIn,
+  messageSignIn
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  signIn: (data, history) => dispatch({ type: "USER_SIGNIN", data: { data, history } }),
-  updateStateReducer: (data) => dispatch({ type: "UPDATE_STATE", data }),
+const mapDispatchToProps = dispatch => ({
+  signIn: (data, history) =>
+    dispatch({ type: USER.SIGNIN, data: { data, history } }),
+  updateStateReducer: data => dispatch({ type: USER.UPDATE_STATE, data })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

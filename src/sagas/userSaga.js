@@ -14,7 +14,7 @@ function* handleSignUp(object) {
   yield delay(500);
   const resp = yield call(signUpAPI, dat);
   if (resp.code !== 200) {
-    yield put({ type: "USER_SIGNUP_FAIL", data: resp });
+    yield put({ type: USER.SIGNUP_FAIL, data: resp });
     return;
   }
   const { data = {}, data: { token } = {} } = resp;
@@ -22,7 +22,7 @@ function* handleSignUp(object) {
     token,
     data
   });
-  yield put({ type: "USER_SIGNUP_SUCCESS" });
+  yield put({ type: USER.SIGNUP_SUCCESS });
   yield delay(3000);
   yield call(history.push, "/");
 }
@@ -33,7 +33,7 @@ function* handleSignIn(object) {
   yield delay(500);
   const resp = yield call(signInAPI, dat);
   if (resp.code !== 200) {
-    yield put({ type: "USER_SIGNIN_FAIL", data: resp });
+    yield put({ type: USER.SIGNIN_FAIL, data: resp });
     return;
   }
   const { data = {}, data: { token } = {} } = resp;
@@ -41,7 +41,7 @@ function* handleSignIn(object) {
     token,
     data
   });
-  yield put({ type: "USER_SIGNIN_SUCCESS" });
+  yield put({ type: USER.SIGNIN_SUCCESS });
   yield call(history.push, "/");
 }
 

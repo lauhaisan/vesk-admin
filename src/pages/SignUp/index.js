@@ -3,6 +3,7 @@ import { Form, FormGroup, TextInput } from "carbon-components-react";
 import { Reply32 } from "@carbon/icons-react";
 import { connect } from "react-redux";
 import TitlePage from "../../components/TitlePage";
+import { USER } from "../../constant";
 import ButtonLoading from "../../components/ButtonLoading";
 import ButtonOutline from "../../components/ButtonOutline";
 import Notification from "../../components/Notification";
@@ -348,8 +349,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => ({
   signUp: (data, history) =>
-    dispatch({ type: "USER_SIGNUP", data: { data, history } }),
-  updateStateReducer: data => dispatch({ type: "UPDATE_STATE", data })
+    dispatch({ type: USER.SIGNUP, data: { data, history } }),
+  updateStateReducer: data => dispatch({ type: USER.UPDATE_STATE, data })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
