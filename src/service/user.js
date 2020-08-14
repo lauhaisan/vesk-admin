@@ -1,13 +1,13 @@
 import request from "../utils/request";
-import URL from "../utils/url";
+import URL from "../constant/url";
 
-// request( param1: url,param2: isAuth, param3: method = "GET",param4: payload)
+// request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
-const signUpAPI = async payload => {
+const signUpAPI = async (payload) => {
   return request(URL.SIGNUP, false, "POST", payload);
 };
 
-const signInAPI = async payload => {
+const signInAPI = async (payload) => {
   return request(URL.SIGNIN, false, "POST", payload);
 };
 
@@ -23,7 +23,7 @@ const signInAPI = async payload => {
 
 export {
   signUpAPI,
-  signInAPI
+  signInAPI,
   // logoutAPI
   // , getMyInfoAPI
 };
