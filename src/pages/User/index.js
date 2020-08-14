@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
+import moment from "moment";
 import {
   Form,
   FormGroup,
@@ -13,25 +14,22 @@ import {
 import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
+
 class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       openModal: false,
       titleModal: "",
-      isReview: "",
-      formData: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        userName: "",
-        gender: "",
-        region: "",
-        city: "",
-        address: "",
-        phone: ""
-      }
+      isReview: ""
     };
+  }
+
+  static getDerivedStateFromProps(props) {
+    if ("itemUser" in props) {
+      return { itemUser: props.itemUser };
+    }
+    return null;
   }
 
   componentDidMount() {
@@ -54,30 +52,37 @@ class Users extends React.Component {
     });
   };
 
+  onChangeDatePicker = e => {
+    const value = e.target ? e.target.value : e[0];
+    const valueDate = moment(value).format("DD/MM/YYYY");
+    let { itemUser } = this.state;
+    itemUser.birthDate = valueDate;
+    this.setState({
+      itemUser
+    });
+  };
+
+  onChangeFormData = (key, value) => {
+    let { itemUser } = this.state;
+    itemUser[key] = value;
+    this.setState({
+      itemUser
+    });
+  };
+
   _hideModal = () => {
     const { updateStateReducer } = this.props;
     this.setState({
       openModal: false,
       titleModal: "",
-      isReview: "",
-      formData: {
-        address: "",
-        city: "",
-        email: "",
-        firstName: "",
-        gender: "",
-        lastName: "",
-        phone: "",
-        region: "",
-        userName: ""
-      }
+      isReview: ""
     });
     updateStateReducer({ itemUser: {} });
   };
 
   _handleSubmit = () => {
-    //After dispatch API => this._hideModal
-    alert("submit form");
+    const { itemUser } = this.state;
+    console.log("submit", itemUser);
   };
 
   _handleDelete = () => {
@@ -104,7 +109,7 @@ class Users extends React.Component {
   };
 
   render() {
-    const { openModal, titleModal, isReview, formData } = this.state;
+    const { openModal, titleModal, isReview } = this.state;
     const {
       loading,
       listUserData = [],
@@ -136,17 +141,21 @@ class Users extends React.Component {
                   light={true}
                   placeholder="Email"
                   type="text"
-                  value={itemUser.email || formData.email}
+                  value={itemUser.email}
                 />
               </FormGroup>
               <FormGroup legendText="">
-                <DatePicker dateFormat="d/m/Y" datePickerType="single">
+                <DatePicker
+                  dateFormat="d/m/Y"
+                  datePickerType="single"
+                  onChange={e => this.onChangeDatePicker(e)}
+                >
                   <DatePickerInput
                     id="date-picker-calendar-id"
                     placeholder="Birthday"
                     labelText="Date picker label"
                     type="text"
-                    value={itemUser.birthDate || formData.birthDate}
+                    value={itemUser.birthDate}
                   />
                 </DatePicker>
               </FormGroup>
@@ -158,12 +167,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputFirstName"
                   labelText="First Name"
+                  onChange={event =>
+                    this.onChangeFormData("firstName", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="First Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.firstName || formData.firstName}
+                  value={itemUser.firstName}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -172,12 +184,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputLastName"
                   labelText="Last Name"
+                  onChange={event =>
+                    this.onChangeFormData("lastName", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Last Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.lastName || formData.lastName}
+                  value={itemUser.lastName}
                 />
               </FormGroup>
             </div>
@@ -188,12 +203,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputUserName"
                   labelText="User Name"
+                  onChange={event =>
+                    this.onChangeFormData("userName", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="User Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.userName || formData.userName}
+                  value={itemUser.userName}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -202,12 +220,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputGender"
                   labelText="Gender"
+                  onChange={event =>
+                    this.onChangeFormData("gender", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Gender"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.gender || formData.gender}
+                  value={itemUser.gender}
                 />
               </FormGroup>
             </div>
@@ -218,12 +239,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputRegion"
                   labelText="Region"
+                  onChange={event =>
+                    this.onChangeFormData("region", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Region"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.region || formData.region}
+                  value={itemUser.region}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -232,12 +256,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputCity"
                   labelText="City"
+                  onChange={event =>
+                    this.onChangeFormData("city", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="City"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.city || formData.city}
+                  value={itemUser.city}
                 />
               </FormGroup>
             </div>
@@ -248,12 +275,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputAddress"
                   labelText="Address"
+                  onChange={event =>
+                    this.onChangeFormData("address", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Address"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.address || formData.address}
+                  value={itemUser.address}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -262,12 +292,15 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputPhone"
                   labelText="Phone"
+                  onChange={event =>
+                    this.onChangeFormData("phone", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Phone"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.phone || formData.phone}
+                  value={itemUser.phone}
                 />
               </FormGroup>
             </div>

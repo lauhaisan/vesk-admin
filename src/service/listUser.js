@@ -7,7 +7,6 @@ const getListUserAPI = async payload => {
 };
 
 const getUserByIdAPI = async payload => {
-  console.log(payload);
   const URL_WITH_PARAMS = `${URL.GET_USER_BY_ID}/${payload}`;
   return request(URL_WITH_PARAMS);
 };
