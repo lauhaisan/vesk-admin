@@ -11,4 +11,8 @@ const getUserByIdAPI = async payload => {
   return request(URL_WITH_PARAMS);
 };
 
-export { getListUserAPI, getUserByIdAPI };
+const editUserAPI = async payload => {
+  return request(URL.EDIT_USER, "PUT", payload);
+};
+
+export { getListUserAPI, getUserByIdAPI, editUserAPI };

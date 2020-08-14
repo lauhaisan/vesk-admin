@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
+import Notification from "../../components/Notification";
 import moment from "moment";
 import {
   Form,
@@ -36,6 +37,15 @@ class Users extends React.Component {
     const { getListUser } = this.props;
     const payload = {};
     getListUser(payload);
+  }
+
+  componentWillUnmount() {
+    const { updateStateReducer } = this.props;
+    updateStateReducer({
+      itemUser: {},
+      editUserSuccessfully: "",
+      messageError: ""
+    });
   }
 
   getUserById = id => {
@@ -77,12 +87,15 @@ class Users extends React.Component {
       titleModal: "",
       isReview: ""
     });
-    updateStateReducer({ itemUser: {} });
+    updateStateReducer({
+      itemUser: {}
+    });
   };
 
   _handleSubmit = () => {
+    const { editUser } = this.props;
     const { itemUser } = this.state;
-    console.log("submit", itemUser);
+    editUser(itemUser, this._hideModal);
   };
 
   _handleDelete = () => {
@@ -114,7 +127,10 @@ class Users extends React.Component {
       loading,
       listUserData = [],
       itemUser = {},
-      loadingGetUserById
+      loadingGetUserById,
+      loadingEditUser,
+      messageError,
+      editUserSuccessfully
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -151,6 +167,7 @@ class Users extends React.Component {
                   onChange={e => this.onChangeDatePicker(e)}
                 >
                   <DatePickerInput
+                    disabled={isReview}
                     id="date-picker-calendar-id"
                     placeholder="Birthday"
                     labelText="Date picker label"
@@ -364,7 +381,7 @@ class Users extends React.Component {
         <CustomModal
           isReview={isReview}
           open={openModal}
-          // loading={loading}
+          loading={loadingEditUser}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
           textSubmit={titleModal === "Delete User" ? "Delete" : "Save"}
@@ -375,6 +392,16 @@ class Users extends React.Component {
           }
           title={titleModal}
         />
+        {!editUserSuccessfully && messageError !== "" && (
+          <Notification
+            status="error"
+            message={messageError}
+            title="Edit User Failed"
+          />
+        )}
+        {editUserSuccessfully && (
+          <Notification status="success" title="Edit User Successfully" />
+        )}
       </Fragment>
     );
   }
@@ -387,7 +414,9 @@ const mapStateToProps = ({
     paging,
     messageError,
     loadingGetUserById,
-    itemUser
+    itemUser,
+    loadingEditUser,
+    editUserSuccessfully
   } = {}
 }) => ({
   loading,
@@ -395,12 +424,16 @@ const mapStateToProps = ({
   paging,
   messageError,
   loadingGetUserById,
-  itemUser
+  itemUser,
+  loadingEditUser,
+  editUserSuccessfully
 });
 
 const mapDispatchToProps = dispatch => ({
   getUserInfo: data => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
   getListUser: data => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
+  editUser: (data, functionHideModal) =>
+    dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
   updateStateReducer: data =>
     dispatch({ type: LIST_USER.SET_STATE_REDUCER, data })
 });

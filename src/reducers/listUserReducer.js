@@ -6,7 +6,9 @@ const INITIAL_STATE = {
   paging: {},
   messageError: "",
   loadingGetUserById: false,
-  itemUser: {},
+  loadingEditUser: false,
+  editUserSuccessfully: "",
+  itemUser: {}
 };
 
 const listUserReducer = (state = INITIAL_STATE, action) => {
@@ -15,7 +17,7 @@ const listUserReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
-        messageError: "",
+        messageError: ""
       };
     case LIST_USER.GET_LIST_USER_SUCCESS:
       return {
@@ -23,39 +25,60 @@ const listUserReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         listUserData: action.data.items,
         paging: action.data.paging,
-        messageError: "",
+        messageError: ""
       };
     case LIST_USER.GET_LIST_USER_FAIL:
       return {
         ...state,
         loading: false,
         listUserData: [],
-        messageError: action.data,
+        messageError: action.data
       };
     case LIST_USER.GET_USER_BY_ID:
       return {
         ...state,
         loadingGetUserById: true,
-        messageError: "",
+        messageError: ""
       };
     case LIST_USER.GET_USER_BY_ID_SUCCESS:
       return {
         ...state,
         loadingGetUserById: false,
         itemUser: action.data,
-        messageError: "",
+        messageError: ""
       };
     case LIST_USER.GET_USER_BY_ID_FAIL:
       return {
         ...state,
         loadingGetUserById: false,
         itemUser: {},
-        messageError: action.data,
+        messageError: action.data
+      };
+    case LIST_USER.EDIT_USER:
+      return {
+        ...state,
+        loadingEditUser: true,
+        editUserSuccessfully: "",
+        messageError: ""
+      };
+    case LIST_USER.EDIT_USER_SUCCESS:
+      return {
+        ...state,
+        loadingEditUser: false,
+        editUserSuccessfully: true,
+        messageError: ""
+      };
+    case LIST_USER.EDIT_USER_FAIL:
+      return {
+        ...state,
+        loadingEditUser: false,
+        editUserSuccessfully: false,
+        messageError: action.data
       };
     case LIST_USER.SET_STATE_REDUCER:
       return {
         ...state,
-        ...action.data,
+        ...action.data
       };
 
     default:

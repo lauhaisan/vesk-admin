@@ -6,12 +6,12 @@ class Notification extends Component {
     const {
       title = "",
       status = "error",
-      timeout = 0,
+      timeout = 5000,
       message = "",
-      caption = false,
+      caption = false
     } = this.props;
     return (
-      <div style={{ position: "absolute", top: "20px", right: "10px" }}>
+      <div style={{ position: "fixed", top: "3rem", right: "10px" }}>
         <ToastNotification
           kind={status}
           caption={caption}
