@@ -8,10 +8,12 @@ class Notification extends Component {
       status = "error",
       timeout = 5000,
       message = "",
-      caption = false
+      caption = false,
     } = this.props;
     return (
-      <div style={{ position: "fixed", top: "3rem", right: "10px" }}>
+      <div
+        style={{ position: "fixed", top: "3rem", right: "10px", zIndex: "700" }}
+      >
         <ToastNotification
           kind={status}
           caption={caption}
