@@ -94,7 +94,7 @@ class Users extends React.Component {
     this.setState({
       openAdd: false,
       openModal: false,
-      titleModal: "",
+      // titleModal: "",
       isReview: false,
     });
     updateStateReducer({
