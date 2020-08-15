@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
+import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
 import moment from "moment";
 import {
@@ -10,7 +11,7 @@ import {
   TextInput,
   DatePicker,
   DatePickerInput,
-  Loading
+  Loading,
 } from "carbon-components-react";
 import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
@@ -20,9 +21,10 @@ class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openAdd: false,
       openModal: false,
       titleModal: "",
-      isReview: ""
+      isReview: false,
     };
   }
 
@@ -44,31 +46,37 @@ class Users extends React.Component {
     updateStateReducer({
       itemUser: {},
       editUserSuccessfully: "",
-      messageError: ""
+      messageError: "",
     });
   }
 
-  getUserById = id => {
+  openModalAddUser = () => {
+    this.setState({
+      openAdd: true,
+    });
+  };
+
+  getUserById = (id) => {
     const { getUserInfo } = this.props;
     getUserInfo({ data: id });
   };
 
-  _actionReview = item => {
+  _actionReview = (item) => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Review User",
-      isReview: true
+      isReview: true,
     });
   };
 
-  onChangeDatePicker = e => {
+  onChangeDatePicker = (e) => {
     const value = e.target ? e.target.value : e[0];
     const valueDate = moment(value).format("DD/MM/YYYY");
     let { itemUser } = this.state;
     itemUser.birthDate = valueDate;
     this.setState({
-      itemUser
+      itemUser,
     });
   };
 
@@ -76,23 +84,25 @@ class Users extends React.Component {
     let { itemUser } = this.state;
     itemUser[key] = value;
     this.setState({
-      itemUser
+      itemUser,
     });
   };
 
   _hideModal = () => {
     const { updateStateReducer } = this.props;
     this.setState({
+      openAdd: false,
       openModal: false,
       titleModal: "",
-      isReview: ""
+      isReview: false,
     });
     updateStateReducer({
-      itemUser: {}
+      itemUser: {},
     });
   };
 
-  _handleSubmit = () => {
+  _handleSubmit = (event) => {
+    event.preventDefault();
     const { editUser } = this.props;
     const { itemUser } = this.state;
     editUser(itemUser, this._hideModal);
@@ -103,34 +113,34 @@ class Users extends React.Component {
     alert("delete", itemUser.userId);
   };
 
-  _actionDelete = item => {
+  _actionDelete = (item) => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Delete User",
-      isReview: false
+      isReview: false,
     });
   };
 
-  _actionEdit = item => {
+  _actionEdit = (item) => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Edit User",
-      isReview: false
+      isReview: false,
     });
   };
 
   render() {
-    const { openModal, titleModal, isReview } = this.state;
+    const { openModal, titleModal, isReview, openAdd, itemUser } = this.state;
+    console.log("item user from state", itemUser);
     const {
       loading,
       listUserData = [],
-      itemUser = {},
       loadingGetUserById,
       loadingEditUser,
       messageError,
-      editUserSuccessfully
+      editUserSuccessfully,
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -150,21 +160,21 @@ class Users extends React.Component {
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  disabled={true}
+                  disabled={!openAdd}
                   id="inputEmail"
                   labelText="Email"
                   required
                   light={true}
                   placeholder="Email"
                   type="text"
-                  value={itemUser.email}
+                  value={itemUser.email || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
                 <DatePicker
                   dateFormat="d/m/Y"
                   datePickerType="single"
-                  onChange={e => this.onChangeDatePicker(e)}
+                  onChange={(e) => this.onChangeDatePicker(e)}
                 >
                   <DatePickerInput
                     disabled={isReview}
@@ -172,7 +182,7 @@ class Users extends React.Component {
                     placeholder="Birthday"
                     labelText="Date picker label"
                     type="text"
-                    value={itemUser.birthDate}
+                    value={itemUser.birthDate || ""}
                   />
                 </DatePicker>
               </FormGroup>
@@ -184,7 +194,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputFirstName"
                   labelText="First Name"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("firstName", event.target.value)
                   }
                   required
@@ -192,7 +202,7 @@ class Users extends React.Component {
                   placeholder="First Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.firstName}
+                  value={itemUser.firstName || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -201,7 +211,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputLastName"
                   labelText="Last Name"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("lastName", event.target.value)
                   }
                   required
@@ -209,7 +219,7 @@ class Users extends React.Component {
                   placeholder="Last Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.lastName}
+                  value={itemUser.lastName || ""}
                 />
               </FormGroup>
             </div>
@@ -220,7 +230,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputUserName"
                   labelText="User Name"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("userName", event.target.value)
                   }
                   required
@@ -228,7 +238,7 @@ class Users extends React.Component {
                   placeholder="User Name"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.userName}
+                  value={itemUser.userName || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -237,7 +247,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputGender"
                   labelText="Gender"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("gender", event.target.value)
                   }
                   required
@@ -245,7 +255,7 @@ class Users extends React.Component {
                   placeholder="Gender"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.gender}
+                  value={itemUser.gender || ""}
                 />
               </FormGroup>
             </div>
@@ -256,7 +266,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputRegion"
                   labelText="Region"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("region", event.target.value)
                   }
                   required
@@ -264,7 +274,7 @@ class Users extends React.Component {
                   placeholder="Region"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.region}
+                  value={itemUser.region || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -273,7 +283,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputCity"
                   labelText="City"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("city", event.target.value)
                   }
                   required
@@ -281,7 +291,7 @@ class Users extends React.Component {
                   placeholder="City"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.city}
+                  value={itemUser.city || ""}
                 />
               </FormGroup>
             </div>
@@ -292,7 +302,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputAddress"
                   labelText="Address"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("address", event.target.value)
                   }
                   required
@@ -300,7 +310,7 @@ class Users extends React.Component {
                   placeholder="Address"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.address}
+                  value={itemUser.address || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
@@ -309,7 +319,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputPhone"
                   labelText="Phone"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("phone", event.target.value)
                   }
                   required
@@ -317,7 +327,7 @@ class Users extends React.Component {
                   placeholder="Phone"
                   type="text"
                   readOnly={isReview}
-                  value={itemUser.phone}
+                  value={itemUser.phone || ""}
                 />
               </FormGroup>
             </div>
@@ -340,27 +350,27 @@ class Users extends React.Component {
     const headerData = [
       {
         header: "Email",
-        key: "email"
+        key: "email",
       },
       {
         header: "First Name",
-        key: "firstName"
+        key: "firstName",
       },
       {
         header: "Last Name",
-        key: "lastName"
+        key: "lastName",
       },
       {
         header: "User Name",
-        key: "userName"
+        key: "userName",
       },
-      { header: "Action", key: "action" }
+      { header: "Action", key: "action" },
     ];
 
-    const formatData = listUserData.map(item => {
+    const formatData = listUserData.map((item) => {
       return {
         ...item,
-        id: item.userId
+        id: item.userId,
       };
     });
 
@@ -368,6 +378,7 @@ class Users extends React.Component {
       <Fragment>
         <TitlePage title="Users" />
         <div className="containerUserPage">
+          <ButtonLoading text="Add New User" onClick={this.openModalAddUser} />
           <TableCommon
             title="Table"
             rowData={formatData}
@@ -380,7 +391,7 @@ class Users extends React.Component {
         </div>
         <CustomModal
           isReview={isReview}
-          open={openModal}
+          open={openModal || openAdd}
           loading={loadingEditUser}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
@@ -392,6 +403,7 @@ class Users extends React.Component {
           }
           title={titleModal}
         />
+
         {!editUserSuccessfully && messageError !== "" && (
           <Notification
             status="error"
@@ -416,8 +428,8 @@ const mapStateToProps = ({
     loadingGetUserById,
     itemUser,
     loadingEditUser,
-    editUserSuccessfully
-  } = {}
+    editUserSuccessfully,
+  } = {},
 }) => ({
   loading,
   listUserData,
@@ -426,16 +438,16 @@ const mapStateToProps = ({
   loadingGetUserById,
   itemUser,
   loadingEditUser,
-  editUserSuccessfully
+  editUserSuccessfully,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getUserInfo: data => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
-  getListUser: data => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
+const mapDispatchToProps = (dispatch) => ({
+  getUserInfo: (data) => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
+  getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
   editUser: (data, functionHideModal) =>
     dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
-  updateStateReducer: data =>
-    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data })
+  updateStateReducer: (data) =>
+    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

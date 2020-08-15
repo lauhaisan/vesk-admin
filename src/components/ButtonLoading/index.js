@@ -4,7 +4,7 @@ import "./index.scss";
 
 class ButtonLoading extends Component {
   render() {
-    const { text = "", loading, disabled, onClick } = this.props;
+    const { text = "", loading, disabled = undefined, onClick } = this.props;
     return (
       <div className="btnLoading">
         <Button
