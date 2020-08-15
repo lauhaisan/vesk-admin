@@ -53,6 +53,7 @@ class Users extends React.Component {
   openModalAddUser = () => {
     this.setState({
       openAdd: true,
+      titleModal: "Add New User",
     });
   };
 
@@ -104,12 +105,18 @@ class Users extends React.Component {
   _handleSubmit = (event) => {
     event.preventDefault();
     const { editUser } = this.props;
-    const { itemUser } = this.state;
-    editUser(itemUser, this._hideModal);
+    const { itemUser, titleModal } = this.state;
+    if (titleModal === "Add New User") {
+      // dispatch to saga add new user
+      console.log("add new", itemUser);
+    } else {
+      editUser(itemUser, this._hideModal);
+    }
   };
 
   _handleDelete = () => {
     const { itemUser } = this.props;
+    // dispatch to saga delete user
     alert("delete", itemUser.userId);
   };
 
@@ -133,7 +140,6 @@ class Users extends React.Component {
 
   render() {
     const { openModal, titleModal, isReview, openAdd, itemUser } = this.state;
-    console.log("item user from state", itemUser);
     const {
       loading,
       listUserData = [],
@@ -163,6 +169,9 @@ class Users extends React.Component {
                   disabled={!openAdd}
                   id="inputEmail"
                   labelText="Email"
+                  onChange={(event) =>
+                    this.onChangeFormData("email", event.target.value)
+                  }
                   required
                   light={true}
                   placeholder="Email"
