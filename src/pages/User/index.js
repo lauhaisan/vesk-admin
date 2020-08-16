@@ -21,7 +21,6 @@ class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openAdd: false,
       openModal: false,
       titleModal: "",
       isReview: false,
@@ -52,8 +51,8 @@ class Users extends React.Component {
 
   openModalAddUser = () => {
     this.setState({
-      openAdd: true,
       titleModal: "Add New User",
+      openModal: true,
     });
   };
 
@@ -92,9 +91,7 @@ class Users extends React.Component {
   _hideModal = () => {
     const { updateStateReducer } = this.props;
     this.setState({
-      openAdd: false,
       openModal: false,
-      // titleModal: "",
       isReview: false,
     });
     updateStateReducer({
@@ -107,7 +104,7 @@ class Users extends React.Component {
     const { editUser } = this.props;
     const { itemUser, titleModal } = this.state;
     if (titleModal === "Add New User") {
-      // dispatch to saga add new user
+      // dispatch to saga add new user and _hideModal()
       console.log("add new", itemUser);
     } else {
       editUser(itemUser, this._hideModal);
@@ -125,7 +122,6 @@ class Users extends React.Component {
     this.setState({
       openModal: true,
       titleModal: "Delete User",
-      isReview: false,
     });
   };
 
@@ -134,12 +130,11 @@ class Users extends React.Component {
     this.setState({
       openModal: true,
       titleModal: "Edit User",
-      isReview: false,
     });
   };
 
   render() {
-    const { openModal, titleModal, isReview, openAdd, itemUser } = this.state;
+    const { openModal, titleModal, isReview, itemUser } = this.state;
     const {
       loading,
       listUserData = [],
@@ -166,7 +161,7 @@ class Users extends React.Component {
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  disabled={!openAdd}
+                  disabled={titleModal !== "Add New User"}
                   id="inputEmail"
                   labelText="Email"
                   onChange={(event) =>
@@ -189,7 +184,7 @@ class Users extends React.Component {
                     disabled={isReview}
                     id="date-picker-calendar-id"
                     placeholder="Birthday"
-                    labelText="Date picker label"
+                    labelText="Birthday"
                     type="text"
                     value={itemUser.birthDate || ""}
                   />
@@ -400,7 +395,7 @@ class Users extends React.Component {
         </div>
         <CustomModal
           isReview={isReview}
-          open={openModal || openAdd}
+          open={openModal}
           loading={loadingEditUser}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
