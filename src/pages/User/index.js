@@ -4,6 +4,7 @@ import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
 import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
+import Filter from "./component/Filter";
 import moment from "moment";
 import {
   Form,
@@ -12,6 +13,8 @@ import {
   DatePicker,
   DatePickerInput,
   Loading,
+  Accordion,
+  AccordionItem,
 } from "carbon-components-react";
 import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
@@ -383,8 +386,21 @@ class Users extends React.Component {
         <TitlePage title="Users" />
         <div className="containerUserPage">
           <ButtonLoading text="Add New User" onClick={this.openModalAddUser} />
+          <Accordion className="viewFilter">
+            <AccordionItem
+              open
+              title={
+                <div className="viewFilter__title">
+                  Filter
+                  <i className="fas fa-filter viewFilter__title--icon"></i>
+                </div>
+              }
+            >
+              <Filter />
+            </AccordionItem>
+          </Accordion>
           <TableCommon
-            title="Table"
+            title="List User"
             rowData={formatData}
             headerData={headerData}
             loading={loading}
