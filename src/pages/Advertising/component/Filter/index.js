@@ -9,8 +9,8 @@ class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      userName: ""
+      name: "",
+      linkTarget: ""
     };
   }
 
@@ -23,22 +23,22 @@ class Filter extends Component {
   handleSearch = event => {
     event.preventDefault();
     const { search } = this.props;
-    const { email, userName } = this.state;
-    const value = { email, userName };
+    const { name, linkTarget } = this.state;
+    const value = { name, linkTarget };
     search(value);
   };
 
   handleReset = () => {
     const { resetFilter } = this.props;
     this.setState({
-      email: "",
-      userName: ""
+      name: "",
+      linkTarget: ""
     });
     resetFilter();
   };
 
   render() {
-    const { email, userName } = this.state;
+    const { name, linkTarget } = this.state;
     return (
       <div className="containerFilter">
         <Form className="bx--row">
@@ -46,32 +46,32 @@ class Filter extends Component {
             <TextInput
               className="itemForm"
               disabled={false}
-              id="inputSearchEmail"
-              labelText="Email"
+              id="inputSearchName"
+              labelText="Name"
               required
               light={true}
               onChange={event =>
-                this.onChangeFormData("email", event.target.value)
+                this.onChangeFormData("name", event.target.value)
               }
-              placeholder="Email"
+              placeholder="Name"
               type="text"
-              value={email}
+              value={name}
             />
           </FormGroup>
           <FormGroup legendText="" className="bx--col-md-2 bx--col-sm-4">
             <TextInput
               className="itemForm"
               disabled={false}
-              id="inputSearchUserName"
-              labelText="User Name"
+              id="inputSearchLinkTarget"
+              labelText="Link Target"
               required
               light={true}
               onChange={event =>
-                this.onChangeFormData("userName", event.target.value)
+                this.onChangeFormData("linkTarget", event.target.value)
               }
-              placeholder="User Name"
+              placeholder="Link Target"
               type="text"
-              value={userName}
+              value={linkTarget}
             />
           </FormGroup>
         </Form>
@@ -79,7 +79,7 @@ class Filter extends Component {
         <div className="viewBtn">
           <ButtonOutline text="Reset Filter" onClick={this.handleReset} />
           <ButtonLoading
-            disabled={!email && !userName}
+            disabled={!name && !linkTarget}
             text="Search"
             renderIcon={Search32}
             onClick={this.handleSearch}

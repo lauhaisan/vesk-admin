@@ -11,13 +11,13 @@ import {
   Form,
   FormGroup,
   TextInput,
-  DatePicker,
-  DatePickerInput,
+  // DatePicker,
+  // DatePickerInput,
   Loading,
   Accordion,
   AccordionItem
 } from "carbon-components-react";
-import { LIST_USER } from "../../constant";
+import { ADVERTISING } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -32,76 +32,76 @@ class Advertising extends React.Component {
   }
 
   static getDerivedStateFromProps(props) {
-    if ("itemUser" in props) {
-      return { itemUser: props.itemUser };
+    if ("itemAds" in props) {
+      return { itemAds: props.itemAds };
     }
     return null;
   }
 
   componentDidMount() {
-    this.handleGetListUser({});
+    this.handleGetListAds({});
   }
 
-  componentWillUnmount() {
-    const { updateStateReducer } = this.props;
-    updateStateReducer({
-      itemUser: {},
-      editUserSuccessfully: "",
-      messageError: ""
-    });
-  }
+  // componentWillUnmount() {
+  //   const { updateStateReducer } = this.props;
+  //   updateStateReducer({
+  //     itemUser: {},
+  //     editUserSuccessfully: "",
+  //     messageError: ""
+  //   });
+  // }
 
-  handleGetListUser = payload => {
-    const { getListUser } = this.props;
-    getListUser(payload);
+  handleGetListAds = payload => {
+    const { getListAds } = this.props;
+    getListAds(payload);
   };
 
   _resetFilter = () => {
-    this.handleGetListUser({});
+    this.handleGetListAds({});
   };
 
   _search = value => {
-    alert(`search by email:${value.email}, username:${value.userName}`);
+    alert(`search by name:${value.name}, link target:${value.linkTarget}`);
     //call api getListUser with payload is value;
     // this.handleGetListUser(value)
   };
 
   openModalAddUser = () => {
     this.setState({
-      titleModal: "Add New User",
+      titleModal: "Add New Advertising",
       openModal: true
     });
   };
 
-  getUserById = id => {
-    const { getUserInfo } = this.props;
-    getUserInfo({ data: id });
+  handeGetAdsById = id => {
+    const { getAdsById } = this.props;
+    getAdsById({ data: id });
   };
 
   _actionReview = item => {
-    this.getUserById(item.id);
+    this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Review User",
+      titleModal: "Review Advertising",
       isReview: true
     });
   };
 
-  onChangeDatePicker = e => {
+  onChangeDatePicker = (key, e) => {
     const value = e.target ? e.target.value : e[0];
     const valueDate = moment(value).format("DD/MM/YYYY");
-    let { itemUser } = this.state;
-    itemUser.birthDate = valueDate;
+    let { itemAds } = this.state;
+    itemAds[key] = valueDate;
     this.setState({
-      itemUser
+      itemAds
     });
   };
 
   onChangeFormData = (key, value) => {
-    let { itemUser } = this.state;
-    itemUser[key] = value;
+    let { itemAds } = this.state;
+    itemAds[key] = value;
     this.setState({
-      itemUser
+      itemAds
     });
   };
 
@@ -112,19 +112,19 @@ class Advertising extends React.Component {
       isReview: false
     });
     updateStateReducer({
-      itemUser: {}
+      itemAds: {}
     });
   };
 
   _handleSubmit = event => {
     event.preventDefault();
-    const { editUser } = this.props;
-    const { itemUser, titleModal } = this.state;
-    if (titleModal === "Add New User") {
+    const { editAds } = this.props;
+    const { itemAds, titleModal } = this.state;
+    if (titleModal === "Add New Advertising") {
       // dispatch to saga add new user and _hideModal()
-      console.log("add new", itemUser);
+      console.log("add new", itemAds);
     } else {
-      editUser(itemUser, this._hideModal);
+      editAds(itemAds, this._hideModal);
     }
   };
 
@@ -135,223 +135,184 @@ class Advertising extends React.Component {
   };
 
   _actionDelete = item => {
-    this.getUserById(item.id);
+    this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Delete User"
+      titleModal: "Delete Advertising"
     });
   };
 
   _actionEdit = item => {
-    this.getUserById(item.id);
+    this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Edit User"
+      titleModal: "Edit Advertising"
     });
   };
 
   render() {
-    const { openModal, titleModal, isReview, itemUser } = this.state;
+    const { openModal, titleModal, isReview, itemAds } = this.state;
     const {
       loading,
-      listUserData = [],
-      loadingGetUserById,
-      loadingEditUser,
+      listAds = [],
+      loadingGetAdsById,
+      loadingActionAds,
       messageError,
-      editUserSuccessfully
+      actionAdsSuccessfully
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
-        {loadingGetUserById ? (
+        {loadingGetAdsById ? (
           <div className="modalLoading">
             <Loading withOverlay={false} />
           </div>
         ) : (
           <Form className="formData">
-            <div className="formData__avt">
-              <img
-                className="formData__avt--img"
-                src={require("../../images/testAvatar.jpg")}
-                alt="img-avatar"
-              />
-            </div>
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  disabled={titleModal !== "Add New User"}
-                  id="inputEmail"
-                  labelText="Email"
+                  // disabled={titleModal !== "Add New Advertising"}
+                  id="inputName"
+                  labelText="Name"
                   onChange={event =>
-                    this.onChangeFormData("email", event.target.value)
+                    this.onChangeFormData("name", event.target.value)
                   }
                   required
+                  readOnly={isReview}
                   light={true}
-                  placeholder="Email"
+                  placeholder="Name"
                   type="text"
-                  value={itemUser.email || ""}
+                  value={itemAds.name || ""}
                 />
+              </FormGroup>
+              <FormGroup legendText="">
+                <TextInput
+                  id="inputPosition"
+                  labelText="Position"
+                  onChange={event =>
+                    this.onChangeFormData("Position", event.target.value)
+                  }
+                  required
+                  readOnly={isReview}
+                  light={true}
+                  placeholder="Position"
+                  type="text"
+                  value={itemAds.Position || ""}
+                />
+              </FormGroup>
+            </div>
+            <div className="formData__row">
+              {/* <FormGroup legendText="">
+                <DatePicker
+                  dateFormat="d/m/Y"
+                  datePickerType="single"
+                  onChange={e => this.onChangeDatePicker("ShowStartAt", e)}
+                >
+                  <DatePickerInput
+                    disabled={isReview}
+                    id="inputStart"
+                    placeholder="Start"
+                    labelText="Start"
+                    type="text"
+                    value={itemAds.ShowStartAt || ""}
+                  />
+                </DatePicker>
               </FormGroup>
               <FormGroup legendText="">
                 <DatePicker
                   dateFormat="d/m/Y"
                   datePickerType="single"
-                  onChange={e => this.onChangeDatePicker(e)}
+                  onChange={e => this.onChangeDatePicker("ShowEndAt", e)}
                 >
                   <DatePickerInput
                     disabled={isReview}
-                    id="date-picker-calendar-id"
-                    placeholder="Birthday"
-                    labelText="Birthday"
+                    id="inputEnd"
+                    placeholder="End"
+                    labelText="End"
                     type="text"
-                    value={itemUser.birthDate || ""}
+                    value={itemAds.ShowEndAt || ""}
                   />
                 </DatePicker>
-              </FormGroup>
-            </div>
-            <div className="formData__row">
+              </FormGroup> */}
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputFirstName"
-                  labelText="First Name"
+                  id="inputStart"
+                  labelText="Start"
                   onChange={event =>
-                    this.onChangeFormData("firstName", event.target.value)
+                    this.onChangeFormData("ShowStartAt", event.target.value)
                   }
                   required
-                  light={true}
-                  placeholder="First Name"
-                  type="text"
                   readOnly={isReview}
-                  value={itemUser.firstName || ""}
+                  light={true}
+                  placeholder="Start"
+                  type="text"
+                  value={itemAds.ShowStartAt || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputLastName"
-                  labelText="Last Name"
+                  id="inputEnd"
+                  labelText="End"
                   onChange={event =>
-                    this.onChangeFormData("lastName", event.target.value)
+                    this.onChangeFormData("ShowEndAt", event.target.value)
                   }
                   required
-                  light={true}
-                  placeholder="Last Name"
-                  type="text"
                   readOnly={isReview}
-                  value={itemUser.lastName || ""}
+                  light={true}
+                  placeholder="End"
+                  type="text"
+                  value={itemAds.ShowEndAt || ""}
                 />
               </FormGroup>
             </div>
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputUserName"
-                  labelText="User Name"
+                  id="point"
+                  labelText="Point"
                   onChange={event =>
-                    this.onChangeFormData("userName", event.target.value)
+                    this.onChangeFormData("point", event.target.value)
                   }
                   required
-                  light={true}
-                  placeholder="User Name"
-                  type="text"
                   readOnly={isReview}
-                  value={itemUser.userName || ""}
+                  light={true}
+                  placeholder="Point"
+                  type="text"
+                  value={itemAds.point || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputGender"
-                  labelText="Gender"
+                  id="inputImageUrl"
+                  labelText="Image Url"
                   onChange={event =>
-                    this.onChangeFormData("gender", event.target.value)
+                    this.onChangeFormData("ImageUrl", event.target.value)
                   }
                   required
-                  light={true}
-                  placeholder="Gender"
-                  type="text"
                   readOnly={isReview}
-                  value={itemUser.gender || ""}
+                  light={true}
+                  placeholder="Image Url"
+                  type="text"
+                  value={itemAds.ImageUrl || ""}
                 />
               </FormGroup>
             </div>
-            <div className="formData__row">
-              <FormGroup legendText="">
-                <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputRegion"
-                  labelText="Region"
-                  onChange={event =>
-                    this.onChangeFormData("region", event.target.value)
-                  }
-                  required
-                  light={true}
-                  placeholder="Region"
-                  type="text"
-                  readOnly={isReview}
-                  value={itemUser.region || ""}
-                />
-              </FormGroup>
-              <FormGroup legendText="">
-                <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputCity"
-                  labelText="City"
-                  onChange={event =>
-                    this.onChangeFormData("city", event.target.value)
-                  }
-                  required
-                  light={true}
-                  placeholder="City"
-                  type="text"
-                  readOnly={isReview}
-                  value={itemUser.city || ""}
-                />
-              </FormGroup>
-            </div>
-            <div className="formData__row">
-              <FormGroup legendText="">
-                <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputAddress"
-                  labelText="Address"
-                  onChange={event =>
-                    this.onChangeFormData("address", event.target.value)
-                  }
-                  required
-                  light={true}
-                  placeholder="Address"
-                  type="text"
-                  readOnly={isReview}
-                  value={itemUser.address || ""}
-                />
-              </FormGroup>
-              <FormGroup legendText="">
-                <TextInput
-                  // disabled={true}
-                  className="formData__row__input"
-                  id="inputPhone"
-                  labelText="Phone"
-                  onChange={event =>
-                    this.onChangeFormData("phone", event.target.value)
-                  }
-                  required
-                  light={true}
-                  placeholder="Phone"
-                  type="text"
-                  readOnly={isReview}
-                  value={itemUser.phone || ""}
-                />
-              </FormGroup>
-            </div>
+            <FormGroup legendText="">
+              <TextInput
+                // disabled={titleModal !== "Add New Advertising"}
+                id="inputLinkTarget"
+                labelText="Link Target"
+                onChange={event =>
+                  this.onChangeFormData("LinkTarget", event.target.value)
+                }
+                required
+                readOnly={isReview}
+                light={true}
+                placeholder="Link Target"
+                type="text"
+                value={itemAds.LinkTarget || ""}
+              />
+            </FormGroup>
           </Form>
         )}
       </div>
@@ -359,41 +320,50 @@ class Advertising extends React.Component {
 
     const contentDeleteModal = (
       <div style={{ height: "auto", width: "100%" }}>
-        {loadingGetUserById
+        {loadingGetAdsById
           ? "Loading..."
-          : `Are you sure delete userID: ${itemUser.userId}?`}
+          : `Are you sure delete advertisingID: ${itemAds.id}?`}
       </div>
     );
 
     const renderContentModal =
-      titleModal === "Delete User" ? contentDeleteModal : contentModal;
+      titleModal === "Delete Advertising" ? contentDeleteModal : contentModal;
 
     const headerData = [
       {
-        header: "Email",
-        key: "email"
+        header: "Name",
+        key: "name"
       },
       {
-        header: "First Name",
-        key: "firstName"
+        header: "Created",
+        key: "createdAt"
       },
       {
-        header: "Last Name",
-        key: "lastName"
+        header: "Start",
+        key: "ShowStartAt"
       },
       {
-        header: "User Name",
-        key: "userName"
+        header: "End",
+        key: "ShowEndAt"
+      },
+      {
+        header: "Position",
+        key: "Position"
+      },
+      {
+        header: "Link Target",
+        key: "LinkTarget"
+      },
+      {
+        header: "Image URL",
+        key: "ImageUrl"
+      },
+      {
+        header: "Point",
+        key: "point"
       },
       { header: "Action", key: "action" }
     ];
-
-    const formatData = listUserData.map(item => {
-      return {
-        ...item,
-        id: item.userId
-      };
-    });
 
     return (
       <Fragment>
@@ -419,7 +389,7 @@ class Advertising extends React.Component {
           </Accordion>
           <TableCommon
             title="List Advertising"
-            rowData={formatData}
+            rowData={listAds}
             headerData={headerData}
             loading={loading}
             actionReview={this._actionReview}
@@ -430,27 +400,27 @@ class Advertising extends React.Component {
         <CustomModal
           isReview={isReview}
           open={openModal}
-          loading={loadingEditUser}
+          loading={loadingActionAds}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
-          textSubmit={titleModal === "Delete User" ? "Delete" : "Save"}
+          textSubmit={titleModal === "Delete Advertising" ? "Delete" : "Save"}
           onSubmit={
-            titleModal !== "Delete User"
+            titleModal !== "Delete Advertising"
               ? this._handleSubmit
               : this._handleDelete
           }
           title={titleModal}
         />
 
-        {!editUserSuccessfully && messageError !== "" && (
+        {!actionAdsSuccessfully && messageError !== "" && (
           <Notification
             status="error"
             message={messageError}
-            title="Edit User Failed"
+            title={`${titleModal} Failed`}
           />
         )}
-        {editUserSuccessfully && (
-          <Notification status="success" title="Edit User Successfully" />
+        {actionAdsSuccessfully && (
+          <Notification status="success" title={`${titleModal} Successfully`} />
         )}
       </Fragment>
     );
@@ -458,34 +428,34 @@ class Advertising extends React.Component {
 }
 
 const mapStateToProps = ({
-  listUser: {
+  advertising: {
     loading,
-    listUserData,
+    listAds,
     paging,
     messageError,
-    loadingGetUserById,
-    itemUser,
-    loadingEditUser,
-    editUserSuccessfully
+    itemAds,
+    loadingGetAdsById,
+    loadingActionAds,
+    actionAdsSuccessfully
   } = {}
 }) => ({
   loading,
-  listUserData,
+  listAds,
   paging,
   messageError,
-  loadingGetUserById,
-  itemUser,
-  loadingEditUser,
-  editUserSuccessfully
+  itemAds,
+  loadingGetAdsById,
+  loadingActionAds,
+  actionAdsSuccessfully
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserInfo: data => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
-  getListUser: data => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
-  editUser: (data, functionHideModal) =>
-    dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
+  getListAds: data => dispatch({ type: ADVERTISING.GET_LIST_ADS, data }),
+  getAdsById: data => dispatch({ type: ADVERTISING.GET_ADS_BY_ID, data }),
+  editAds: (data, functionHideModal) =>
+    dispatch({ type: ADVERTISING.EDIT_ADS, data: { data, functionHideModal } }),
   updateStateReducer: data =>
-    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data })
+    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);
