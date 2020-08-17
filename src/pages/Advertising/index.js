@@ -118,11 +118,10 @@ class Advertising extends React.Component {
 
   _handleSubmit = event => {
     event.preventDefault();
-    const { editAds } = this.props;
+    const { editAds, addNewAds } = this.props;
     const { itemAds, titleModal } = this.state;
     if (titleModal === "Add New Advertising") {
-      // dispatch to saga add new user and _hideModal()
-      console.log("add new", itemAds);
+      addNewAds(itemAds, this._hideModal);
     } else {
       editAds(itemAds, this._hideModal);
     }
@@ -131,7 +130,6 @@ class Advertising extends React.Component {
   _handleDelete = () => {
     const { itemAds } = this.state;
     const { deleteAds } = this.props;
-    // dispatch to saga delete user
     deleteAds(itemAds, this._hideModal);
   };
 
@@ -460,6 +458,11 @@ const mapDispatchToProps = dispatch => ({
   deleteAds: (data, functionHideModal) =>
     dispatch({
       type: ADVERTISING.DELETE_ADS,
+      data: { data, functionHideModal }
+    }),
+  addNewAds: (data, functionHideModal) =>
+    dispatch({
+      type: ADVERTISING.ADD_NEW_ADS,
       data: { data, functionHideModal }
     })
 });

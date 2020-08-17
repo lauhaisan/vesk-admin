@@ -22,4 +22,14 @@ const deleteAdsByIdAPI = async payload => {
   return request(URL_WITH_PARAMS, true, "DELETE");
 };
 
-export { getListAdsAPI, getAdsByIdAPI, editAdsAPI, deleteAdsByIdAPI };
+const addNewAdsAPI = async payload => {
+  return request(URL.ADMIN_CRUD_ADVERTISING, true, "POST", payload);
+};
+
+export {
+  getListAdsAPI,
+  getAdsByIdAPI,
+  editAdsAPI,
+  deleteAdsByIdAPI,
+  addNewAdsAPI
+};
