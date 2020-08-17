@@ -4,6 +4,10 @@
 
   .bx--data-table-header {
     background-color: transparent;
+    &__title {
+      color: #2a3f54;
+      font-weight: 600;
+    }
   }
   //   .bx--data-table th {
   //     background-color: yellow;
