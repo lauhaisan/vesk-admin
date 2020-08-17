@@ -1,16 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "./index.scss";
 
 class Filter extends Component {
   render() {
+    const a = [1, 2, 3, 4, 5, 6, 7, 8];
+
     return (
-      <p>
-        The accordion component delivers large amounts of content in a small
-        space through progressive disclosure. The user gets key details about
-        the underlying content and can choose to expand that content within the
-        constraints of the accordion. Accordions work especially well on mobile
-        interfaces or whenever vertical space is at a premium.
-      </p>
+      <Fragment>
+        <div class="bx--row">
+          {a.map((item) => (
+            <div class="bx--col-md-2 bx--col-sm-4">
+              <div
+                style={{
+                  width: "100%",
+                  minWidth: "200px",
+                  backgroundColor: "yellow",
+                }}
+              >
+                Content From
+              </div>
+            </div>
+          ))}
+        </div>
+      </Fragment>
     );
   }
 }
