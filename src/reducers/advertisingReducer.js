@@ -80,6 +80,27 @@ const advertisingReducer = (state = INITIAL_STATE, action) => {
         ...state,
         ...action.data
       };
+    case ADVERTISING.DELETE_ADS:
+      return {
+        ...state,
+        loadingActionAds: true,
+        actionAdsSuccessfully: "",
+        messageError: ""
+      };
+    case ADVERTISING.DELETE_ADS_SUCCESS:
+      return {
+        ...state,
+        loadingActionAds: false,
+        actionAdsSuccessfully: true,
+        messageError: ""
+      };
+    case ADVERTISING.DELETE_ADS_FAIL:
+      return {
+        ...state,
+        loadingActionAds: false,
+        actionAdsSuccessfully: false,
+        messageError: action.data
+      };
 
     default:
       return state;

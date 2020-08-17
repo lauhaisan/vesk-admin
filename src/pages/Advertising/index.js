@@ -42,14 +42,14 @@ class Advertising extends React.Component {
     this.handleGetListAds({});
   }
 
-  // componentWillUnmount() {
-  //   const { updateStateReducer } = this.props;
-  //   updateStateReducer({
-  //     itemUser: {},
-  //     editUserSuccessfully: "",
-  //     messageError: ""
-  //   });
-  // }
+  componentWillUnmount() {
+    const { updateStateReducer } = this.props;
+    updateStateReducer({
+      itemAds: {},
+      actionAdsSuccessfully: "",
+      messageError: ""
+    });
+  }
 
   handleGetListAds = payload => {
     const { getListAds } = this.props;
@@ -129,9 +129,10 @@ class Advertising extends React.Component {
   };
 
   _handleDelete = () => {
-    const { itemUser } = this.props;
+    const { itemAds } = this.state;
+    const { deleteAds } = this.props;
     // dispatch to saga delete user
-    alert("delete", itemUser.userId);
+    deleteAds(itemAds, this._hideModal);
   };
 
   _actionDelete = item => {
@@ -322,7 +323,7 @@ class Advertising extends React.Component {
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetAdsById
           ? "Loading..."
-          : `Are you sure delete advertisingID: ${itemAds.id}?`}
+          : `Are you sure delete ${itemAds.name}?`}
       </div>
     );
 
@@ -455,7 +456,12 @@ const mapDispatchToProps = dispatch => ({
   editAds: (data, functionHideModal) =>
     dispatch({ type: ADVERTISING.EDIT_ADS, data: { data, functionHideModal } }),
   updateStateReducer: data =>
-    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data })
+    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data }),
+  deleteAds: (data, functionHideModal) =>
+    dispatch({
+      type: ADVERTISING.DELETE_ADS,
+      data: { data, functionHideModal }
+    })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);

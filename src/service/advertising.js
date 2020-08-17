@@ -17,4 +17,9 @@ const editAdsAPI = async payload => {
   return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
-export { getListAdsAPI, getAdsByIdAPI, editAdsAPI };
+const deleteAdsByIdAPI = async payload => {
+  const URL_WITH_PARAMS = `${URL.ADMIN_CRUD_ADVERTISING}/${payload.id}`;
+  return request(URL_WITH_PARAMS, true, "DELETE");
+};
+
+export { getListAdsAPI, getAdsByIdAPI, editAdsAPI, deleteAdsByIdAPI };
