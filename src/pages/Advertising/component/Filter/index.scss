@@ -1,0 +1,28 @@
+.containerFilter {
+  .itemForm {
+    width: 100%;
+    min-width: 200px;
+  }
+  .bx--label {
+    font : {
+      size: 14px;
+      weight: 600;
+    }
+  }
+  .bx--text-input {
+    background-color: transparent;
+    &:focus {
+      outline: none;
+    }
+  }
+  input:-webkit-autofill,
+  input:focus:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px #fff inset;
+    box-shadow: 0 0 0 100px #fff inset;
+  }
+  .viewBtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}

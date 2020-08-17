@@ -6,7 +6,8 @@ export default class SideMenu extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      openUser: false
+      openUser: false,
+      openAds: false
     };
   }
 
@@ -14,6 +15,11 @@ export default class SideMenu extends PureComponent {
     if (window.location.pathname.includes("users")) {
       this.setState({
         openUser: true
+      });
+    }
+    if (window.location.pathname.includes("advertising")) {
+      this.setState({
+        openAds: true
       });
     }
   }
@@ -25,8 +31,15 @@ export default class SideMenu extends PureComponent {
     });
   };
 
+  handleClickAds = () => {
+    const { openAds } = this.state;
+    this.setState({
+      openAds: !openAds
+    });
+  };
+
   render() {
-    const { openUser } = this.state;
+    const { openUser, openAds } = this.state;
     const { history } = this.props;
     const classNameMenu = "sideBar";
     const iconChevronUser = "fas fa-chevron-down";
@@ -74,6 +87,30 @@ export default class SideMenu extends PureComponent {
                 >
                   <i className="fas fa-exchange-alt itemMenu__icon--children"></i>
                   <span className="itemMenu__text--children">Exchange</span>
+                </NavLink>
+              </Fragment>
+            )}
+          </Fragment>
+          <Fragment>
+            <div className="menu__parent" onClick={this.handleClickAds}>
+              <div className="menu__parent--iconText">
+                <i
+                  className="fas fa-ad menu__parent__icon"
+                  style={{ fontSize: "26px" }}
+                ></i>
+                <span className="menu__parent__text">Advertising</span>
+              </div>
+              <i className={`${iconChevronUser} menu__parent__iconChevron`}></i>
+            </div>
+            {openAds && (
+              <Fragment>
+                <NavLink
+                  activeClassName={`${classNameMenu}__menu__itemMenu--active`}
+                  to="/advertising"
+                  className={`${classNameMenu}__menu__itemMenu`}
+                >
+                  <i className="fas fa-tasks itemMenu__icon--children"></i>
+                  <span className="itemMenu__text--children ">Manage</span>
                 </NavLink>
               </Fragment>
             )}

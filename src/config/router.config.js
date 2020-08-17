@@ -8,6 +8,7 @@ import SignIn from "../pages/SignIn";
 import Detail from "../pages/Detail";
 import ForgotPassword from "../pages/ForgotPassword";
 import ComingSoon from "../pages/ComingSoon";
+const Advertising = lazy(() => import("../pages/Advertising"));
 const Contact = lazy(() => import("../pages/Contact"));
 // const Home = lazy(() => import("../pages/Home"));
 const Users = lazy(() => import("../pages/User"));
@@ -24,13 +25,13 @@ const routes = [
     path: "/",
     exact: true,
     layout: BasicLayout,
-    component: ComingSoon,
+    component: ComingSoon
   },
   {
     path: "/users",
     exact: true,
     layout: BasicLayout,
-    component: Users,
+    component: Users
   },
   // {
   //   path: "/users/:id",
@@ -40,58 +41,64 @@ const routes = [
   // },
   {
     path: "/users-exchange",
+    exact: true,
+    layout: BasicLayout,
+    component: ComingSoon
+  },
+  {
+    path: "/advertising",
     exact: false,
     layout: BasicLayout,
-    component: ComingSoon,
+    component: Advertising
   },
   {
     path: "/detail",
     exact: true,
     layout: BasicLayout,
-    component: Detail,
+    component: Detail
   },
   {
     path: "/detail/:id",
     exact: false,
     layout: BasicLayout,
-    component: Detail,
+    component: Detail
   },
   {
     path: "/contact",
     exact: false,
     layout: BasicLayout,
-    component: Contact,
+    component: Contact
   },
   {
     path: "/profile",
     exact: false,
     layout: BasicLayout,
-    component: Profile,
+    component: Profile
   },
   {
     path: "/signin",
     exact: true,
     layout: LoginLayout,
-    component: SignIn,
+    component: SignIn
   },
   {
     path: "/signup",
     exact: true,
     layout: LoginLayout,
-    component: SignUp,
+    component: SignUp
   },
   {
     path: "/forgot-password",
     exact: true,
     layout: LoginLayout,
-    component: ForgotPassword,
+    component: ForgotPassword
   },
   {
     path: "",
     exact: false,
     layout: BasicLayout,
-    component: Notfound,
-  },
+    component: Notfound
+  }
 ];
 
 export default routes;
