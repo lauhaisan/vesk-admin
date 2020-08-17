@@ -66,7 +66,7 @@ class Advertising extends React.Component {
     // this.handleGetListUser(value)
   };
 
-  openModalAddUser = () => {
+  openModalAddNewAdvertising = () => {
     this.setState({
       titleModal: "Add New Advertising",
       openModal: true
@@ -366,11 +366,11 @@ class Advertising extends React.Component {
 
     return (
       <Fragment>
-        <TitlePage title="Users" />
+        <TitlePage title="Advertising" />
         <div className="containerUserPage">
           <ButtonLoading
             text="Add"
-            onClick={this.openModalAddUser}
+            onClick={this.openModalAddNewAdvertising}
             renderIcon={AddFilled32}
           />
           <Accordion className="viewFilter">
