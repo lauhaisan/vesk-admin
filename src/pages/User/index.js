@@ -4,6 +4,7 @@ import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
 import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
+import { AddFilled32 } from "@carbon/icons-react";
 import Filter from "./component/Filter";
 import moment from "moment";
 import {
@@ -14,7 +15,7 @@ import {
   DatePickerInput,
   Loading,
   Accordion,
-  AccordionItem,
+  AccordionItem
 } from "carbon-components-react";
 import { LIST_USER } from "../../constant";
 import { connect } from "react-redux";
@@ -26,7 +27,7 @@ class Users extends React.Component {
     this.state = {
       openModal: false,
       titleModal: "",
-      isReview: false,
+      isReview: false
     };
   }
 
@@ -38,9 +39,7 @@ class Users extends React.Component {
   }
 
   componentDidMount() {
-    const { getListUser } = this.props;
-    const payload = {};
-    getListUser(payload);
+    this.handleGetListUser({});
   }
 
   componentWillUnmount() {
@@ -48,38 +47,53 @@ class Users extends React.Component {
     updateStateReducer({
       itemUser: {},
       editUserSuccessfully: "",
-      messageError: "",
+      messageError: ""
     });
   }
+
+  handleGetListUser = payload => {
+    const { getListUser } = this.props;
+    getListUser(payload);
+  };
+
+  _resetFilter = () => {
+    this.handleGetListUser({});
+  };
+
+  _search = value => {
+    alert(`search by email:${value.email}, username:${value.userName}`);
+    //call api getListUser with payload is value;
+    // this.handleGetListUser(value)
+  };
 
   openModalAddUser = () => {
     this.setState({
       titleModal: "Add New User",
-      openModal: true,
+      openModal: true
     });
   };
 
-  getUserById = (id) => {
+  getUserById = id => {
     const { getUserInfo } = this.props;
     getUserInfo({ data: id });
   };
 
-  _actionReview = (item) => {
+  _actionReview = item => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Review User",
-      isReview: true,
+      isReview: true
     });
   };
 
-  onChangeDatePicker = (e) => {
+  onChangeDatePicker = e => {
     const value = e.target ? e.target.value : e[0];
     const valueDate = moment(value).format("DD/MM/YYYY");
     let { itemUser } = this.state;
     itemUser.birthDate = valueDate;
     this.setState({
-      itemUser,
+      itemUser
     });
   };
 
@@ -87,7 +101,7 @@ class Users extends React.Component {
     let { itemUser } = this.state;
     itemUser[key] = value;
     this.setState({
-      itemUser,
+      itemUser
     });
   };
 
@@ -95,14 +109,14 @@ class Users extends React.Component {
     const { updateStateReducer } = this.props;
     this.setState({
       openModal: false,
-      isReview: false,
+      isReview: false
     });
     updateStateReducer({
-      itemUser: {},
+      itemUser: {}
     });
   };
 
-  _handleSubmit = (event) => {
+  _handleSubmit = event => {
     event.preventDefault();
     const { editUser } = this.props;
     const { itemUser, titleModal } = this.state;
@@ -120,19 +134,19 @@ class Users extends React.Component {
     alert("delete", itemUser.userId);
   };
 
-  _actionDelete = (item) => {
+  _actionDelete = item => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Delete User",
+      titleModal: "Delete User"
     });
   };
 
-  _actionEdit = (item) => {
+  _actionEdit = item => {
     this.getUserById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Edit User",
+      titleModal: "Edit User"
     });
   };
 
@@ -144,7 +158,7 @@ class Users extends React.Component {
       loadingGetUserById,
       loadingEditUser,
       messageError,
-      editUserSuccessfully,
+      editUserSuccessfully
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -167,7 +181,7 @@ class Users extends React.Component {
                   disabled={titleModal !== "Add New User"}
                   id="inputEmail"
                   labelText="Email"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("email", event.target.value)
                   }
                   required
@@ -181,7 +195,7 @@ class Users extends React.Component {
                 <DatePicker
                   dateFormat="d/m/Y"
                   datePickerType="single"
-                  onChange={(e) => this.onChangeDatePicker(e)}
+                  onChange={e => this.onChangeDatePicker(e)}
                 >
                   <DatePickerInput
                     disabled={isReview}
@@ -201,7 +215,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputFirstName"
                   labelText="First Name"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("firstName", event.target.value)
                   }
                   required
@@ -218,7 +232,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputLastName"
                   labelText="Last Name"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("lastName", event.target.value)
                   }
                   required
@@ -237,7 +251,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputUserName"
                   labelText="User Name"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("userName", event.target.value)
                   }
                   required
@@ -254,7 +268,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputGender"
                   labelText="Gender"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("gender", event.target.value)
                   }
                   required
@@ -273,7 +287,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputRegion"
                   labelText="Region"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("region", event.target.value)
                   }
                   required
@@ -290,7 +304,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputCity"
                   labelText="City"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("city", event.target.value)
                   }
                   required
@@ -309,7 +323,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputAddress"
                   labelText="Address"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("address", event.target.value)
                   }
                   required
@@ -326,7 +340,7 @@ class Users extends React.Component {
                   className="formData__row__input"
                   id="inputPhone"
                   labelText="Phone"
-                  onChange={(event) =>
+                  onChange={event =>
                     this.onChangeFormData("phone", event.target.value)
                   }
                   required
@@ -357,27 +371,27 @@ class Users extends React.Component {
     const headerData = [
       {
         header: "Email",
-        key: "email",
+        key: "email"
       },
       {
         header: "First Name",
-        key: "firstName",
+        key: "firstName"
       },
       {
         header: "Last Name",
-        key: "lastName",
+        key: "lastName"
       },
       {
         header: "User Name",
-        key: "userName",
+        key: "userName"
       },
-      { header: "Action", key: "action" },
+      { header: "Action", key: "action" }
     ];
 
-    const formatData = listUserData.map((item) => {
+    const formatData = listUserData.map(item => {
       return {
         ...item,
-        id: item.userId,
+        id: item.userId
       };
     });
 
@@ -385,7 +399,11 @@ class Users extends React.Component {
       <Fragment>
         <TitlePage title="Users" />
         <div className="containerUserPage">
-          <ButtonLoading text="Add New User" onClick={this.openModalAddUser} />
+          <ButtonLoading
+            text="Add"
+            onClick={this.openModalAddUser}
+            renderIcon={AddFilled32}
+          />
           <Accordion className="viewFilter">
             <AccordionItem
               open
@@ -396,7 +414,7 @@ class Users extends React.Component {
                 </div>
               }
             >
-              <Filter />
+              <Filter resetFilter={this._resetFilter} search={this._search} />
             </AccordionItem>
           </Accordion>
           <TableCommon
@@ -448,8 +466,8 @@ const mapStateToProps = ({
     loadingGetUserById,
     itemUser,
     loadingEditUser,
-    editUserSuccessfully,
-  } = {},
+    editUserSuccessfully
+  } = {}
 }) => ({
   loading,
   listUserData,
@@ -458,16 +476,16 @@ const mapStateToProps = ({
   loadingGetUserById,
   itemUser,
   loadingEditUser,
-  editUserSuccessfully,
+  editUserSuccessfully
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getUserInfo: (data) => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
-  getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
+const mapDispatchToProps = dispatch => ({
+  getUserInfo: data => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
+  getListUser: data => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
   editUser: (data, functionHideModal) =>
     dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
-  updateStateReducer: (data) =>
-    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data }),
+  updateStateReducer: data =>
+    dispatch({ type: LIST_USER.SET_STATE_REDUCER, data })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
