@@ -4,12 +4,12 @@ import {
   getAdsByIdAPI,
   editAdsAPI,
   deleteAdsByIdAPI,
-  addNewAdsAPI
+  addNewAdsAPI,
 } from "../service/advertising";
 import { ADVERTISING } from "../constant";
 
 function* getListAds(object) {
-  const dat = object.data.data;
+  const dat = object.data;
   const resp = yield call(getListAdsAPI, dat);
   if (resp.code !== 200) {
     yield put({ type: ADVERTISING.GET_LIST_ADS_FAIL, data: resp.message });
@@ -19,7 +19,7 @@ function* getListAds(object) {
 }
 
 function* getAdsById(obj) {
-  const dat = obj.data.data;
+  const dat = obj.data.id;
   const resp = yield call(getAdsByIdAPI, dat);
   if (resp.code !== 200) {
     yield put({ type: ADVERTISING.GET_ADS_BY_ID_FAIL, data: resp.message });
@@ -73,5 +73,5 @@ export const advertisingSaga = [
   takeLatest(ADVERTISING.GET_ADS_BY_ID, getAdsById),
   takeLatest(ADVERTISING.EDIT_ADS, editAds),
   takeLatest(ADVERTISING.DELETE_ADS, deleteAdsById),
-  takeLatest(ADVERTISING.ADD_NEW_ADS, addNewAds)
+  takeLatest(ADVERTISING.ADD_NEW_ADS, addNewAds),
 ];

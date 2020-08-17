@@ -15,7 +15,7 @@ import {
   // DatePickerInput,
   Loading,
   Accordion,
-  AccordionItem
+  AccordionItem,
 } from "carbon-components-react";
 import { ADVERTISING } from "../../constant";
 import { connect } from "react-redux";
@@ -27,7 +27,7 @@ class Advertising extends React.Component {
     this.state = {
       openModal: false,
       titleModal: "",
-      isReview: false
+      isReview: false,
     };
   }
 
@@ -47,11 +47,11 @@ class Advertising extends React.Component {
     updateStateReducer({
       itemAds: {},
       actionAdsSuccessfully: "",
-      messageError: ""
+      messageError: "",
     });
   }
 
-  handleGetListAds = payload => {
+  handleGetListAds = (payload) => {
     const { getListAds } = this.props;
     getListAds(payload);
   };
@@ -60,7 +60,7 @@ class Advertising extends React.Component {
     this.handleGetListAds({});
   };
 
-  _search = value => {
+  _search = (value) => {
     alert(`search by name:${value.name}, link target:${value.linkTarget}`);
     //call api getListUser with payload is value;
     // this.handleGetListUser(value)
@@ -69,21 +69,21 @@ class Advertising extends React.Component {
   openModalAddNewAdvertising = () => {
     this.setState({
       titleModal: "Add New Advertising",
-      openModal: true
+      openModal: true,
     });
   };
 
-  handeGetAdsById = id => {
+  handeGetAdsById = (id) => {
     const { getAdsById } = this.props;
-    getAdsById({ data: id });
+    getAdsById(id);
   };
 
-  _actionReview = item => {
+  _actionReview = (item) => {
     this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Review Advertising",
-      isReview: true
+      isReview: true,
     });
   };
 
@@ -93,7 +93,7 @@ class Advertising extends React.Component {
     let { itemAds } = this.state;
     itemAds[key] = valueDate;
     this.setState({
-      itemAds
+      itemAds,
     });
   };
 
@@ -101,7 +101,7 @@ class Advertising extends React.Component {
     let { itemAds } = this.state;
     itemAds[key] = value;
     this.setState({
-      itemAds
+      itemAds,
     });
   };
 
@@ -109,14 +109,14 @@ class Advertising extends React.Component {
     const { updateStateReducer } = this.props;
     this.setState({
       openModal: false,
-      isReview: false
+      isReview: false,
     });
     updateStateReducer({
-      itemAds: {}
+      itemAds: {},
     });
   };
 
-  _handleSubmit = event => {
+  _handleSubmit = (event) => {
     event.preventDefault();
     const { editAds, addNewAds } = this.props;
     const { itemAds, titleModal } = this.state;
@@ -133,19 +133,19 @@ class Advertising extends React.Component {
     deleteAds(itemAds, this._hideModal);
   };
 
-  _actionDelete = item => {
+  _actionDelete = (item) => {
     this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Delete Advertising"
+      titleModal: "Delete Advertising",
     });
   };
 
-  _actionEdit = item => {
+  _actionEdit = (item) => {
     this.handeGetAdsById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Edit Advertising"
+      titleModal: "Edit Advertising",
     });
   };
 
@@ -157,7 +157,7 @@ class Advertising extends React.Component {
       loadingGetAdsById,
       loadingActionAds,
       messageError,
-      actionAdsSuccessfully
+      actionAdsSuccessfully,
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -173,7 +173,7 @@ class Advertising extends React.Component {
                   // disabled={titleModal !== "Add New Advertising"}
                   id="inputName"
                   labelText="Name"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("name", event.target.value)
                   }
                   required
@@ -188,7 +188,7 @@ class Advertising extends React.Component {
                 <TextInput
                   id="inputPosition"
                   labelText="Position"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("Position", event.target.value)
                   }
                   required
@@ -237,7 +237,7 @@ class Advertising extends React.Component {
                 <TextInput
                   id="inputStart"
                   labelText="Start"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("ShowStartAt", event.target.value)
                   }
                   required
@@ -252,7 +252,7 @@ class Advertising extends React.Component {
                 <TextInput
                   id="inputEnd"
                   labelText="End"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("ShowEndAt", event.target.value)
                   }
                   required
@@ -269,7 +269,7 @@ class Advertising extends React.Component {
                 <TextInput
                   id="point"
                   labelText="Point"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("point", event.target.value)
                   }
                   required
@@ -284,7 +284,7 @@ class Advertising extends React.Component {
                 <TextInput
                   id="inputImageUrl"
                   labelText="Image Url"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("ImageUrl", event.target.value)
                   }
                   required
@@ -301,7 +301,7 @@ class Advertising extends React.Component {
                 // disabled={titleModal !== "Add New Advertising"}
                 id="inputLinkTarget"
                 labelText="Link Target"
-                onChange={event =>
+                onChange={(event) =>
                   this.onChangeFormData("LinkTarget", event.target.value)
                 }
                 required
@@ -331,37 +331,37 @@ class Advertising extends React.Component {
     const headerData = [
       {
         header: "Name",
-        key: "name"
+        key: "name",
       },
       {
         header: "Created",
-        key: "createdAt"
+        key: "createdAt",
       },
       {
         header: "Start",
-        key: "ShowStartAt"
+        key: "ShowStartAt",
       },
       {
         header: "End",
-        key: "ShowEndAt"
+        key: "ShowEndAt",
       },
       {
         header: "Position",
-        key: "Position"
+        key: "Position",
       },
       {
         header: "Link Target",
-        key: "LinkTarget"
+        key: "LinkTarget",
       },
       {
         header: "Image URL",
-        key: "ImageUrl"
+        key: "ImageUrl",
       },
       {
         header: "Point",
-        key: "point"
+        key: "point",
       },
-      { header: "Action", key: "action" }
+      { header: "Action", key: "action" },
     ];
 
     return (
@@ -435,8 +435,8 @@ const mapStateToProps = ({
     itemAds,
     loadingGetAdsById,
     loadingActionAds,
-    actionAdsSuccessfully
-  } = {}
+    actionAdsSuccessfully,
+  } = {},
 }) => ({
   loading,
   listAds,
@@ -445,26 +445,27 @@ const mapStateToProps = ({
   itemAds,
   loadingGetAdsById,
   loadingActionAds,
-  actionAdsSuccessfully
+  actionAdsSuccessfully,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getListAds: data => dispatch({ type: ADVERTISING.GET_LIST_ADS, data }),
-  getAdsById: data => dispatch({ type: ADVERTISING.GET_ADS_BY_ID, data }),
+const mapDispatchToProps = (dispatch) => ({
+  getListAds: (data) => dispatch({ type: ADVERTISING.GET_LIST_ADS, data }),
+  getAdsById: (id) =>
+    dispatch({ type: ADVERTISING.GET_ADS_BY_ID, data: { id } }),
   editAds: (data, functionHideModal) =>
     dispatch({ type: ADVERTISING.EDIT_ADS, data: { data, functionHideModal } }),
-  updateStateReducer: data =>
+  updateStateReducer: (data) =>
     dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data }),
   deleteAds: (data, functionHideModal) =>
     dispatch({
       type: ADVERTISING.DELETE_ADS,
-      data: { data, functionHideModal }
+      data: { data, functionHideModal },
     }),
   addNewAds: (data, functionHideModal) =>
     dispatch({
       type: ADVERTISING.ADD_NEW_ADS,
-      data: { data, functionHideModal }
-    })
+      data: { data, functionHideModal },
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);
