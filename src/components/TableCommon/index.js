@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./index.scss";
 import { DataTable, PaginationNav, Loading } from "carbon-components-react";
 const {
@@ -82,29 +82,35 @@ class TableCommon extends React.Component {
           render={({ rows, headers, getHeaderProps }) => (
             <TableContainer title={title}>
               {loading ? (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "50vh",
-                    display: "grid",
-                    placeItems: "center"
-                  }}
-                >
+                <div className="viewLoading">
                   <Loading withOverlay={false} />
                 </div>
               ) : (
-                <Table useZebraStyles>
-                  <TableHead>
-                    <TableRow>
-                      {headers.map(header => (
-                        <TableHeader {...getHeaderProps({ header })}>
-                          {header.header}
-                        </TableHeader>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>{this.renderTableRow(rows)}</TableBody>
-                </Table>
+                <Fragment>
+                  {rows.length === 0 ? (
+                    <div className="viewEmpty">
+                      <img
+                        className="viewEmpty__img"
+                        src={require("../../images/empty.png")}
+                        alt="img-empty"
+                      />
+                      <p className="viewEmpty__text">No Result</p>
+                    </div>
+                  ) : (
+                    <Table useZebraStyles>
+                      <TableHead>
+                        <TableRow>
+                          {headers.map(header => (
+                            <TableHeader {...getHeaderProps({ header })}>
+                              {header.header}
+                            </TableHeader>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>{this.renderTableRow(rows)}</TableBody>
+                    </Table>
+                  )}
+                </Fragment>
               )}
             </TableContainer>
           )}
