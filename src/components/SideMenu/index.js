@@ -7,7 +7,8 @@ export default class SideMenu extends PureComponent {
     super(props);
     this.state = {
       openUser: false,
-      openAds: false
+      openAds: false,
+      openSocialMedia: false
     };
   }
 
@@ -20,6 +21,11 @@ export default class SideMenu extends PureComponent {
     if (window.location.pathname.includes("advertising")) {
       this.setState({
         openAds: true
+      });
+    }
+    if (window.location.pathname.includes("social-media")) {
+      this.setState({
+        openSocialMedia: true
       });
     }
   }
@@ -38,8 +44,15 @@ export default class SideMenu extends PureComponent {
     });
   };
 
+  handleClickSocialMedia = () => {
+    const { openSocialMedia } = this.state;
+    this.setState({
+      openSocialMedia: !openSocialMedia
+    });
+  };
+
   render() {
-    const { openUser, openAds } = this.state;
+    const { openUser, openAds, openSocialMedia } = this.state;
     const { history } = this.props;
     const classNameMenu = "sideBar";
     const iconChevronUser = "fas fa-chevron-down";
@@ -107,6 +120,30 @@ export default class SideMenu extends PureComponent {
                 <NavLink
                   activeClassName={`${classNameMenu}__menu__itemMenu--active`}
                   to="/advertising"
+                  className={`${classNameMenu}__menu__itemMenu`}
+                >
+                  <i className="fas fa-tasks itemMenu__icon--children"></i>
+                  <span className="itemMenu__text--children ">Manage</span>
+                </NavLink>
+              </Fragment>
+            )}
+          </Fragment>
+          <Fragment>
+            <div className="menu__parent" onClick={this.handleClickSocialMedia}>
+              <div className="menu__parent--iconText">
+                <i
+                  className="fas fa-share-alt-square menu__parent__icon"
+                  style={{ fontSize: "26px" }}
+                ></i>
+                <span className="menu__parent__text">Social Media</span>
+              </div>
+              <i className={`${iconChevronUser} menu__parent__iconChevron`}></i>
+            </div>
+            {openSocialMedia && (
+              <Fragment>
+                <NavLink
+                  activeClassName={`${classNameMenu}__menu__itemMenu--active`}
+                  to="/social-media"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
                   <i className="fas fa-tasks itemMenu__icon--children"></i>
