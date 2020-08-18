@@ -12,7 +12,10 @@ const URL = {
   EDIT_USER: "/v1/vesk/users",
 
   GET_LIST_ADVERTISING: "/v1/vesk/ads",
-  ADMIN_CRUD_ADVERTISING: "/v1/vesk/admin/ads"
+  ADMIN_CRUD_ADVERTISING: "/v1/vesk/admin/ads",
+
+  GET_LIST_SOCIAL_MEDIA: "/v1/vesk/e-social-media",
+  ADMIN_CRUD_SOCIAL_MEDIA: "/v1/vesk/admin/e-social-media"
 };
 
 export default URL;

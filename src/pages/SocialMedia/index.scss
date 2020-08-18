@@ -36,6 +36,17 @@
 
 .formData {
   padding: 0rem 1rem;
+
+  .bx--number__control-btn:focus {
+    outline: none;
+  }
+
+  .bx--number input[type="number"] {
+    min-width: 7rem;
+    &:focus {
+      outline: none;
+    }
+  }
   .bx--fieldset {
     margin-bottom: 0.5rem;
   }

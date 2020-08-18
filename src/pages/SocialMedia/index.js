@@ -11,13 +11,14 @@ import {
   Form,
   FormGroup,
   TextInput,
+  NumberInput,
   // DatePicker,
   // DatePickerInput,
   Loading,
   Accordion,
   AccordionItem
 } from "carbon-components-react";
-import { ADVERTISING } from "../../constant";
+import { ADVERTISING, SOCIAL_MEDIA } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -32,32 +33,32 @@ class SocialMedia extends React.Component {
   }
 
   static getDerivedStateFromProps(props) {
-    if ("itemAds" in props) {
-      return { itemAds: props.itemAds };
+    if ("itemMediaSocial" in props) {
+      return { itemMediaSocial: props.itemMediaSocial };
     }
     return null;
   }
 
   componentDidMount() {
-    this.handleGetListAds({});
+    this.handleGetListSocialMedia({});
   }
 
   componentWillUnmount() {
     const { updateStateReducer } = this.props;
     updateStateReducer({
-      itemAds: {},
-      actionAdsSuccessfully: "",
+      itemMediaSocial: {},
+      actionSuccessfully: "",
       messageError: ""
     });
   }
 
-  handleGetListAds = payload => {
-    const { getListAds } = this.props;
-    getListAds(payload);
+  handleGetListSocialMedia = payload => {
+    const { getListSocialMedia } = this.props;
+    getListSocialMedia(payload);
   };
 
   _resetFilter = () => {
-    this.handleGetListAds({});
+    this.handleGetListSocialMedia({});
   };
 
   _search = value => {
@@ -68,21 +69,21 @@ class SocialMedia extends React.Component {
 
   openModalAddNewAdvertising = () => {
     this.setState({
-      titleModal: "Add New Advertising",
+      titleModal: "Add New Social Media",
       openModal: true
     });
   };
 
-  handeGetAdsById = id => {
-    const { getAdsById } = this.props;
-    getAdsById(id);
+  handeGetById = id => {
+    const { getById } = this.props;
+    getById(id);
   };
 
   _actionReview = item => {
-    this.handeGetAdsById(item.id);
+    this.handeGetById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Review Advertising",
+      titleModal: "Review Media Social",
       isReview: true
     });
   };
@@ -98,10 +99,10 @@ class SocialMedia extends React.Component {
   };
 
   onChangeFormData = (key, value) => {
-    let { itemAds } = this.state;
-    itemAds[key] = value;
+    let { itemMediaSocial } = this.state;
+    itemMediaSocial[key] = value;
     this.setState({
-      itemAds
+      itemMediaSocial
     });
   };
 
@@ -112,18 +113,19 @@ class SocialMedia extends React.Component {
       isReview: false
     });
     updateStateReducer({
-      itemAds: {}
+      itemMediaSocial: {}
     });
   };
 
   _handleSubmit = event => {
     event.preventDefault();
-    const { editAds, addNewAds } = this.props;
-    const { itemAds, titleModal } = this.state;
-    if (titleModal === "Add New Advertising") {
-      addNewAds(itemAds, this._hideModal);
+    const { editSocialMedia } = this.props;
+    const { itemMediaSocial, titleModal } = this.state;
+    if (titleModal === "Add New Social Media") {
+      // addNewAds(itemMediaSocial, this._hideModal);
+      alert("add new");
     } else {
-      editAds(itemAds, this._hideModal);
+      editSocialMedia(itemMediaSocial, this._hideModal);
     }
   };
 
@@ -134,34 +136,39 @@ class SocialMedia extends React.Component {
   };
 
   _actionDelete = item => {
-    this.handeGetAdsById(item.id);
+    this.handeGetById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Delete Advertising"
+      titleModal: "Delete Social Media"
     });
   };
 
   _actionEdit = item => {
-    this.handeGetAdsById(item.id);
+    this.handeGetById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Edit Advertising"
+      titleModal: "Edit Social Media"
     });
   };
 
   render() {
-    const { openModal, titleModal, isReview, itemAds } = this.state;
+    const {
+      openModal,
+      titleModal,
+      isReview,
+      itemMediaSocial = {}
+    } = this.state;
     const {
       loading,
-      listAds = [],
-      loadingGetAdsById,
-      loadingActionAds,
+      listSocialMedia = [],
+      loadingGetById,
       messageError,
-      actionAdsSuccessfully
+      loadingAction,
+      actionSuccessfully
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
-        {loadingGetAdsById ? (
+        {loadingGetById ? (
           <div className="modalLoading">
             <Loading withOverlay={false} />
           </div>
@@ -170,7 +177,6 @@ class SocialMedia extends React.Component {
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={titleModal !== "Add New Advertising"}
                   id="inputName"
                   labelText="Name"
                   onChange={event =>
@@ -181,135 +187,182 @@ class SocialMedia extends React.Component {
                   light={true}
                   placeholder="Name"
                   type="text"
-                  value={itemAds.name || ""}
+                  value={itemMediaSocial.name || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
                 <TextInput
-                  id="inputPosition"
-                  labelText="Position"
+                  id="inputStatus"
+                  labelText="Status"
                   onChange={event =>
-                    this.onChangeFormData("Position", event.target.value)
+                    this.onChangeFormData("status", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
-                  placeholder="Position"
+                  placeholder="Status"
                   type="text"
-                  value={itemAds.Position || ""}
+                  value={itemMediaSocial.status || ""}
                 />
               </FormGroup>
             </div>
+            {titleModal !== "Add New Social Media" && (
+              <div className="formData__row">
+                <FormGroup legendText="">
+                  <TextInput
+                    disabled={true}
+                    id="inputAuthorId"
+                    labelText="Author"
+                    required
+                    light={true}
+                    placeholder="Author"
+                    type="text"
+                    value={itemMediaSocial.authorId || ""}
+                  />
+                </FormGroup>
+                <FormGroup legendText="">
+                  <TextInput
+                    id="inputCreatedBy"
+                    disabled={true}
+                    labelText="Created By"
+                    required
+                    light={true}
+                    placeholder="Created By"
+                    type="text"
+                    value={itemMediaSocial.createdBy || ""}
+                  />
+                </FormGroup>
+              </div>
+            )}
+
             <div className="formData__row">
-              {/* <FormGroup legendText="">
-                <DatePicker
-                  dateFormat="d/m/Y"
-                  datePickerType="single"
-                  onChange={e => this.onChangeDatePicker("ShowStartAt", e)}
-                >
-                  <DatePickerInput
-                    disabled={isReview}
-                    id="inputStart"
-                    placeholder="Start"
-                    labelText="Start"
-                    type="text"
-                    value={itemAds.ShowStartAt || ""}
-                  />
-                </DatePicker>
-              </FormGroup>
-              <FormGroup legendText="">
-                <DatePicker
-                  dateFormat="d/m/Y"
-                  datePickerType="single"
-                  onChange={e => this.onChangeDatePicker("ShowEndAt", e)}
-                >
-                  <DatePickerInput
-                    disabled={isReview}
-                    id="inputEnd"
-                    placeholder="End"
-                    labelText="End"
-                    type="text"
-                    value={itemAds.ShowEndAt || ""}
-                  />
-                </DatePicker>
-              </FormGroup> */}
               <FormGroup legendText="">
                 <TextInput
                   id="inputStart"
                   labelText="Start"
                   onChange={event =>
-                    this.onChangeFormData("ShowStartAt", event.target.value)
+                    this.onChangeFormData("start", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
                   placeholder="Start"
                   type="text"
-                  value={itemAds.ShowStartAt || ""}
+                  value={itemMediaSocial.start || ""}
                 />
               </FormGroup>
               <FormGroup legendText="">
                 <TextInput
-                  id="inputEnd"
+                  id="inputend"
                   labelText="End"
                   onChange={event =>
-                    this.onChangeFormData("ShowEndAt", event.target.value)
+                    this.onChangeFormData("end", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
                   placeholder="End"
                   type="text"
-                  value={itemAds.ShowEndAt || ""}
+                  value={itemMediaSocial.end || ""}
                 />
               </FormGroup>
             </div>
             <div className="formData__row">
               <FormGroup legendText="">
-                <TextInput
-                  id="point"
-                  labelText="Point"
-                  onChange={event =>
-                    this.onChangeFormData("point", event.target.value)
-                  }
-                  required
+                <NumberInput
                   readOnly={isReview}
-                  light={true}
-                  placeholder="Point"
-                  type="text"
-                  value={itemAds.point || ""}
+                  id="inputNumberPoint"
+                  onChange={event =>
+                    this.onChangeFormData(
+                      "point",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Point"
+                  max={100}
+                  min={1}
+                  step={1}
+                  value={itemMediaSocial.point || 0}
                 />
               </FormGroup>
               <FormGroup legendText="">
-                <TextInput
-                  id="inputImageUrl"
-                  labelText="Image Url"
-                  onChange={event =>
-                    this.onChangeFormData("ImageUrl", event.target.value)
-                  }
-                  required
+                <NumberInput
                   readOnly={isReview}
-                  light={true}
-                  placeholder="Image Url"
-                  type="text"
-                  value={itemAds.ImageUrl || ""}
+                  id="pointForUser"
+                  onChange={event =>
+                    this.onChangeFormData(
+                      "pointForUserView",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Point For User View"
+                  max={100}
+                  min={1}
+                  step={1}
+                  value={itemMediaSocial.pointForUserView || 0}
+                />
+              </FormGroup>
+              <FormGroup legendText="">
+                <NumberInput
+                  readOnly={isReview}
+                  id="timeForRecvCoin"
+                  onChange={event =>
+                    this.onChangeFormData(
+                      "timeForRecvCoin",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Time For Recv Coin"
+                  max={100}
+                  min={1}
+                  step={1}
+                  value={itemMediaSocial.timeForRecvCoin || 0}
                 />
               </FormGroup>
             </div>
             <FormGroup legendText="">
               <TextInput
-                // disabled={titleModal !== "Add New Advertising"}
+                id="inputDescription"
+                labelText="Description"
+                onChange={event =>
+                  this.onChangeFormData("description", event.target.value)
+                }
+                required
+                readOnly={isReview}
+                light={true}
+                placeholder="Description"
+                type="text"
+                value={itemMediaSocial.description || ""}
+              />
+            </FormGroup>
+            <FormGroup legendText="">
+              <TextInput
                 id="inputLinkTarget"
                 labelText="Link Target"
                 onChange={event =>
-                  this.onChangeFormData("LinkTarget", event.target.value)
+                  this.onChangeFormData("linkTarget", event.target.value)
                 }
                 required
                 readOnly={isReview}
                 light={true}
                 placeholder="Link Target"
                 type="text"
-                value={itemAds.LinkTarget || ""}
+                value={itemMediaSocial.linkTarget || ""}
+              />
+            </FormGroup>
+            <FormGroup legendText="">
+              <TextInput
+                id="inputVideoURL"
+                labelText="Video URL"
+                onChange={event =>
+                  this.onChangeFormData("videoUrl", event.target.value)
+                }
+                required
+                readOnly={isReview}
+                light={true}
+                placeholder="Video URL"
+                type="text"
+                value={itemMediaSocial.videoUrl || ""}
               />
             </FormGroup>
           </Form>
@@ -319,14 +372,14 @@ class SocialMedia extends React.Component {
 
     const contentDeleteModal = (
       <div style={{ height: "auto", width: "100%" }}>
-        {loadingGetAdsById
+        {loadingGetById
           ? "Loading..."
-          : `Are you sure delete ${itemAds.name}?`}
+          : `Are you sure delete ${itemMediaSocial.id}?`}
       </div>
     );
 
     const renderContentModal =
-      titleModal === "Delete Advertising" ? contentDeleteModal : contentModal;
+      titleModal === "Delete Social Media" ? contentDeleteModal : contentModal;
 
     const headerData = [
       {
@@ -335,31 +388,35 @@ class SocialMedia extends React.Component {
       },
       {
         header: "Created",
-        key: "createdAt"
+        key: "created"
       },
       {
         header: "Start",
-        key: "ShowStartAt"
+        key: "start"
       },
       {
         header: "End",
-        key: "ShowEndAt"
+        key: "end"
       },
       {
-        header: "Position",
-        key: "Position"
-      },
-      {
-        header: "Link Target",
-        key: "LinkTarget"
-      },
-      {
-        header: "Image URL",
-        key: "ImageUrl"
+        header: "Description",
+        key: "description"
       },
       {
         header: "Point",
         key: "point"
+      },
+      {
+        header: "Poin For User View",
+        key: "pointForUserView"
+      },
+      {
+        header: "Time For Recv Coin",
+        key: "timeForRecvCoin"
+      },
+      {
+        header: "Status",
+        key: "status"
       },
       { header: "Action", key: "action" }
     ];
@@ -387,8 +444,8 @@ class SocialMedia extends React.Component {
             </AccordionItem>
           </Accordion>
           <TableCommon
-            title="List Advertising"
-            rowData={listAds}
+            title="List Social Media"
+            rowData={listSocialMedia}
             headerData={headerData}
             loading={loading}
             actionReview={this._actionReview}
@@ -399,7 +456,7 @@ class SocialMedia extends React.Component {
         <CustomModal
           isReview={isReview}
           open={openModal}
-          loading={loadingActionAds}
+          loading={loadingAction}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
           textSubmit={titleModal === "Delete Advertising" ? "Delete" : "Save"}
@@ -411,14 +468,14 @@ class SocialMedia extends React.Component {
           title={titleModal}
         />
 
-        {!actionAdsSuccessfully && messageError !== "" && (
+        {!actionSuccessfully && messageError !== "" && (
           <Notification
             status="error"
             message={messageError}
             title={`${titleModal} Failed`}
           />
         )}
-        {actionAdsSuccessfully && (
+        {actionSuccessfully && (
           <Notification status="success" title={`${titleModal} Successfully`} />
         )}
       </Fragment>
@@ -427,34 +484,38 @@ class SocialMedia extends React.Component {
 }
 
 const mapStateToProps = ({
-  advertising: {
+  socialMedia: {
     loading,
-    listAds,
+    listSocialMedia,
     paging,
+    loadingGetById,
+    itemMediaSocial,
     messageError,
-    itemAds,
-    loadingGetAdsById,
-    loadingActionAds,
-    actionAdsSuccessfully
+    loadingAction,
+    actionSuccessfully
   } = {}
 }) => ({
   loading,
-  listAds,
+  listSocialMedia,
   paging,
+  loadingGetById,
+  itemMediaSocial,
   messageError,
-  itemAds,
-  loadingGetAdsById,
-  loadingActionAds,
-  actionAdsSuccessfully
+  loadingAction,
+  actionSuccessfully
 });
 
 const mapDispatchToProps = dispatch => ({
-  getListAds: data => dispatch({ type: ADVERTISING.GET_LIST_ADS, data }),
-  getAdsById: id => dispatch({ type: ADVERTISING.GET_ADS_BY_ID, data: { id } }),
-  editAds: (data, functionHideModal) =>
-    dispatch({ type: ADVERTISING.EDIT_ADS, data: { data, functionHideModal } }),
+  getListSocialMedia: data =>
+    dispatch({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data }),
+  getById: id => dispatch({ type: SOCIAL_MEDIA.GET_BY_ID, data: { id } }),
+  editSocialMedia: (data, functionHideModal) =>
+    dispatch({
+      type: SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA,
+      data: { data, functionHideModal }
+    }),
   updateStateReducer: data =>
-    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data }),
+    dispatch({ type: SOCIAL_MEDIA.SET_STATE_REDUCER, data }),
   deleteAds: (data, functionHideModal) =>
     dispatch({
       type: ADVERTISING.DELETE_ADS,
