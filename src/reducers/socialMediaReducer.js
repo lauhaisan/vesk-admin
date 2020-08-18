@@ -75,53 +75,55 @@ const socialMediaReducer = (state = INITIAL_STATE, action) => {
         actionSuccessfully: false,
         messageError: action.data
       };
+    case SOCIAL_MEDIA.ADD_NEW:
+      return {
+        ...state,
+        loadingAction: true,
+        actionSuccessfully: "",
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.ADD_NEW_SUCCESS:
+      return {
+        ...state,
+        loadingAction: false,
+        actionSuccessfully: true,
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.ADD_NEW_FAIL:
+      return {
+        ...state,
+        loadingAction: false,
+        actionSuccessfully: false,
+        messageError: action.data
+      };
+
+    case SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA:
+      return {
+        ...state,
+        loadingAction: true,
+        actionSuccessfully: "",
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA_SUCCESS:
+      return {
+        ...state,
+        loadingAction: false,
+        actionSuccessfully: true,
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA_FAIL:
+      return {
+        ...state,
+        loadingAction: false,
+        actionSuccessfully: false,
+        messageError: action.data
+      };
+
     case SOCIAL_MEDIA.SET_STATE_REDUCER:
       return {
         ...state,
         ...action.data
       };
-    // case ADVERTISING.DELETE_ADS:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: true,
-    //     actionAdsSuccessfully: "",
-    //     messageError: ""
-    //   };
-    // case ADVERTISING.DELETE_ADS_SUCCESS:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: false,
-    //     actionAdsSuccessfully: true,
-    //     messageError: ""
-    //   };
-    // case ADVERTISING.DELETE_ADS_FAIL:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: false,
-    //     actionAdsSuccessfully: false,
-    //     messageError: action.data
-    //   };
-    // case ADVERTISING.ADD_NEW_ADS:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: true,
-    //     actionAdsSuccessfully: "",
-    //     messageError: ""
-    //   };
-    // case ADVERTISING.ADD_NEW_ADS_SUCCESS:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: false,
-    //     actionAdsSuccessfully: true,
-    //     messageError: ""
-    //   };
-    // case ADVERTISING.ADD_NEW_ADS_FAIL:
-    //   return {
-    //     ...state,
-    //     loadingActionAds: false,
-    //     actionAdsSuccessfully: false,
-    //     messageError: action.data
-    //   };
 
     default:
       return state;

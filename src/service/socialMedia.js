@@ -17,19 +17,19 @@ const editSocialMediaAPI = async payload => {
   return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
-// const deleteAdsByIdAPI = async payload => {
-//   const URL_WITH_PARAMS = `${URL.ADMIN_CRUD_ADVERTISING}/${payload.id}`;
-//   return request(URL_WITH_PARAMS, true, "DELETE");
-// };
+const deleteSocialMediaAPI = async payload => {
+  const URL_WITH_PARAMS = `${URL.ADMIN_CRUD_SOCIAL_MEDIA}/${payload.id}`;
+  return request(URL_WITH_PARAMS, true, "DELETE");
+};
 
-// const addNewAdsAPI = async payload => {
-//   return request(URL.ADMIN_CRUD_ADVERTISING, true, "POST", payload);
-// };
+const addNewSocialMediaAPI = async payload => {
+  return request(URL.ADMIN_CRUD_SOCIAL_MEDIA, true, "POST", payload);
+};
 
 export {
   getListSocialMediaAPI,
   getByIdAPI,
-  editSocialMediaAPI
-  // deleteAdsByIdAPI,
-  // addNewAdsAPI
+  editSocialMediaAPI,
+  deleteSocialMediaAPI,
+  addNewSocialMediaAPI
 };

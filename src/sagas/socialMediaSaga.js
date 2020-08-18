@@ -2,9 +2,9 @@ import { takeLatest, call, put } from "redux-saga/effects";
 import {
   getListSocialMediaAPI,
   getByIdAPI,
-  editSocialMediaAPI
-  // deleteAdsByIdAPI,
-  // addNewAdsAPI
+  editSocialMediaAPI,
+  deleteSocialMediaAPI,
+  addNewSocialMediaAPI
 } from "../service/socialMedia";
 import { SOCIAL_MEDIA } from "../constant";
 
@@ -50,37 +50,42 @@ function* editSocialMedia(obj) {
   yield put({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data: resp.data });
 }
 
-// function* deleteAdsById(obj) {
-//   const dat = obj.data.data;
-//   const hideModal = obj.data.functionHideModal;
-//   const resp = yield call(deleteAdsByIdAPI, dat);
-//   console.log(resp);
-//   if (resp.code !== 200) {
-//     yield put({ type: ADVERTISING.DELETE_ADS_FAIL, data: resp.message });
-//     return;
-//   }
-//   yield put({ type: ADVERTISING.DELETE_ADS_SUCCESS, data: resp.data });
-//   hideModal();
-//   yield put({ type: ADVERTISING.GET_LIST_ADS, data: resp.data });
-// }
+function* deleteSocialMedia(obj) {
+  const dat = obj.data.data;
+  const hideModal = obj.data.functionHideModal;
+  const resp = yield call(deleteSocialMediaAPI, dat);
+  if (resp.code !== 200) {
+    yield put({
+      type: SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA_FAIL,
+      data: resp.message
+    });
+    return;
+  }
+  yield put({
+    type: SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA_SUCCESS,
+    data: resp.data
+  });
+  hideModal();
+  yield put({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data: resp.data });
+}
 
-// function* addNewAds(obj) {
-//   const dat = obj.data.data;
-//   const hideModal = obj.data.functionHideModal;
-//   const resp = yield call(addNewAdsAPI, dat);
-//   if (resp.code !== 200) {
-//     yield put({ type: ADVERTISING.ADD_NEW_ADS_FAIL, data: resp.message });
-//     return;
-//   }
-//   yield put({ type: ADVERTISING.ADD_NEW_ADS_SUCCESS, data: resp.data });
-//   hideModal();
-//   yield put({ type: ADVERTISING.GET_LIST_ADS, data: resp.data });
-// }
+function* addNewSocialMedia(obj) {
+  const dat = obj.data.data;
+  const hideModal = obj.data.functionHideModal;
+  const resp = yield call(addNewSocialMediaAPI, dat);
+  if (resp.code !== 200) {
+    yield put({ type: SOCIAL_MEDIA.ADD_NEW_FAIL, data: resp.message });
+    return;
+  }
+  yield put({ type: SOCIAL_MEDIA.ADD_NEW_SUCCESS, data: resp.data });
+  hideModal();
+  yield put({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data: resp.data });
+}
 
 export const socialMediaSaga = [
   takeLatest(SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, getListSocialMedia),
   takeLatest(SOCIAL_MEDIA.GET_BY_ID, getSocialMediaById),
-  takeLatest(SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA, editSocialMedia)
-  // takeLatest(ADVERTISING.DELETE_ADS, deleteAdsById),
-  // takeLatest(ADVERTISING.ADD_NEW_ADS, addNewAds),
+  takeLatest(SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA, editSocialMedia),
+  takeLatest(SOCIAL_MEDIA.ADD_NEW, addNewSocialMedia),
+  takeLatest(SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA, deleteSocialMedia)
 ];

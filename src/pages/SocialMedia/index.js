@@ -18,7 +18,7 @@ import {
   Accordion,
   AccordionItem
 } from "carbon-components-react";
-import { ADVERTISING, SOCIAL_MEDIA } from "../../constant";
+import { SOCIAL_MEDIA } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -119,20 +119,25 @@ class SocialMedia extends React.Component {
 
   _handleSubmit = event => {
     event.preventDefault();
-    const { editSocialMedia } = this.props;
+    const { editSocialMedia, addNewSocialMedia } = this.props;
     const { itemMediaSocial, titleModal } = this.state;
     if (titleModal === "Add New Social Media") {
-      // addNewAds(itemMediaSocial, this._hideModal);
-      alert("add new");
+      const arrayKey = ["point", "pointForUserView", "timeForRecvCoin"];
+      arrayKey.forEach(element => {
+        if (!itemMediaSocial[element]) {
+          itemMediaSocial[element] = 1;
+        }
+      });
+      addNewSocialMedia(itemMediaSocial, this._hideModal);
     } else {
       editSocialMedia(itemMediaSocial, this._hideModal);
     }
   };
 
   _handleDelete = () => {
-    const { itemAds } = this.state;
-    const { deleteAds } = this.props;
-    deleteAds(itemAds, this._hideModal);
+    const { itemMediaSocial } = this.state;
+    const { deleteSocialMedia } = this.props;
+    deleteSocialMedia(itemMediaSocial, this._hideModal);
   };
 
   _actionDelete = item => {
@@ -374,7 +379,7 @@ class SocialMedia extends React.Component {
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetById
           ? "Loading..."
-          : `Are you sure delete ${itemMediaSocial.id}?`}
+          : `Are you sure delete ${itemMediaSocial.name}?`}
       </div>
     );
 
@@ -459,9 +464,9 @@ class SocialMedia extends React.Component {
           loading={loadingAction}
           contentModal={renderContentModal}
           hideModal={this._hideModal}
-          textSubmit={titleModal === "Delete Advertising" ? "Delete" : "Save"}
+          textSubmit={titleModal === "Delete Social Media" ? "Delete" : "Save"}
           onSubmit={
-            titleModal !== "Delete Advertising"
+            titleModal !== "Delete Social Media"
               ? this._handleSubmit
               : this._handleDelete
           }
@@ -516,14 +521,14 @@ const mapDispatchToProps = dispatch => ({
     }),
   updateStateReducer: data =>
     dispatch({ type: SOCIAL_MEDIA.SET_STATE_REDUCER, data }),
-  deleteAds: (data, functionHideModal) =>
+  deleteSocialMedia: (data, functionHideModal) =>
     dispatch({
-      type: ADVERTISING.DELETE_ADS,
+      type: SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA,
       data: { data, functionHideModal }
     }),
-  addNewAds: (data, functionHideModal) =>
+  addNewSocialMedia: (data, functionHideModal) =>
     dispatch({
-      type: ADVERTISING.ADD_NEW_ADS,
+      type: SOCIAL_MEDIA.ADD_NEW,
       data: { data, functionHideModal }
     })
 });
