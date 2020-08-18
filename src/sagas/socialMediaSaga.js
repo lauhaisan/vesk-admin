@@ -4,7 +4,8 @@ import {
   getByIdAPI,
   editSocialMediaAPI,
   deleteSocialMediaAPI,
-  addNewSocialMediaAPI
+  addNewSocialMediaAPI,
+  searchSocialMediaAPI
 } from "../service/socialMedia";
 import { SOCIAL_MEDIA } from "../constant";
 
@@ -82,10 +83,27 @@ function* addNewSocialMedia(obj) {
   yield put({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data: resp.data });
 }
 
+function* searchSocialMedia(obj) {
+  const dat = obj.data.data;
+  const resp = yield call(searchSocialMediaAPI, dat);
+  if (resp.code !== 200) {
+    yield put({
+      type: SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA_FAIL,
+      data: resp.message
+    });
+    return;
+  }
+  yield put({
+    type: SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA_SUCCESS,
+    data: resp.data
+  });
+}
+
 export const socialMediaSaga = [
   takeLatest(SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, getListSocialMedia),
   takeLatest(SOCIAL_MEDIA.GET_BY_ID, getSocialMediaById),
   takeLatest(SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA, editSocialMedia),
   takeLatest(SOCIAL_MEDIA.ADD_NEW, addNewSocialMedia),
+  takeLatest(SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA, searchSocialMedia),
   takeLatest(SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA, deleteSocialMedia)
 ];

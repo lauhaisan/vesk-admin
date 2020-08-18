@@ -9,8 +9,7 @@ class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      linkTarget: ""
+      name: ""
     };
   }
 
@@ -23,22 +22,21 @@ class Filter extends Component {
   handleSearch = event => {
     event.preventDefault();
     const { search } = this.props;
-    const { name, linkTarget } = this.state;
-    const value = { name, linkTarget };
+    const { name } = this.state;
+    const value = { name };
     search(value);
   };
 
   handleReset = () => {
     const { resetFilter } = this.props;
     this.setState({
-      name: "",
-      linkTarget: ""
+      name: ""
     });
     resetFilter();
   };
 
   render() {
-    const { name, linkTarget } = this.state;
+    const { name } = this.state;
     return (
       <div className="containerFilter">
         <Form className="bx--row">
@@ -58,7 +56,7 @@ class Filter extends Component {
               value={name}
             />
           </FormGroup>
-          <FormGroup legendText="" className="bx--col-md-2 bx--col-sm-4">
+          {/* <FormGroup legendText="" className="bx--col-md-2 bx--col-sm-4">
             <TextInput
               className="itemForm"
               disabled={false}
@@ -73,13 +71,13 @@ class Filter extends Component {
               type="text"
               value={linkTarget}
             />
-          </FormGroup>
+          </FormGroup> */}
         </Form>
 
         <div className="viewBtn">
           <ButtonOutline text="Reset Filter" onClick={this.handleReset} />
           <ButtonLoading
-            disabled={!name && !linkTarget}
+            disabled={!name}
             text="Search"
             renderIcon={Search32}
             onClick={this.handleSearch}

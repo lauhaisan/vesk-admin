@@ -119,6 +119,28 @@ const socialMediaReducer = (state = INITIAL_STATE, action) => {
         messageError: action.data
       };
 
+    case SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA:
+      return {
+        ...state,
+        loading: true,
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        listSocialMedia: action.data.items,
+        paging: action.data.paging,
+        messageError: ""
+      };
+    case SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA_FAIL:
+      return {
+        ...state,
+        loading: false,
+        listSocialMedia: [],
+        messageError: action.data
+      };
+
     case SOCIAL_MEDIA.SET_STATE_REDUCER:
       return {
         ...state,

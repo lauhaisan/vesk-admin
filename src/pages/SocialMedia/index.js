@@ -62,9 +62,8 @@ class SocialMedia extends React.Component {
   };
 
   _search = value => {
-    alert(`search by name:${value.name}, link target:${value.linkTarget}`);
-    //call api getListUser with payload is value;
-    // this.handleGetListUser(value)
+    const { searchSocialMedia } = this.props;
+    searchSocialMedia(value);
   };
 
   openModalAddNewAdvertising = () => {
@@ -530,6 +529,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch({
       type: SOCIAL_MEDIA.ADD_NEW,
       data: { data, functionHideModal }
+    }),
+  searchSocialMedia: data =>
+    dispatch({
+      type: SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA,
+      data: { data }
     })
 });
 

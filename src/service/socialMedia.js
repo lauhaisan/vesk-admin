@@ -1,5 +1,6 @@
 import request from "../utils/request";
 import URL from "../constant/url";
+import queryString from "query-string";
 
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
@@ -26,10 +27,18 @@ const addNewSocialMediaAPI = async payload => {
   return request(URL.ADMIN_CRUD_SOCIAL_MEDIA, true, "POST", payload);
 };
 
+const searchSocialMediaAPI = async payload => {
+  const param = queryString.stringify(payload);
+  console.log(param);
+  const URL_WITH_PARAMS = `${URL.SOCIAL_MEDIA_SEARCH}?${param}`;
+  return request(URL_WITH_PARAMS, true);
+};
+
 export {
   getListSocialMediaAPI,
   getByIdAPI,
   editSocialMediaAPI,
   deleteSocialMediaAPI,
-  addNewSocialMediaAPI
+  addNewSocialMediaAPI,
+  searchSocialMediaAPI
 };
