@@ -60,6 +60,13 @@
           opacity: 0.7;
         }
       }
+      &--exchange {
+        color: #42be65;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.7;
+        }
+      }
     }
   }
 

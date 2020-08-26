@@ -16,7 +16,7 @@ import {
   // DatePickerInput,
   Loading,
   Accordion,
-  AccordionItem
+  AccordionItem,
 } from "carbon-components-react";
 import { SOCIAL_MEDIA } from "../../constant";
 import { connect } from "react-redux";
@@ -28,7 +28,7 @@ class SocialMedia extends React.Component {
     this.state = {
       openModal: false,
       titleModal: "",
-      isReview: false
+      isReview: false,
     };
   }
 
@@ -48,11 +48,11 @@ class SocialMedia extends React.Component {
     updateStateReducer({
       itemMediaSocial: {},
       actionSuccessfully: "",
-      messageError: ""
+      messageError: "",
     });
   }
 
-  handleGetListSocialMedia = payload => {
+  handleGetListSocialMedia = (payload) => {
     const { getListSocialMedia } = this.props;
     getListSocialMedia(payload);
   };
@@ -61,7 +61,7 @@ class SocialMedia extends React.Component {
     this.handleGetListSocialMedia({});
   };
 
-  _search = value => {
+  _search = (value) => {
     const { searchSocialMedia } = this.props;
     searchSocialMedia(value);
   };
@@ -69,21 +69,21 @@ class SocialMedia extends React.Component {
   openModalAddNewAdvertising = () => {
     this.setState({
       titleModal: "Add New Social Media",
-      openModal: true
+      openModal: true,
     });
   };
 
-  handeGetById = id => {
+  handeGetById = (id) => {
     const { getById } = this.props;
     getById(id);
   };
 
-  _actionReview = item => {
+  _actionReview = (item) => {
     this.handeGetById(item.id);
     this.setState({
       openModal: true,
       titleModal: "Review Media Social",
-      isReview: true
+      isReview: true,
     });
   };
 
@@ -93,7 +93,7 @@ class SocialMedia extends React.Component {
     let { itemAds } = this.state;
     itemAds[key] = valueDate;
     this.setState({
-      itemAds
+      itemAds,
     });
   };
 
@@ -101,7 +101,7 @@ class SocialMedia extends React.Component {
     let { itemMediaSocial } = this.state;
     itemMediaSocial[key] = value;
     this.setState({
-      itemMediaSocial
+      itemMediaSocial,
     });
   };
 
@@ -109,20 +109,20 @@ class SocialMedia extends React.Component {
     const { updateStateReducer } = this.props;
     this.setState({
       openModal: false,
-      isReview: false
+      isReview: false,
     });
     updateStateReducer({
-      itemMediaSocial: {}
+      itemMediaSocial: {},
     });
   };
 
-  _handleSubmit = event => {
+  _handleSubmit = (event) => {
     event.preventDefault();
     const { editSocialMedia, addNewSocialMedia } = this.props;
     const { itemMediaSocial, titleModal } = this.state;
     if (titleModal === "Add New Social Media") {
       const arrayKey = ["point", "pointForUserView", "timeForRecvCoin"];
-      arrayKey.forEach(element => {
+      arrayKey.forEach((element) => {
         if (!itemMediaSocial[element]) {
           itemMediaSocial[element] = 1;
         }
@@ -139,19 +139,19 @@ class SocialMedia extends React.Component {
     deleteSocialMedia(itemMediaSocial, this._hideModal);
   };
 
-  _actionDelete = item => {
+  _actionDelete = (item) => {
     this.handeGetById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Delete Social Media"
+      titleModal: "Delete Social Media",
     });
   };
 
-  _actionEdit = item => {
+  _actionEdit = (item) => {
     this.handeGetById(item.id);
     this.setState({
       openModal: true,
-      titleModal: "Edit Social Media"
+      titleModal: "Edit Social Media",
     });
   };
 
@@ -160,7 +160,7 @@ class SocialMedia extends React.Component {
       openModal,
       titleModal,
       isReview,
-      itemMediaSocial = {}
+      itemMediaSocial = {},
     } = this.state;
     const {
       loading,
@@ -168,7 +168,7 @@ class SocialMedia extends React.Component {
       loadingGetById,
       messageError,
       loadingAction,
-      actionSuccessfully
+      actionSuccessfully,
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -183,7 +183,7 @@ class SocialMedia extends React.Component {
                 <TextInput
                   id="inputName"
                   labelText="Name"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("name", event.target.value)
                   }
                   required
@@ -198,7 +198,7 @@ class SocialMedia extends React.Component {
                 <TextInput
                   id="inputStatus"
                   labelText="Status"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("status", event.target.value)
                   }
                   required
@@ -244,7 +244,7 @@ class SocialMedia extends React.Component {
                 <TextInput
                   id="inputStart"
                   labelText="Start"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("start", event.target.value)
                   }
                   required
@@ -259,7 +259,7 @@ class SocialMedia extends React.Component {
                 <TextInput
                   id="inputend"
                   labelText="End"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData("end", event.target.value)
                   }
                   required
@@ -276,14 +276,13 @@ class SocialMedia extends React.Component {
                 <NumberInput
                   readOnly={isReview}
                   id="inputNumberPoint"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData(
                       "point",
                       event.imaginaryTarget.valueAsNumber
                     )
                   }
                   label="Point"
-                  max={100}
                   min={1}
                   step={1}
                   value={itemMediaSocial.point || 0}
@@ -293,14 +292,13 @@ class SocialMedia extends React.Component {
                 <NumberInput
                   readOnly={isReview}
                   id="pointForUser"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData(
                       "pointForUserView",
                       event.imaginaryTarget.valueAsNumber
                     )
                   }
                   label="Point For User View"
-                  max={100}
                   min={1}
                   step={1}
                   value={itemMediaSocial.pointForUserView || 0}
@@ -310,14 +308,13 @@ class SocialMedia extends React.Component {
                 <NumberInput
                   readOnly={isReview}
                   id="timeForRecvCoin"
-                  onChange={event =>
+                  onChange={(event) =>
                     this.onChangeFormData(
                       "timeForRecvCoin",
                       event.imaginaryTarget.valueAsNumber
                     )
                   }
                   label="Time For Recv Coin"
-                  max={100}
                   min={1}
                   step={1}
                   value={itemMediaSocial.timeForRecvCoin || 0}
@@ -328,7 +325,7 @@ class SocialMedia extends React.Component {
               <TextInput
                 id="inputDescription"
                 labelText="Description"
-                onChange={event =>
+                onChange={(event) =>
                   this.onChangeFormData("description", event.target.value)
                 }
                 required
@@ -343,7 +340,7 @@ class SocialMedia extends React.Component {
               <TextInput
                 id="inputLinkTarget"
                 labelText="Link Target"
-                onChange={event =>
+                onChange={(event) =>
                   this.onChangeFormData("linkTarget", event.target.value)
                 }
                 required
@@ -358,7 +355,7 @@ class SocialMedia extends React.Component {
               <TextInput
                 id="inputVideoURL"
                 labelText="Video URL"
-                onChange={event =>
+                onChange={(event) =>
                   this.onChangeFormData("videoUrl", event.target.value)
                 }
                 required
@@ -367,6 +364,21 @@ class SocialMedia extends React.Component {
                 placeholder="Video URL"
                 type="text"
                 value={itemMediaSocial.videoUrl || ""}
+              />
+            </FormGroup>
+            <FormGroup legendText="">
+              <TextInput
+                id="inputThumbnailURL"
+                labelText="Thumbnail URL"
+                onChange={(event) =>
+                  this.onChangeFormData("thumbnail", event.target.value)
+                }
+                required
+                readOnly={isReview}
+                light={true}
+                placeholder="Thumbnail URL"
+                type="text"
+                value={itemMediaSocial.thumbnail || ""}
               />
             </FormGroup>
           </Form>
@@ -388,41 +400,41 @@ class SocialMedia extends React.Component {
     const headerData = [
       {
         header: "Name",
-        key: "name"
+        key: "name",
       },
       {
         header: "Created",
-        key: "created"
+        key: "created",
       },
       {
         header: "Start",
-        key: "start"
+        key: "start",
       },
       {
         header: "End",
-        key: "end"
+        key: "end",
       },
       {
         header: "Description",
-        key: "description"
+        key: "description",
       },
       {
         header: "Point",
-        key: "point"
+        key: "point",
       },
       {
         header: "Poin For User View",
-        key: "pointForUserView"
+        key: "pointForUserView",
       },
       {
         header: "Time For Recv Coin",
-        key: "timeForRecvCoin"
+        key: "timeForRecvCoin",
       },
       {
         header: "Status",
-        key: "status"
+        key: "status",
       },
-      { header: "Action", key: "action" }
+      { header: "Action", key: "action" },
     ];
 
     return (
@@ -496,8 +508,8 @@ const mapStateToProps = ({
     itemMediaSocial,
     messageError,
     loadingAction,
-    actionSuccessfully
-  } = {}
+    actionSuccessfully,
+  } = {},
 }) => ({
   loading,
   listSocialMedia,
@@ -506,35 +518,35 @@ const mapStateToProps = ({
   itemMediaSocial,
   messageError,
   loadingAction,
-  actionSuccessfully
+  actionSuccessfully,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getListSocialMedia: data =>
+const mapDispatchToProps = (dispatch) => ({
+  getListSocialMedia: (data) =>
     dispatch({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data }),
-  getById: id => dispatch({ type: SOCIAL_MEDIA.GET_BY_ID, data: { id } }),
+  getById: (id) => dispatch({ type: SOCIAL_MEDIA.GET_BY_ID, data: { id } }),
   editSocialMedia: (data, functionHideModal) =>
     dispatch({
       type: SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA,
-      data: { data, functionHideModal }
+      data: { data, functionHideModal },
     }),
-  updateStateReducer: data =>
+  updateStateReducer: (data) =>
     dispatch({ type: SOCIAL_MEDIA.SET_STATE_REDUCER, data }),
   deleteSocialMedia: (data, functionHideModal) =>
     dispatch({
       type: SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA,
-      data: { data, functionHideModal }
+      data: { data, functionHideModal },
     }),
   addNewSocialMedia: (data, functionHideModal) =>
     dispatch({
       type: SOCIAL_MEDIA.ADD_NEW,
-      data: { data, functionHideModal }
+      data: { data, functionHideModal },
     }),
-  searchSocialMedia: data =>
+  searchSocialMedia: (data) =>
     dispatch({
       type: SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA,
-      data: { data }
-    })
+      data: { data },
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SocialMedia);

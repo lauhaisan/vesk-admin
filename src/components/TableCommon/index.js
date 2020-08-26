@@ -8,30 +8,44 @@ const {
   TableRow,
   TableBody,
   TableCell,
-  TableHeader
+  TableHeader,
 } = DataTable;
 
 class TableCommon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 0
+      currentPage: 0,
     };
   }
 
-  onChangePage = value => {
+  onChangePage = (value) => {
     // const function pagination from prop:
     // ex: const { handlePagination} = this.props
     this.setState({
-      currentPage: value
+      currentPage: value,
     });
     // Dispatch to handlePagination with param: value +1 because default value = 0
   };
 
-  renderAction = item => {
-    const { actionReview, actionEdit, actionDelete } = this.props;
+  renderAction = (item) => {
+    const {
+      actionReview,
+      actionEdit,
+      actionDelete,
+      actionExchange,
+      title = "",
+    } = this.props;
+    const check = title === "List User";
+    const width = check ? "8rem" : "5rem";
     return (
-      <div className="viewAction">
+      <div className="viewAction" style={{ width }}>
+        {check && (
+          <i
+            className="fas fa-exchange-alt viewAction__icon viewAction__icon--exchange"
+            onClick={() => actionExchange(item)}
+          ></i>
+        )}
         <i
           className="fas fa-eye viewAction__icon viewAction__icon--review"
           onClick={() => actionReview(item)}
@@ -48,10 +62,10 @@ class TableCommon extends React.Component {
     );
   };
 
-  renderTableRow = rows => {
-    return rows.map(row => (
+  renderTableRow = (rows) => {
+    return rows.map((row) => (
       <TableRow key={row.id}>
-        {row.cells.map(cell => (
+        {row.cells.map((cell) => (
           <TableCell key={cell.id}>
             {cell.info.header === "action"
               ? this.renderAction(row)
@@ -69,7 +83,7 @@ class TableCommon extends React.Component {
       title,
       total = 0,
       limit = 10,
-      loading = false
+      loading = false,
     } = this.props;
     const { currentPage } = this.state;
     const totalPage = Math.ceil(total / limit);
@@ -100,7 +114,7 @@ class TableCommon extends React.Component {
                     <Table useZebraStyles>
                       <TableHead>
                         <TableRow>
-                          {headers.map(header => (
+                          {headers.map((header) => (
                             <TableHeader {...getHeaderProps({ header })}>
                               {header.header}
                             </TableHeader>
@@ -120,7 +134,7 @@ class TableCommon extends React.Component {
             className=""
             itemsShown={5}
             page={currentPage}
-            onChange={page => this.onChangePage(page)}
+            onChange={(page) => this.onChangePage(page)}
             totalItems={totalPage}
           />
         )}

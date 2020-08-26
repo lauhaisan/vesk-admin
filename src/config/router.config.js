@@ -26,13 +26,13 @@ const routes = [
     path: "/",
     exact: true,
     layout: BasicLayout,
-    component: ComingSoon
+    component: ComingSoon,
   },
   {
     path: "/users",
     exact: true,
     layout: BasicLayout,
-    component: Users
+    component: Users,
   },
   // {
   //   path: "/users/:id",
@@ -40,23 +40,23 @@ const routes = [
   //   layout: BasicLayout,
   //   component: ReviewUser,
   // },
-  {
-    path: "/users-exchange",
-    exact: true,
-    layout: BasicLayout,
-    component: ComingSoon
-  },
+  // {
+  //   path: "/users-exchange",
+  //   exact: true,
+  //   layout: BasicLayout,
+  //   component: ComingSoon
+  // },
   {
     path: "/advertising",
     exact: true,
     layout: BasicLayout,
-    component: Advertising
+    component: Advertising,
   },
   {
     path: "/social-media",
     exact: true,
     layout: BasicLayout,
-    component: SocialMeida
+    component: SocialMeida,
   },
   // {
   //   path: "/detail",
@@ -74,38 +74,38 @@ const routes = [
     path: "/contact",
     exact: false,
     layout: BasicLayout,
-    component: Contact
+    component: Contact,
   },
   {
     path: "/profile",
     exact: false,
     layout: BasicLayout,
-    component: Profile
+    component: Profile,
   },
   {
     path: "/signin",
     exact: true,
     layout: LoginLayout,
-    component: SignIn
+    component: SignIn,
   },
   {
     path: "/signup",
     exact: true,
     layout: LoginLayout,
-    component: SignUp
+    component: SignUp,
   },
   {
     path: "/forgot-password",
     exact: true,
     layout: LoginLayout,
-    component: ForgotPassword
+    component: ForgotPassword,
   },
   {
     path: "",
     exact: false,
     layout: BasicLayout,
-    component: Notfound
-  }
+    component: Notfound,
+  },
 ];
 
 export default routes;

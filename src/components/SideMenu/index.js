@@ -8,24 +8,24 @@ export default class SideMenu extends PureComponent {
     this.state = {
       openUser: false,
       openAds: false,
-      openSocialMedia: false
+      openSocialMedia: false,
     };
   }
 
   componentDidMount() {
     if (window.location.pathname.includes("users")) {
       this.setState({
-        openUser: true
+        openUser: true,
       });
     }
     if (window.location.pathname.includes("advertising")) {
       this.setState({
-        openAds: true
+        openAds: true,
       });
     }
     if (window.location.pathname.includes("social-media")) {
       this.setState({
-        openSocialMedia: true
+        openSocialMedia: true,
       });
     }
   }
@@ -33,21 +33,21 @@ export default class SideMenu extends PureComponent {
   handleClickUser = () => {
     const { openUser } = this.state;
     this.setState({
-      openUser: !openUser
+      openUser: !openUser,
     });
   };
 
   handleClickAds = () => {
     const { openAds } = this.state;
     this.setState({
-      openAds: !openAds
+      openAds: !openAds,
     });
   };
 
   handleClickSocialMedia = () => {
     const { openSocialMedia } = this.state;
     this.setState({
-      openSocialMedia: !openSocialMedia
+      openSocialMedia: !openSocialMedia,
     });
   };
 
@@ -93,14 +93,14 @@ export default class SideMenu extends PureComponent {
                   <i className="fas fa-tasks itemMenu__icon--children"></i>
                   <span className="itemMenu__text--children ">Manage</span>
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   activeClassName={`${classNameMenu}__menu__itemMenu--active`}
                   to="/users-exchange/"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
                   <i className="fas fa-exchange-alt itemMenu__icon--children"></i>
                   <span className="itemMenu__text--children">Exchange</span>
-                </NavLink>
+                </NavLink> */}
               </Fragment>
             )}
           </Fragment>
