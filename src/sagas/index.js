@@ -4,12 +4,15 @@ import { userSaga } from "./userSaga";
 import { listUserSaga } from "./listUserSaga";
 import { advertisingSaga } from "./advertisingSaga";
 import { socialMediaSaga } from "./socialMediaSaga";
+import { exchangeSaga } from "./exchangeSaga";
+
 export default function* rootSaga() {
   yield all([
     ...productSaga,
     ...userSaga,
     ...listUserSaga,
     ...advertisingSaga,
-    ...socialMediaSaga
+    ...socialMediaSaga,
+    ...exchangeSaga,
   ]);
 }

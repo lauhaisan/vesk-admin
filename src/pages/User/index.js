@@ -18,7 +18,7 @@ import {
   AccordionItem,
   NumberInput,
 } from "carbon-components-react";
-import { LIST_USER } from "../../constant";
+import { LIST_USER, EXCHANGE } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -133,7 +133,7 @@ class Users extends React.Component {
 
   _handleSubmitExchange = (event) => {
     event.preventDefault();
-    // const { editUser } = this.props;
+    const { createExchange } = this.props;
     const {
       itemUser: { userId = "" } = {},
       coint,
@@ -146,7 +146,7 @@ class Users extends React.Component {
       coint,
       message: messageExchange,
     };
-    console.log("value exchange", value);
+    createExchange(value, this._hideModal);
   };
 
   _handleSubmit = (event) => {
@@ -208,6 +208,9 @@ class Users extends React.Component {
       loadingEditUser,
       messageError,
       editUserSuccessfully,
+      loadingCreateExchange,
+      isCreateExchangeSuccessfully,
+      messageCreateExchange,
     } = this.props;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -562,7 +565,7 @@ class Users extends React.Component {
         />
         <CustomModal
           open={openModalExchange}
-          // loading={loadingEditUser}
+          loading={loadingCreateExchange}
           contentModal={contentModalExChange}
           hideModal={this._hideModal}
           textSubmit="Save"
@@ -580,6 +583,16 @@ class Users extends React.Component {
         {editUserSuccessfully && (
           <Notification status="success" title="Edit User Successfully" />
         )}
+        {!isCreateExchangeSuccessfully && messageCreateExchange !== "" && (
+          <Notification
+            status="error"
+            message={messageError}
+            title="Exchange Failed"
+          />
+        )}
+        {isCreateExchangeSuccessfully && (
+          <Notification status="success" title="Exchange Successfully" />
+        )}
       </Fragment>
     );
   }
@@ -596,6 +609,11 @@ const mapStateToProps = ({
     loadingEditUser,
     editUserSuccessfully,
   } = {},
+  exchange: {
+    loading: loadingCreateExchange,
+    isCreateExchangeSuccessfully,
+    messageCreateExchange,
+  } = {},
 }) => ({
   loading,
   listUserData,
@@ -605,6 +623,9 @@ const mapStateToProps = ({
   itemUser,
   loadingEditUser,
   editUserSuccessfully,
+  loadingCreateExchange,
+  isCreateExchangeSuccessfully,
+  messageCreateExchange,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -612,6 +633,11 @@ const mapDispatchToProps = (dispatch) => ({
   getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
   editUser: (data, functionHideModal) =>
     dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
+  createExchange: (data, functionHideModal) =>
+    dispatch({
+      type: EXCHANGE.CREATE_EXCHANGE,
+      data: { data, functionHideModal },
+    }),
   updateStateReducer: (data) =>
     dispatch({ type: LIST_USER.SET_STATE_REDUCER, data }),
 });
