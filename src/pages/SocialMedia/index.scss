@@ -42,7 +42,7 @@
   }
 
   .bx--number input[type="number"] {
-    min-width: 7rem;
+    max-width: 3rem;
     &:focus {
       outline: none;
     }

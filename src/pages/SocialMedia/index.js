@@ -17,6 +17,7 @@ import {
   Loading,
   Accordion,
   AccordionItem,
+  Toggle,
 } from "carbon-components-react";
 import { SOCIAL_MEDIA } from "../../constant";
 import { connect } from "react-redux";
@@ -318,6 +319,59 @@ class SocialMedia extends React.Component {
                   min={1}
                   step={1}
                   value={itemMediaSocial.timeForRecvCoin || 0}
+                />
+              </FormGroup>
+            </div>
+            <div className="formData__row">
+              <div style={{ width: "9.5rem" }}>
+                <FormGroup legendText="">
+                  <Toggle
+                    disabled={isReview}
+                    aria-label="toggle button"
+                    toggled={
+                      (itemMediaSocial && itemMediaSocial.isTop) || false
+                    }
+                    id="toggle-1"
+                    labelA="No"
+                    labelB="Yes"
+                    labelText="Top Video"
+                    onChange={() =>
+                      this.onChangeFormData("isTop", !itemMediaSocial.isTop)
+                    }
+                  />
+                </FormGroup>
+              </div>
+
+              <FormGroup legendText="">
+                <NumberInput
+                  readOnly={isReview}
+                  id="topRank"
+                  onChange={(event) =>
+                    this.onChangeFormData(
+                      "topRank",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Top Rank"
+                  min={0}
+                  step={1}
+                  value={itemMediaSocial.topRank || 0}
+                />
+              </FormGroup>
+              <FormGroup legendText="">
+                <NumberInput
+                  readOnly={isReview}
+                  id="views"
+                  onChange={(event) =>
+                    this.onChangeFormData(
+                      "countView",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Count View"
+                  min={0}
+                  step={1}
+                  value={itemMediaSocial.countView || 0}
                 />
               </FormGroup>
             </div>
