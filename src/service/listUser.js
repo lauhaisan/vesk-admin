@@ -13,7 +13,8 @@ const getUserByIdAPI = async (payload) => {
 };
 
 const editUserAPI = async (payload) => {
-  return request(URL.EDIT_USER, true, "PUT", payload);
+  const URL_WITH_PARAMS = `${URL.EDIT_USER}/${payload.userId}`;
+  return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
 export { getListUserAPI, getUserByIdAPI, editUserAPI };
