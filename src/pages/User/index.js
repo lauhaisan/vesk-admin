@@ -17,8 +17,9 @@ import {
   Accordion,
   AccordionItem,
   NumberInput,
+  FileUploader,
 } from "carbon-components-react";
-import { LIST_USER, EXCHANGE } from "../../constant";
+import { LIST_USER, EXCHANGE, UPLOAD } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -33,6 +34,7 @@ class Users extends React.Component {
       coint: 0,
       point: 0,
       messageExchange: "",
+      fileUpload: null,
     };
   }
 
@@ -117,7 +119,7 @@ class Users extends React.Component {
   };
 
   _hideModal = () => {
-    const { updateStateReducer } = this.props;
+    const { updateStateReducer, updateUploadReducer } = this.props;
     this.setState({
       openModalExchange: false,
       openModal: false,
@@ -128,6 +130,10 @@ class Users extends React.Component {
     });
     updateStateReducer({
       itemUser: {},
+    });
+    updateUploadReducer({
+      link: "",
+      messageUpload: "",
     });
   };
 
@@ -151,13 +157,14 @@ class Users extends React.Component {
 
   _handleSubmit = (event) => {
     event.preventDefault();
-    const { editUser } = this.props;
+    const { editUser, link } = this.props;
     const { itemUser, titleModal } = this.state;
+    const payload = { ...itemUser, avatar: link || itemUser.avatar };
     if (titleModal === "Add New User") {
       // dispatch to saga add new user and _hideModal()
       console.log("add new", itemUser);
     } else {
-      editUser(itemUser, this._hideModal);
+      editUser(payload, this._hideModal);
     }
   };
 
@@ -190,12 +197,31 @@ class Users extends React.Component {
     });
   };
 
+  handleFileChanged = (e) => {
+    this.setState(
+      {
+        fileUpload: e.target.files[0],
+      },
+      () => {
+        this.handleUploadToServer();
+      }
+    );
+  };
+
+  handleUploadToServer = () => {
+    const { fileUpload } = this.state;
+    const { uploadImage } = this.props;
+    const formData = new FormData();
+    formData.append("file", fileUpload);
+    uploadImage({ file: formData });
+  };
+
   render() {
     const {
       openModal,
       titleModal,
       isReview,
-      itemUser,
+      itemUser = {},
       openModalExchange,
       coint,
       point,
@@ -211,7 +237,12 @@ class Users extends React.Component {
       loadingCreateExchange,
       isCreateExchangeSuccessfully,
       messageCreateExchange,
+      loadingUpload,
+      link,
+      messageUpload,
     } = this.props;
+    const linkAvatar =
+      link || itemUser.avatar || require("../../images/testAvatar.jpg");
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetUserById ? (
@@ -221,11 +252,36 @@ class Users extends React.Component {
         ) : (
           <Form className="formData">
             <div className="formData__avt">
-              <img
-                className="formData__avt--img"
-                src={require("../../images/testAvatar.jpg")}
-                alt="img-avatar"
-              />
+              {loadingUpload ? (
+                <div
+                  className="formData__avt--img"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Loading small description="" withOverlay={false} />
+                </div>
+              ) : (
+                <img
+                  className="formData__avt--img"
+                  src={linkAvatar}
+                  alt="img-avatar"
+                />
+              )}
+              {(titleModal === "Edit User" ||
+                titleModal === "Add New User") && (
+                <div className="customButtonUpload">
+                  <FileUploader
+                    accept={[".jpg", ".png"]}
+                    buttonKind="primary"
+                    buttonLabel={<i className="fas fa-edit iconEdit"></i>}
+                    labelTitle=""
+                    onChange={(e) => this.handleFileChanged(e)}
+                  />
+                </div>
+              )}
             </div>
             <div className="formData__row">
               <FormGroup legendText="">
@@ -263,7 +319,6 @@ class Users extends React.Component {
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={true}
                   className="formData__row__input"
                   id="inputFirstName"
                   labelText="First Name"
@@ -404,6 +459,17 @@ class Users extends React.Component {
                 />
               </FormGroup>
             </div>
+            {(titleModal === "Edit User" || titleModal === "Add New User") && (
+              <div className="buttonUpload">
+                <FileUploader
+                  accept={[".jpg", ".png"]}
+                  buttonKind="primary"
+                  buttonLabel="Upload Contract"
+                  labelTitle=""
+                  // onChange={(e) => this.handleFileChangedContract(e)}
+                />
+              </div>
+            )}
           </Form>
         )}
       </div>
@@ -593,6 +659,13 @@ class Users extends React.Component {
         {isCreateExchangeSuccessfully && (
           <Notification status="success" title="Exchange Successfully" />
         )}
+        {messageUpload === "Upload Image Failed" && (
+          <Notification
+            status="error"
+            message={messageUpload}
+            title="Upload Image Failed"
+          />
+        )}
       </Fragment>
     );
   }
@@ -614,6 +687,7 @@ const mapStateToProps = ({
     isCreateExchangeSuccessfully,
     messageCreateExchange,
   } = {},
+  upload: { loading: loadingUpload, link, messageUpload } = {},
 }) => ({
   loading,
   listUserData,
@@ -626,6 +700,9 @@ const mapStateToProps = ({
   loadingCreateExchange,
   isCreateExchangeSuccessfully,
   messageCreateExchange,
+  loadingUpload,
+  link,
+  messageUpload,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -640,6 +717,10 @@ const mapDispatchToProps = (dispatch) => ({
     }),
   updateStateReducer: (data) =>
     dispatch({ type: LIST_USER.SET_STATE_REDUCER, data }),
+  uploadImage: (data) =>
+    dispatch({ type: UPLOAD.UPLOAD_IMAGE, data: { data } }),
+  updateUploadReducer: (data) =>
+    dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

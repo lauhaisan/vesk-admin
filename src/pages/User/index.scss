@@ -66,11 +66,39 @@
     width: 100%;
     height: 5rem;
     margin-bottom: 1rem;
+    position: relative;
     &--img {
       width: 6rem;
       height: 6rem;
       border-radius: 50%;
       position: relative;
+    }
+    .customButtonUpload {
+      .iconEdit {
+        font-size: 13px;
+        margin-left: 8px;
+      }
+      .bx--btn {
+        min-height: 20px;
+        padding: 0px;
+      }
+      .bx--btn--primary {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border-radius: 2px solid #fff;
+        position: absolute;
+        top: -7px;
+        right: 37%;
+      }
+      .bx--file__selected-file {
+        display: none;
+      }
+    }
+    .customButtonUpload {
+      .bx--file__selected-file {
+        display: none;
+      }
     }
   }
   &__row {
