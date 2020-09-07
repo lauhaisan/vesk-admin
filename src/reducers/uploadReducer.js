@@ -3,6 +3,7 @@ import { UPLOAD } from "../constant";
 const INITIAL_STATE = {
   loading: false,
   link: "",
+  linkContract: "",
   messageUpload: "",
 };
 
@@ -24,6 +25,13 @@ const uploadReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         link: action.data,
+        messageUpload: "",
+      };
+    case UPLOAD.UPLOAD_IMAGE_CONTRACT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        linkContract: action.data,
         messageUpload: "",
       };
     case UPLOAD.UPLOAD_IMAGE_FAIL:

@@ -134,6 +134,7 @@ class Users extends React.Component {
     updateUploadReducer({
       link: "",
       messageUpload: "",
+      linkContract: "",
     });
   };
 
@@ -157,9 +158,13 @@ class Users extends React.Component {
 
   _handleSubmit = (event) => {
     event.preventDefault();
-    const { editUser, link } = this.props;
+    const { editUser, link, linkContract } = this.props;
     const { itemUser, titleModal } = this.state;
-    const payload = { ...itemUser, avatar: link || itemUser.avatar };
+    const payload = {
+      ...itemUser,
+      avatar: link || itemUser.avatar,
+      contract: linkContract || itemUser.contract,
+    };
     if (titleModal === "Add New User") {
       // dispatch to saga add new user and _hideModal()
       console.log("add new", itemUser);
@@ -197,23 +202,23 @@ class Users extends React.Component {
     });
   };
 
-  handleFileChanged = (e) => {
+  handleFileChanged = (e, isContract) => {
     this.setState(
       {
         fileUpload: e.target.files[0],
       },
       () => {
-        this.handleUploadToServer();
+        this.handleUploadToServer(isContract);
       }
     );
   };
 
-  handleUploadToServer = () => {
+  handleUploadToServer = (isContract) => {
     const { fileUpload } = this.state;
     const { uploadImage } = this.props;
     const formData = new FormData();
     formData.append("file", fileUpload);
-    uploadImage({ file: formData });
+    uploadImage({ file: formData, isContract });
   };
 
   render() {
@@ -240,9 +245,11 @@ class Users extends React.Component {
       loadingUpload,
       link,
       messageUpload,
+      linkContract,
     } = this.props;
     const linkAvatar =
       link || itemUser.avatar || require("../../images/testAvatar.jpg");
+    const imgContract = linkContract || itemUser.contract;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetUserById ? (
@@ -278,7 +285,7 @@ class Users extends React.Component {
                     buttonKind="primary"
                     buttonLabel={<i className="fas fa-edit iconEdit"></i>}
                     labelTitle=""
-                    onChange={(e) => this.handleFileChanged(e)}
+                    onChange={(e) => this.handleFileChanged(e, false)}
                   />
                 </div>
               )}
@@ -466,10 +473,24 @@ class Users extends React.Component {
                   buttonKind="primary"
                   buttonLabel="Upload Contract"
                   labelTitle=""
-                  // onChange={(e) => this.handleFileChangedContract(e)}
+                  onChange={(e) => this.handleFileChanged(e, true)}
                 />
               </div>
             )}
+
+            <div className="viewContract">
+              {loadingUpload ? (
+                <Loading small description="" withOverlay={false} />
+              ) : (
+                imgContract && (
+                  <img
+                    className="viewContract__img"
+                    src={imgContract}
+                    alt="img-contract"
+                  />
+                )
+              )}
+            </div>
           </Form>
         )}
       </div>
@@ -687,7 +708,7 @@ const mapStateToProps = ({
     isCreateExchangeSuccessfully,
     messageCreateExchange,
   } = {},
-  upload: { loading: loadingUpload, link, messageUpload } = {},
+  upload: { loading: loadingUpload, link, messageUpload, linkContract } = {},
 }) => ({
   loading,
   listUserData,
@@ -703,6 +724,7 @@ const mapStateToProps = ({
   loadingUpload,
   link,
   messageUpload,
+  linkContract,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -9,7 +9,7 @@ const uploadApi = async (payload) => {
       "Access-Control-Request-Headers": "Content-Type, authorization",
       Authorization: token,
     },
-    body: payload.file,
+    body: payload,
   };
   const response = await fetch(
     "https://upload.vesk.fastfps.com/vesk/upload",
