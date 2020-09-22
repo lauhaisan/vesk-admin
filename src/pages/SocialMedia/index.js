@@ -454,21 +454,6 @@ class SocialMedia extends React.Component {
                 value={itemMediaSocial.videoUrl || ""}
               />
             </FormGroup>
-            {/* <FormGroup legendText="">
-              <TextInput
-                id="inputThumbnailURL"
-                labelText="Thumbnail URL"
-                onChange={(event) =>
-                  this.onChangeFormData("thumbnail", event.target.value)
-                }
-                required
-                readOnly={isReview}
-                light={true}
-                placeholder="Thumbnail URL"
-                type="text"
-                value={itemMediaSocial.thumbnail || ""}
-              />
-            </FormGroup> */}
             {(titleModal === "Edit Social Media" ||
               titleModal === "Add New Social Media") && (
               <div className="buttonUpload">

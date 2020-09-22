@@ -11,13 +11,12 @@ import {
   Form,
   FormGroup,
   TextInput,
-  // DatePicker,
-  // DatePickerInput,
+  FileUploader,
   Loading,
   Accordion,
   AccordionItem,
 } from "carbon-components-react";
-import { ADVERTISING } from "../../constant";
+import { ADVERTISING, UPLOAD } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -28,6 +27,7 @@ class Advertising extends React.Component {
       openModal: false,
       titleModal: "",
       isReview: false,
+      fileUpload: null,
     };
   }
 
@@ -106,7 +106,7 @@ class Advertising extends React.Component {
   };
 
   _hideModal = () => {
-    const { updateStateReducer } = this.props;
+    const { updateStateReducer, updateUploadReducer } = this.props;
     this.setState({
       openModal: false,
       isReview: false,
@@ -114,16 +114,25 @@ class Advertising extends React.Component {
     updateStateReducer({
       itemAds: {},
     });
+    updateUploadReducer({
+      link: "",
+      messageUpload: "",
+      linkContract: "",
+    });
   };
 
   _handleSubmit = (event) => {
     event.preventDefault();
-    const { editAds, addNewAds } = this.props;
+    const { editAds, addNewAds, linkAds } = this.props;
     const { itemAds, titleModal } = this.state;
+    const payload = {
+      ...itemAds,
+      ImageUrl: linkAds || itemAds.ImageUrl,
+    };
     if (titleModal === "Add New Advertising") {
-      addNewAds(itemAds, this._hideModal);
+      addNewAds(payload, this._hideModal);
     } else {
-      editAds(itemAds, this._hideModal);
+      editAds(payload, this._hideModal);
     }
   };
 
@@ -149,6 +158,25 @@ class Advertising extends React.Component {
     });
   };
 
+  handleFileChanged = (e, isContract) => {
+    this.setState(
+      {
+        fileUpload: e.target.files[0],
+      },
+      () => {
+        this.handleUploadToServer(isContract);
+      }
+    );
+  };
+
+  handleUploadToServer = (isContract) => {
+    const { fileUpload } = this.state;
+    const { uploadImage } = this.props;
+    const formData = new FormData();
+    formData.append("file", fileUpload);
+    uploadImage({ file: formData, isContract });
+  };
+
   render() {
     const { openModal, titleModal, isReview, itemAds } = this.state;
     const {
@@ -158,7 +186,12 @@ class Advertising extends React.Component {
       loadingActionAds,
       messageError,
       actionAdsSuccessfully,
+      loadingUpload,
+      linkAds,
+      messageUpload,
     } = this.props;
+    const imgAds = linkAds || itemAds.ImageUrl;
+
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetAdsById ? (
@@ -282,36 +315,63 @@ class Advertising extends React.Component {
               </FormGroup>
               <FormGroup legendText="">
                 <TextInput
-                  id="inputImageUrl"
-                  labelText="Image Url"
+                  id="inputLinkTarget"
+                  labelText="Link Target"
                   onChange={(event) =>
-                    this.onChangeFormData("ImageUrl", event.target.value)
+                    this.onChangeFormData("LinkTarget", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
-                  placeholder="Image Url"
+                  placeholder="Link Target"
                   type="text"
-                  value={itemAds.ImageUrl || ""}
+                  value={itemAds.LinkTarget || ""}
                 />
               </FormGroup>
             </div>
-            <FormGroup legendText="">
+            {/* <FormGroup legendText="">
               <TextInput
-                // disabled={titleModal !== "Add New Advertising"}
-                id="inputLinkTarget"
-                labelText="Link Target"
+                id="inputImageUrl"
+                labelText="Image Url"
                 onChange={(event) =>
-                  this.onChangeFormData("LinkTarget", event.target.value)
+                  this.onChangeFormData("ImageUrl", event.target.value)
                 }
                 required
                 readOnly={isReview}
                 light={true}
-                placeholder="Link Target"
+                placeholder="Image Url"
                 type="text"
-                value={itemAds.LinkTarget || ""}
+                value={itemAds.ImageUrl || ""}
               />
-            </FormGroup>
+            </FormGroup> */}
+            {(titleModal === "Edit Advertising" ||
+              titleModal === "Add New Advertising") && (
+              <div className="buttonUpload">
+                <FileUploader
+                  accept={[".jpg", ".png"]}
+                  buttonKind="primary"
+                  buttonLabel="Upload Image"
+                  labelTitle=""
+                  onChange={(e) => this.handleFileChanged(e, true)}
+                />
+              </div>
+            )}
+            <div className="viewContract">
+              {loadingUpload ? (
+                <Loading small description="" withOverlay={false} />
+              ) : (
+                imgAds && (
+                  <Fragment>
+                    <div className="titleContract">Image Advertising:</div>
+                    <img
+                      className="viewContract__img"
+                      src={imgAds}
+                      alt="img-contract"
+                    />
+                  </Fragment>
+                )
+              )}
+            </div>
           </Form>
         )}
       </div>
@@ -421,6 +481,13 @@ class Advertising extends React.Component {
         {actionAdsSuccessfully && (
           <Notification status="success" title={`${titleModal} Successfully`} />
         )}
+        {messageUpload === "Upload Image Failed" && (
+          <Notification
+            status="error"
+            message={messageUpload}
+            title="Upload Image Failed"
+          />
+        )}
       </Fragment>
     );
   }
@@ -437,6 +504,7 @@ const mapStateToProps = ({
     loadingActionAds,
     actionAdsSuccessfully,
   } = {},
+  upload: { loading: loadingUpload, messageUpload, linkContract: linkAds } = {},
 }) => ({
   loading,
   listAds,
@@ -446,6 +514,9 @@ const mapStateToProps = ({
   loadingGetAdsById,
   loadingActionAds,
   actionAdsSuccessfully,
+  loadingUpload,
+  messageUpload,
+  linkAds,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -466,6 +537,10 @@ const mapDispatchToProps = (dispatch) => ({
       type: ADVERTISING.ADD_NEW_ADS,
       data: { data, functionHideModal },
     }),
+  uploadImage: (data) =>
+    dispatch({ type: UPLOAD.UPLOAD_IMAGE, data: { data } }),
+  updateUploadReducer: (data) =>
+    dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);
