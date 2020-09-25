@@ -5,6 +5,7 @@ import {
   editAdsAPI,
   deleteAdsByIdAPI,
   addNewAdsAPI,
+  searchAdsApi,
 } from "../service/advertising";
 import { ADVERTISING } from "../constant";
 
@@ -45,7 +46,6 @@ function* deleteAdsById(obj) {
   const dat = obj.data.data;
   const hideModal = obj.data.functionHideModal;
   const resp = yield call(deleteAdsByIdAPI, dat);
-  console.log(resp);
   if (resp.code !== 200) {
     yield put({ type: ADVERTISING.DELETE_ADS_FAIL, data: resp.message });
     return;
@@ -68,10 +68,21 @@ function* addNewAds(obj) {
   yield put({ type: ADVERTISING.GET_LIST_ADS, data: resp.data });
 }
 
+function* searchAds(object) {
+  const { data } = object;
+  const resp = yield call(searchAdsApi, data);
+  if (resp.code !== 200) {
+    yield put({ type: ADVERTISING.SEARCH_ADS_FAIL, data: resp.message });
+    return;
+  }
+  yield put({ type: ADVERTISING.SEARCH_ADS_SUCCESS, data: resp.data });
+}
+
 export const advertisingSaga = [
   takeLatest(ADVERTISING.GET_LIST_ADS, getListAds),
   takeLatest(ADVERTISING.GET_ADS_BY_ID, getAdsById),
   takeLatest(ADVERTISING.EDIT_ADS, editAds),
   takeLatest(ADVERTISING.DELETE_ADS, deleteAdsById),
   takeLatest(ADVERTISING.ADD_NEW_ADS, addNewAds),
+  takeLatest(ADVERTISING.SEARCH_ADS, searchAds),
 ];

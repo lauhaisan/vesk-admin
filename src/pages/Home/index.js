@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { getToken } from "../../utils/token";
 import TitlePage from "../../components/TitlePage";
 import "./index.scss";
 
@@ -12,7 +14,7 @@ class Home extends Component {
   _setData = () => {
     const { setData } = this.props;
     setData({
-      messageError: "Hmmm..."
+      messageError: "Hmmm...",
     });
   };
 
@@ -21,14 +23,10 @@ class Home extends Component {
     clearData();
   }
   render() {
-    // const {
-    // loading,
-    // listProduct,
-    // messageError,
-    // clearData,
-    //   // getAllProduct
-    //   history
-    // } = this.props;
+    const { token } = getToken();
+    if (token) {
+      return <Redirect to="/users" />;
+    }
     return (
       <div className="container_page_home">
         <TitlePage title="Home" />
@@ -56,19 +54,19 @@ const mapStateToProps = ({
     loading,
     listProduct = [],
     messageError = "",
-    dummyListVideo
-  } = {}
+    dummyListVideo,
+  } = {},
 }) => ({
   loading,
   listProduct,
   messageError,
-  dummyListVideo
+  dummyListVideo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getAllProduct: () => dispatch({ type: "GET_ALL_PRODUCT" }),
   clearData: () => dispatch({ type: "CLEAR_DATA" }),
-  setData: data => dispatch({ type: "SET_STATE_REDUCER", data })
+  setData: (data) => dispatch({ type: "SET_STATE_REDUCER", data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

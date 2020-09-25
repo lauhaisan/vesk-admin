@@ -68,9 +68,8 @@ class Users extends React.Component {
   };
 
   _search = (value) => {
-    alert(`search by email:${value.email}, username:${value.userName}`);
-    //call api getListUser with payload is value;
-    // this.handleGetListUser(value)
+    const { searchListUser } = this.props;
+    searchListUser(value);
   };
 
   openModalAddUser = () => {
@@ -528,7 +527,7 @@ class Users extends React.Component {
                       event.imaginaryTarget.valueAsNumber
                     )
                   }
-                  label="Coint"
+                  label="Coin"
                   min={0}
                   step={1}
                   value={coint || 0}
@@ -743,6 +742,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: UPLOAD.UPLOAD_IMAGE, data: { data } }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
+  searchListUser: (data) => dispatch({ type: LIST_USER.SEARCH_USER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

@@ -3,30 +3,24 @@ import BasicLayout from "../layout/BasicLayout";
 import LoginLayout from "../layout/LoginLayout";
 import Notfound from "../pages/404Page";
 // import ReviewUser from "../pages/User/ReviewUser";
-import SignUp from "../pages/SignUp";
+// import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 // import Detail from "../pages/Detail";
 import ForgotPassword from "../pages/ForgotPassword";
-import ComingSoon from "../pages/ComingSoon";
+// import ComingSoon from "../pages/ComingSoon";
 const SocialMeida = lazy(() => import("../pages/SocialMedia"));
 const Advertising = lazy(() => import("../pages/Advertising"));
-const Contact = lazy(() => import("../pages/Contact"));
-// const Home = lazy(() => import("../pages/Home"));
+// const Contact = lazy(() => import("../pages/Contact"));
+const Home = lazy(() => import("../pages/Home"));
 const Users = lazy(() => import("../pages/User"));
 const Profile = lazy(() => import("../pages/Profile"));
 
 const routes = [
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   layout: BasicLayout,
-  //   component: Home
-  // },
   {
     path: "/",
     exact: true,
     layout: BasicLayout,
-    component: ComingSoon,
+    component: Home,
   },
   {
     path: "/users",
@@ -34,18 +28,6 @@ const routes = [
     layout: BasicLayout,
     component: Users,
   },
-  // {
-  //   path: "/users/:id",
-  //   exact: false,
-  //   layout: BasicLayout,
-  //   component: ReviewUser,
-  // },
-  // {
-  //   path: "/users-exchange",
-  //   exact: true,
-  //   layout: BasicLayout,
-  //   component: ComingSoon
-  // },
   {
     path: "/advertising",
     exact: true,
@@ -59,23 +41,11 @@ const routes = [
     component: SocialMeida,
   },
   // {
-  //   path: "/detail",
-  //   exact: true,
-  //   layout: BasicLayout,
-  //   component: Detail
-  // },
-  // {
-  //   path: "/detail/:id",
+  //   path: "/contact",
   //   exact: false,
   //   layout: BasicLayout,
-  //   component: Detail
+  //   component: Contact,
   // },
-  {
-    path: "/contact",
-    exact: false,
-    layout: BasicLayout,
-    component: Contact,
-  },
   {
     path: "/profile",
     exact: false,
@@ -88,12 +58,12 @@ const routes = [
     layout: LoginLayout,
     component: SignIn,
   },
-  {
-    path: "/signup",
-    exact: true,
-    layout: LoginLayout,
-    component: SignUp,
-  },
+  // {
+  //   path: "/signup",
+  //   exact: true,
+  //   layout: LoginLayout,
+  //   component: SignUp,
+  // },
   {
     path: "/forgot-password",
     exact: true,

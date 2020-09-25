@@ -2,12 +2,11 @@ import React, { Component, Fragment } from "react";
 import {
   Header,
   HeaderContainer,
-  HeaderGlobalBar
+  HeaderGlobalBar,
 } from "carbon-components-react/lib/components/UIShell";
 import {
-  UserProfile20,
   Logout20,
-  ChevronSortDown20
+  ChevronSortDown20,
   // Menu20
 } from "@carbon/icons-react";
 import { getToken, setToken } from "../../utils/token";
@@ -21,7 +20,7 @@ class ComponentHeader extends Component {
 
   handleLogout = () => {
     const {
-      history
+      history,
       //  logout
     } = this.props;
     setToken(undefined);
@@ -29,7 +28,6 @@ class ComponentHeader extends Component {
   };
 
   render() {
-    const { history } = this.props;
     const { data = {} } = getToken();
 
     const rightMenuSignIn = (
@@ -44,13 +42,13 @@ class ComponentHeader extends Component {
           <ChevronSortDown20 className="icon" />
         </div>
         <div className="dropDownMenu">
-          <div
+          {/* <div
             className="dropDownMenu__item"
             onClick={() => history.push("/profile")}
           >
             <UserProfile20 />
             <p className="dropDownMenu__item--text">Profile</p>
-          </div>
+          </div> */}
           <div className="dropDownMenu__item" onClick={this.handleLogout}>
             <Logout20 />
             <p className="dropDownMenu__item--text">Logout</p>

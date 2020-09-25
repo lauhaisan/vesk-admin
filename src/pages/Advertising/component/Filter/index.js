@@ -10,21 +10,20 @@ class Filter extends Component {
     super(props);
     this.state = {
       name: "",
-      linkTarget: ""
     };
   }
 
   onChangeFormData = (key, value) => {
     this.setState({
-      [key]: value
+      [key]: value,
     });
   };
 
-  handleSearch = event => {
+  handleSearch = (event) => {
     event.preventDefault();
     const { search } = this.props;
-    const { name, linkTarget } = this.state;
-    const value = { name, linkTarget };
+    const { name } = this.state;
+    const value = { name };
     search(value);
   };
 
@@ -32,7 +31,6 @@ class Filter extends Component {
     const { resetFilter } = this.props;
     this.setState({
       name: "",
-      linkTarget: ""
     });
     resetFilter();
   };
@@ -50,7 +48,7 @@ class Filter extends Component {
               labelText="Name"
               required
               light={true}
-              onChange={event =>
+              onChange={(event) =>
                 this.onChangeFormData("name", event.target.value)
               }
               placeholder="Name"
@@ -58,7 +56,7 @@ class Filter extends Component {
               value={name}
             />
           </FormGroup>
-          <FormGroup legendText="" className="bx--col-md-2 bx--col-sm-4">
+          {/* <FormGroup legendText="" className="bx--col-md-2 bx--col-sm-4">
             <TextInput
               className="itemForm"
               disabled={false}
@@ -66,14 +64,14 @@ class Filter extends Component {
               labelText="Link Target"
               required
               light={true}
-              onChange={event =>
+              onChange={(event) =>
                 this.onChangeFormData("linkTarget", event.target.value)
               }
               placeholder="Link Target"
               type="text"
               value={linkTarget}
             />
-          </FormGroup>
+          </FormGroup> */}
         </Form>
 
         <div className="viewBtn">

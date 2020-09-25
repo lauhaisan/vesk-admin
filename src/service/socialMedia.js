@@ -4,32 +4,31 @@ import queryString from "query-string";
 
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
-const getListSocialMediaAPI = async payload => {
+const getListSocialMediaAPI = async (payload) => {
   return request(URL.GET_LIST_SOCIAL_MEDIA, true);
 };
 
-const getByIdAPI = async payload => {
+const getByIdAPI = async (payload) => {
   const URL_WITH_PARAMS = `${URL.GET_LIST_SOCIAL_MEDIA}/Id/${payload}`;
   return request(URL_WITH_PARAMS, true);
 };
 
-const editSocialMediaAPI = async payload => {
+const editSocialMediaAPI = async (payload) => {
   const URL_WITH_PARAMS = `${URL.ADMIN_CRUD_SOCIAL_MEDIA}/${payload.id}`;
   return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
-const deleteSocialMediaAPI = async payload => {
+const deleteSocialMediaAPI = async (payload) => {
   const URL_WITH_PARAMS = `${URL.ADMIN_CRUD_SOCIAL_MEDIA}/${payload.id}`;
   return request(URL_WITH_PARAMS, true, "DELETE");
 };
 
-const addNewSocialMediaAPI = async payload => {
+const addNewSocialMediaAPI = async (payload) => {
   return request(URL.ADMIN_CRUD_SOCIAL_MEDIA, true, "POST", payload);
 };
 
-const searchSocialMediaAPI = async payload => {
+const searchSocialMediaAPI = async (payload) => {
   const param = queryString.stringify(payload);
-  console.log(param);
   const URL_WITH_PARAMS = `${URL.SOCIAL_MEDIA_SEARCH}?${param}`;
   return request(URL_WITH_PARAMS, true);
 };
@@ -40,5 +39,5 @@ export {
   editSocialMediaAPI,
   deleteSocialMediaAPI,
   addNewSocialMediaAPI,
-  searchSocialMediaAPI
+  searchSocialMediaAPI,
 };

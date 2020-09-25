@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   loadingGetAdsById: false,
   itemAds: {},
   loadingActionAds: false,
-  actionAdsSuccessfully: ""
+  actionAdsSuccessfully: "",
 };
 
 const advertisingReducer = (state = INITIAL_STATE, action) => {
@@ -17,7 +17,7 @@ const advertisingReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.GET_LIST_ADS_SUCCESS:
       return {
@@ -25,102 +25,123 @@ const advertisingReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         listAds: action.data.items,
         paging: action.data.paging,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.GET_LIST_ADS_FAIL:
       return {
         ...state,
         loading: false,
         listAds: [],
-        messageError: action.data
+        messageError: action.data,
       };
     case ADVERTISING.GET_ADS_BY_ID:
       return {
         ...state,
         loadingGetAdsById: true,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.GET_ADS_BY_ID_SUCCESS:
       return {
         ...state,
         loadingGetAdsById: false,
         itemAds: action.data,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.GET_ADS_BY_ID_FAIL:
       return {
         ...state,
         loadingGetAdsById: false,
         itemAds: {},
-        messageError: action.data
+        messageError: action.data,
       };
     case ADVERTISING.EDIT_ADS:
       return {
         ...state,
         loadingActionAds: true,
         actionAdsSuccessfully: "",
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.EDIT_ADS_SUCCESS:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: true,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.EDIT_ADS_FAIL:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: false,
-        messageError: action.data
+        messageError: action.data,
       };
     case ADVERTISING.SET_STATE_REDUCER:
       return {
         ...state,
-        ...action.data
+        ...action.data,
       };
     case ADVERTISING.DELETE_ADS:
       return {
         ...state,
         loadingActionAds: true,
         actionAdsSuccessfully: "",
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.DELETE_ADS_SUCCESS:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: true,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.DELETE_ADS_FAIL:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: false,
-        messageError: action.data
+        messageError: action.data,
       };
     case ADVERTISING.ADD_NEW_ADS:
       return {
         ...state,
         loadingActionAds: true,
         actionAdsSuccessfully: "",
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.ADD_NEW_ADS_SUCCESS:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: true,
-        messageError: ""
+        messageError: "",
       };
     case ADVERTISING.ADD_NEW_ADS_FAIL:
       return {
         ...state,
         loadingActionAds: false,
         actionAdsSuccessfully: false,
-        messageError: action.data
+        messageError: action.data,
+      };
+    case ADVERTISING.SEARCH_ADS:
+      return {
+        ...state,
+        loading: true,
+        messageError: "",
+      };
+    case ADVERTISING.SEARCH_ADS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        listAds: action.data.items,
+        paging: action.data.paging,
+        messageError: "",
+      };
+    case ADVERTISING.SEARCH_ADS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        listAds: [],
+        messageError: action.data,
       };
 
     default:

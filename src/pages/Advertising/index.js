@@ -61,9 +61,8 @@ class Advertising extends React.Component {
   };
 
   _search = (value) => {
-    alert(`search by name:${value.name}, link target:${value.linkTarget}`);
-    //call api getListUser with payload is value;
-    // this.handleGetListUser(value)
+    const { searchListAds } = this.props;
+    searchListAds(value);
   };
 
   openModalAddNewAdvertising = () => {
@@ -541,6 +540,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: UPLOAD.UPLOAD_IMAGE, data: { data } }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
+  searchListAds: (data) => dispatch({ type: ADVERTISING.SEARCH_ADS, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);
