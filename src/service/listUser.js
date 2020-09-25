@@ -17,4 +17,10 @@ const editUserAPI = async (payload) => {
   return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
-export { getListUserAPI, getUserByIdAPI, editUserAPI };
+const searchUserApi = async ({ email, userName }) => {
+  const param = `email=${email}&userName=${userName}`;
+  const URL_WITH_PARAMS = `${URL.EDIT_USER}/search?${param}`;
+  return request(URL_WITH_PARAMS, true);
+};
+
+export { getListUserAPI, getUserByIdAPI, editUserAPI, searchUserApi };
