@@ -17,8 +17,10 @@ import {
   Accordion,
   AccordionItem,
   Toggle,
+  Select,
+  SelectItem,
 } from "carbon-components-react";
-import { SOCIAL_MEDIA, UPLOAD } from "../../constant";
+import { LIST_USER,SOCIAL_MEDIA, UPLOAD } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -42,6 +44,7 @@ class SocialMedia extends React.Component {
 
   componentDidMount() {
     this.handleGetListSocialMedia({});
+    this.handleGetListUser({});
   }
 
   componentWillUnmount() {
@@ -57,7 +60,10 @@ class SocialMedia extends React.Component {
     const { getListSocialMedia } = this.props;
     getListSocialMedia(payload);
   };
-
+  handleGetListUser = (payload) => {
+    const { getListUser } = this.props;
+    getListUser(payload);
+  };
   _resetFilter = () => {
     this.handleGetListSocialMedia({});
   };
@@ -189,6 +195,7 @@ class SocialMedia extends React.Component {
   render() {
     const {
       openModal,
+                
       titleModal,
       isReview,
       itemMediaSocial = {},
@@ -203,7 +210,9 @@ class SocialMedia extends React.Component {
       loadingUpload,
       linkThumbnail,
       messageUpload,
+      listUser=[]
     } = this.props;
+    console.log(listUser)
     const imgThumbnail = linkThumbnail || itemMediaSocial.thumbnail;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -245,6 +254,35 @@ class SocialMedia extends React.Component {
                 />
               </FormGroup>
             </div>
+            {titleModal === "Add New Social Media" && (
+              <div className="formData__row">
+                <FormGroup legendText="">
+
+                <Select
+                  defaultValue="placeholder-item"
+                  helperText="Optional helper text"
+                  id="select-1"
+                  invalidText="A valid value is required"
+                  labelText="Select"
+                  onChange={(event) =>
+                    this.onChangeFormData("authorId", event.target.value)
+                  }
+                >
+                  {listUser.map(item =>{
+                    return(
+                    <SelectItem
+                    text={item.userName}
+                    value={item.userId}
+                  />)
+                  })}
+                  
+                </Select>
+                </FormGroup>
+              </div>
+            )}
+
+
+  
             {titleModal !== "Add New Social Media" && (
               <div className="formData__row">
                 <FormGroup legendText="">
@@ -608,6 +646,9 @@ class SocialMedia extends React.Component {
 }
 
 const mapStateToProps = ({
+  listUser:{
+    listUserData:listUser=[]
+  }= {},
   socialMedia: {
     loading,
     listSocialMedia,
@@ -617,6 +658,7 @@ const mapStateToProps = ({
     messageError,
     loadingAction,
     actionSuccessfully,
+    
   } = {},
   upload: {
     loading: loadingUpload,
@@ -635,6 +677,7 @@ const mapStateToProps = ({
   loadingUpload,
   messageUpload,
   linkThumbnail,
+  listUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -667,6 +710,9 @@ const mapDispatchToProps = (dispatch) => ({
     }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
+  getListUser: (data) =>
+    dispatch({ type: LIST_USER.GET_LIST_USER, data }),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SocialMedia);
