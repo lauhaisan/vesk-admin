@@ -488,18 +488,6 @@ class SocialMedia extends React.Component {
         key: "created",
       },
       {
-        header: "Start",
-        key: "start",
-      },
-      {
-        header: "End",
-        key: "end",
-      },
-      {
-        header: "Description",
-        key: "description",
-      },
-      {
         header: "Poin For User View",
         key: "pointForUserView",
       },
