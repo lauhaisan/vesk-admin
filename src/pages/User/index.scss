@@ -36,6 +36,12 @@
 
 .formData {
   padding: 0rem 1rem;
+  .bx--number input[type="number"] {
+    width: 11rem;
+    &:focus {
+      outline: none;
+    }
+  }
   .bx--number__control-btn:focus {
     outline: none;
   }

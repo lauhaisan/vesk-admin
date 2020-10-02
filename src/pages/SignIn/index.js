@@ -5,7 +5,6 @@ import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
 import TitlePage from "../../components/TitlePage";
 import { USER } from "../../constant";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -84,7 +83,6 @@ class Login extends Component {
       messageValidationPwd,
       email,
       password,
-      check,
     } = this.state;
     const { loading, isSignInSuccessfully, messageSignIn } = this.props;
 
@@ -92,10 +90,7 @@ class Login extends Component {
       <Fragment>
         <TitlePage title="Sign In" />
 
-        <div
-          className="content-signIn"
-          style={{ height: check ? "525px" : "490px" }}
-        >
+        <div className="content-signIn">
           <div className="viewTitleSignIn">SIGN IN</div>
           <img
             className="viewImage"
@@ -162,9 +157,9 @@ class Login extends Component {
               {/* <Link to="/signup">Create new account?</Link> */}
             </div>
           </div>
-          <div className="viewForgotPWD">
+          {/* <div className="viewForgotPWD">
             <Link to="/forgot-password"> Forgot Password?</Link>
-          </div>
+          </div> */}
         </div>
         {!isSignInSuccessfully && messageSignIn !== "" && (
           <Notification

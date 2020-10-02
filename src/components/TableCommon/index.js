@@ -30,16 +30,15 @@ class TableCommon extends React.Component {
 
   renderAction = (item) => {
     const {
-      actionReview,
-      actionEdit,
-      actionDelete,
-      actionExchange,
+      actionReview = () => {},
+      actionEdit = () => {},
+      actionDelete = () => {},
+      actionExchange = () => {},
       title = "",
     } = this.props;
     const check = title === "List User";
-    const width = check ? "8rem" : "5rem";
     return (
-      <div className="viewAction" style={{ width }}>
+      <div className="viewAction">
         {check && (
           <i
             className="fas fa-exchange-alt viewAction__icon viewAction__icon--exchange"
@@ -54,10 +53,12 @@ class TableCommon extends React.Component {
           className="fas fa-edit viewAction__icon viewAction__icon--edit"
           onClick={() => actionEdit(item)}
         ></i>
-        <i
-          className="fas fa-trash-alt viewAction__icon viewAction__icon--delete"
-          onClick={() => actionDelete(item)}
-        ></i>
+        {!check && (
+          <i
+            className="fas fa-trash-alt viewAction__icon viewAction__icon--delete"
+            onClick={() => actionDelete(item)}
+          ></i>
+        )}
       </div>
     );
   };

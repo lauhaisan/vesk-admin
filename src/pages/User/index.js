@@ -2,9 +2,7 @@ import React, { Fragment } from "react";
 import TitlePage from "../../components/TitlePage";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
-import ButtonLoading from "../../components/ButtonLoading";
 import Notification from "../../components/Notification";
-import { AddFilled32 } from "@carbon/icons-react";
 import Filter from "./component/Filter";
 import moment from "moment";
 import {
@@ -139,7 +137,7 @@ class Users extends React.Component {
 
   _handleSubmitExchange = (event) => {
     event.preventDefault();
-    const { createExchange } = this.props;
+    const { createExchange, linkContract } = this.props;
     const {
       itemUser: { userId = "" } = {},
       coint,
@@ -151,39 +149,23 @@ class Users extends React.Component {
       point,
       coint,
       message: messageExchange,
+      contract: linkContract,
     };
     createExchange(value, this._hideModal);
   };
 
   _handleSubmit = (event) => {
     event.preventDefault();
-    const { editUser, link, linkContract } = this.props;
+    const { editUser, link } = this.props;
     const { itemUser, titleModal } = this.state;
     const payload = {
       ...itemUser,
       avatar: link || itemUser.avatar,
-      contract: linkContract || itemUser.contract,
     };
     if (titleModal === "Add New User") {
-      // dispatch to saga add new user and _hideModal()
-      console.log("add new", itemUser);
     } else {
       editUser(payload, this._hideModal);
     }
-  };
-
-  _handleDelete = () => {
-    const { itemUser } = this.props;
-    // dispatch to saga delete user
-    alert("delete", itemUser.userId);
-  };
-
-  _actionDelete = (item) => {
-    this.getUserById(item.id);
-    this.setState({
-      openModal: true,
-      titleModal: "Delete User",
-    });
   };
 
   _actionEdit = (item) => {
@@ -465,31 +447,6 @@ class Users extends React.Component {
                 />
               </FormGroup>
             </div>
-            {(titleModal === "Edit User" || titleModal === "Add New User") && (
-              <div className="buttonUpload">
-                <FileUploader
-                  accept={[".jpg", ".png"]}
-                  buttonKind="primary"
-                  buttonLabel="Upload Contract"
-                  labelTitle=""
-                  onChange={(e) => this.handleFileChanged(e, true)}
-                />
-              </div>
-            )}
-
-            <div className="viewContract">
-              {loadingUpload ? (
-                <Loading small description="" withOverlay={false} />
-              ) : (
-                imgContract && (
-                  <img
-                    className="viewContract__img"
-                    src={imgContract}
-                    alt="img-contract"
-                  />
-                )
-              )}
-            </div>
           </Form>
         )}
       </div>
@@ -567,6 +524,28 @@ class Users extends React.Component {
                 value={messageExchange}
               />
             </FormGroup>
+            <div className="buttonUpload">
+              <FileUploader
+                accept={[".jpg", ".png"]}
+                buttonKind="primary"
+                buttonLabel="Upload Contract"
+                labelTitle=""
+                onChange={(e) => this.handleFileChanged(e, true)}
+              />
+            </div>
+            <div className="viewContract">
+              {loadingUpload ? (
+                <Loading small description="" withOverlay={false} />
+              ) : (
+                imgContract && (
+                  <img
+                    className="viewContract__img"
+                    src={imgContract}
+                    alt="img-contract"
+                  />
+                )
+              )}
+            </div>
           </Form>
         )}
       </div>
@@ -606,11 +585,6 @@ class Users extends React.Component {
       <Fragment>
         <TitlePage title="Users" />
         <div className="containerUserPage">
-          <ButtonLoading
-            text="Add"
-            onClick={this.openModalAddUser}
-            renderIcon={AddFilled32}
-          />
           <Accordion className="viewFilter">
             <AccordionItem
               open
@@ -631,7 +605,6 @@ class Users extends React.Component {
             loading={loading}
             actionReview={this._actionReview}
             actionEdit={this._actionEdit}
-            actionDelete={this._actionDelete}
             actionExchange={this._actionExchange}
           />
         </div>

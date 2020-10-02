@@ -20,7 +20,7 @@ import {
   Select,
   SelectItem,
 } from "carbon-components-react";
-import { LIST_USER,SOCIAL_MEDIA, UPLOAD } from "../../constant";
+import { LIST_USER, SOCIAL_MEDIA, UPLOAD } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -132,7 +132,7 @@ class SocialMedia extends React.Component {
     event.preventDefault();
     const { editSocialMedia, addNewSocialMedia, linkThumbnail } = this.props;
     const { itemMediaSocial, titleModal } = this.state;
-    const arrayKey = ["point", "pointForUserView", "timeForRecvCoin"];
+    const arrayKey = ["pointForUserView", "timeForRecvCoin"];
     arrayKey.forEach((element) => {
       if (!itemMediaSocial[element]) {
         itemMediaSocial[element] = 1;
@@ -141,6 +141,7 @@ class SocialMedia extends React.Component {
     const payload = {
       ...itemMediaSocial,
       thumbnail: linkThumbnail || itemMediaSocial.thumbnail,
+      point: itemMediaSocial.pointForUserView,
       start: "2020",
       end: "2020",
     };
@@ -195,7 +196,7 @@ class SocialMedia extends React.Component {
   render() {
     const {
       openModal,
-                
+
       titleModal,
       isReview,
       itemMediaSocial = {},
@@ -210,7 +211,7 @@ class SocialMedia extends React.Component {
       loadingUpload,
       linkThumbnail,
       messageUpload,
-      listUser=[]
+      listUser = [],
     } = this.props;
     const imgThumbnail = linkThumbnail || itemMediaSocial.thumbnail;
     const contentModal = (
@@ -256,32 +257,26 @@ class SocialMedia extends React.Component {
             {titleModal === "Add New Social Media" && (
               <div className="formData__row">
                 <FormGroup legendText="">
-
-                <Select
-                  defaultValue="placeholder-item"
-                  helperText="Optional helper text"
-                  id="select-1"
-                  invalidText="A valid value is required"
-                  labelText="Select"
-                  onChange={(event) =>
-                    this.onChangeFormData("authorId", event.target.value)
-                  }
-                >
-                  {listUser.map(item =>{
-                    return(
-                    <SelectItem
-                    text={item.userName}
-                    value={item.userId}
-                  />)
-                  })}
-                  
-                </Select>
+                  <Select
+                    defaultValue="placeholder-item"
+                    helperText="Optional helper text"
+                    id="select-1"
+                    invalidText="A valid value is required"
+                    labelText="Select"
+                    onChange={(event) =>
+                      this.onChangeFormData("authorId", event.target.value)
+                    }
+                  >
+                    {listUser.map((item) => {
+                      return (
+                        <SelectItem text={item.userName} value={item.userId} />
+                      );
+                    })}
+                  </Select>
                 </FormGroup>
               </div>
             )}
 
-
-  
             {titleModal !== "Add New Social Media" && (
               <div className="formData__row">
                 <FormGroup legendText="">
@@ -310,56 +305,7 @@ class SocialMedia extends React.Component {
                 </FormGroup>
               </div>
             )}
-
-            {/* <div className="formData__row">
-              <FormGroup legendText="">
-                <TextInput
-                  id="inputStart"
-                  labelText="Start"
-                  onChange={(event) =>
-                    this.onChangeFormData("start", event.target.value)
-                  }
-                  required
-                  readOnly={isReview}
-                  light={true}
-                  placeholder="Start"
-                  type="text"
-                  value={itemMediaSocial.start || ""}
-                />
-              </FormGroup>
-              <FormGroup legendText="">
-                <TextInput
-                  id="inputend"
-                  labelText="End"
-                  onChange={(event) =>
-                    this.onChangeFormData("end", event.target.value)
-                  }
-                  required
-                  readOnly={isReview}
-                  light={true}
-                  placeholder="End"
-                  type="text"
-                  value={itemMediaSocial.end || ""}
-                />
-              </FormGroup>
-            </div> */}
             <div className="formData__row">
-              <FormGroup legendText="">
-                <NumberInput
-                  readOnly={isReview}
-                  id="inputNumberPoint"
-                  onChange={(event) =>
-                    this.onChangeFormData(
-                      "point",
-                      event.imaginaryTarget.valueAsNumber
-                    )
-                  }
-                  label="Point"
-                  min={1}
-                  step={1}
-                  value={itemMediaSocial.point || 0}
-                />
-              </FormGroup>
               <FormGroup legendText="">
                 <NumberInput
                   readOnly={isReview}
@@ -394,25 +340,6 @@ class SocialMedia extends React.Component {
               </FormGroup>
             </div>
             <div className="formData__row">
-              <div style={{ width: "9.5rem" }}>
-                <FormGroup legendText="">
-                  <Toggle
-                    disabled={isReview}
-                    aria-label="toggle button"
-                    toggled={
-                      (itemMediaSocial && itemMediaSocial.isTop) || false
-                    }
-                    id="toggle-1"
-                    labelA="No"
-                    labelB="Yes"
-                    labelText="Top Video"
-                    onChange={() =>
-                      this.onChangeFormData("isTop", !itemMediaSocial.isTop)
-                    }
-                  />
-                </FormGroup>
-              </div>
-
               <FormGroup legendText="">
                 <NumberInput
                   readOnly={isReview}
@@ -443,6 +370,22 @@ class SocialMedia extends React.Component {
                   min={0}
                   step={1}
                   value={itemMediaSocial.countView || 0}
+                />
+              </FormGroup>
+            </div>
+            <div style={{ width: "9.5rem" }}>
+              <FormGroup legendText="">
+                <Toggle
+                  disabled={isReview}
+                  aria-label="toggle button"
+                  toggled={(itemMediaSocial && itemMediaSocial.isTop) || false}
+                  id="toggle-1"
+                  labelA="No"
+                  labelB="Yes"
+                  labelText="Top Video"
+                  onChange={() =>
+                    this.onChangeFormData("isTop", !itemMediaSocial.isTop)
+                  }
                 />
               </FormGroup>
             </div>
@@ -557,10 +500,6 @@ class SocialMedia extends React.Component {
         key: "description",
       },
       {
-        header: "Point",
-        key: "point",
-      },
-      {
         header: "Poin For User View",
         key: "pointForUserView",
       },
@@ -645,9 +584,7 @@ class SocialMedia extends React.Component {
 }
 
 const mapStateToProps = ({
-  listUser:{
-    listUserData:listUser=[]
-  }= {},
+  listUser: { listUserData: listUser = [] } = {},
   socialMedia: {
     loading,
     listSocialMedia,
@@ -657,7 +594,6 @@ const mapStateToProps = ({
     messageError,
     loadingAction,
     actionSuccessfully,
-    
   } = {},
   upload: {
     loading: loadingUpload,
@@ -709,9 +645,7 @@ const mapDispatchToProps = (dispatch) => ({
     }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
-  getListUser: (data) =>
-    dispatch({ type: LIST_USER.GET_LIST_USER, data }),
-  
+  getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SocialMedia);
