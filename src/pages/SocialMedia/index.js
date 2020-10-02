@@ -212,7 +212,6 @@ class SocialMedia extends React.Component {
       messageUpload,
       listUser=[]
     } = this.props;
-    console.log(listUser)
     const imgThumbnail = linkThumbnail || itemMediaSocial.thumbnail;
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
