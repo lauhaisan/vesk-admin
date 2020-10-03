@@ -63,16 +63,29 @@ class TableCommon extends React.Component {
     );
   };
 
+  renderValue = (nameHeader, value) => {
+    return nameHeader === "contract" && value ? (
+      <a target="_blank" rel="noopener noreferrer" href={value}>
+        View Contract
+      </a>
+    ) : (
+      value
+    );
+  };
+
   renderTableRow = (rows) => {
     return rows.map((row) => (
       <TableRow key={row.id}>
-        {row.cells.map((cell) => (
-          <TableCell key={cell.id}>
-            {cell.info.header === "action"
-              ? this.renderAction(row)
-              : cell.value}
-          </TableCell>
-        ))}
+        {row.cells.map((cell) => {
+          const { id = "", info: { header = "" } = {}, value = "" } = cell;
+          return (
+            <TableCell key={id}>
+              {header === "action"
+                ? this.renderAction(row)
+                : this.renderValue(header, value)}
+            </TableCell>
+          );
+        })}
       </TableRow>
     ));
   };
