@@ -92,6 +92,11 @@
         display: none;
         &--children {
           display: none;
+          white-space: nowrap;
+          width: auto;
+          height: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
       &:hover {

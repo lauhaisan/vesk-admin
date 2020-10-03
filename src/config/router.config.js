@@ -14,6 +14,7 @@ const Advertising = lazy(() => import("../pages/Advertising"));
 const Home = lazy(() => import("../pages/Home"));
 const Users = lazy(() => import("../pages/User"));
 const Profile = lazy(() => import("../pages/Profile"));
+const HistoryExchange = lazy(() => import("../pages/HistoryExchange"));
 
 const routes = [
   {
@@ -58,12 +59,12 @@ const routes = [
     layout: LoginLayout,
     component: SignIn,
   },
-  // {
-  //   path: "/signup",
-  //   exact: true,
-  //   layout: LoginLayout,
-  //   component: SignUp,
-  // },
+  {
+    path: "/users-exchange",
+    exact: true,
+    layout: BasicLayout,
+    component: HistoryExchange,
+  },
   {
     path: "/forgot-password",
     exact: true,

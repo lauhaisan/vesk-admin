@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { createExchangeAPI } from "../service/exchange";
+import { createExchangeAPI, getListExchangeAPI } from "../service/exchange";
 import { EXCHANGE } from "../constant";
 
 function* createExchange(obj) {
@@ -14,6 +14,16 @@ function* createExchange(obj) {
   hideModal();
 }
 
+function* getListExchange() {
+  const resp = yield call(getListExchangeAPI);
+  if (resp.code !== 200) {
+    yield put({ type: EXCHANGE.GET_HISTORY_EXCHANGE_FAIL, data: resp.message });
+    return;
+  }
+  yield put({ type: EXCHANGE.GET_HISTORY_EXCHANGE_SUCCESS, data: resp.data });
+}
+
 export const exchangeSaga = [
   takeLatest(EXCHANGE.CREATE_EXCHANGE, createExchange),
+  takeLatest(EXCHANGE.GET_HISTORY_EXCHANGE, getListExchange),
 ];

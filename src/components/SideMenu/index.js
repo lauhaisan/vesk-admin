@@ -93,14 +93,16 @@ export default class SideMenu extends PureComponent {
                   <i className="fas fa-tasks itemMenu__icon--children"></i>
                   <span className="itemMenu__text--children ">Manage</span>
                 </NavLink>
-                {/* <NavLink
+                <NavLink
                   activeClassName={`${classNameMenu}__menu__itemMenu--active`}
-                  to="/users-exchange/"
+                  to="/users-exchange"
                   className={`${classNameMenu}__menu__itemMenu`}
                 >
                   <i className="fas fa-exchange-alt itemMenu__icon--children"></i>
-                  <span className="itemMenu__text--children">Exchange</span>
-                </NavLink> */}
+                  <span className="itemMenu__text--children">
+                    History Exchange
+                  </span>
+                </NavLink>
               </Fragment>
             )}
           </Fragment>

@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   loading: false,
   isCreateExchangeSuccessfully: "",
   messageCreateExchange: "",
+  listExchange: [],
 };
 
 const exchangeReducer = (state = INITIAL_STATE, action) => {
@@ -33,6 +34,23 @@ const exchangeReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         isCreateExchangeSuccessfully: false,
         messageCreateExchange: action.data.message,
+      };
+    case EXCHANGE.GET_HISTORY_EXCHANGE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case EXCHANGE.GET_HISTORY_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        listExchange: action.data.items,
+      };
+    case EXCHANGE.GET_HISTORY_EXCHANGE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        listExchange: [],
       };
 
     default:

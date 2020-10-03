@@ -19,6 +19,7 @@ const URL = {
   SOCIAL_MEDIA_SEARCH: "/v1/vesk/public/e-social-media/search",
 
   CREATE_EXCHANGE: "/v1/vesk/admin/exchange",
+  GET_HISTORY_EXCHANGE: "/v1/vesk/admin/exchanges",
 };
 
 export default URL;
