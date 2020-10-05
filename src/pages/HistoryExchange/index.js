@@ -25,8 +25,8 @@ class HistoryExchange extends Component {
         key: "message",
       },
       {
-        header: "Money",
-        key: "money",
+        header: "Coin",
+        key: "coin",
       },
       {
         header: "Point",

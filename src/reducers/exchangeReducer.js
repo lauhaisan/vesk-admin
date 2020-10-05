@@ -5,6 +5,8 @@ const INITIAL_STATE = {
   isCreateExchangeSuccessfully: "",
   messageCreateExchange: "",
   listExchange: [],
+  exchangeRate: {},
+  loadingUpdate: false,
 };
 
 const exchangeReducer = (state = INITIAL_STATE, action) => {
@@ -51,6 +53,42 @@ const exchangeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         listExchange: [],
+      };
+
+    case EXCHANGE.GET_EXCHANGE_RATE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case EXCHANGE.GET_EXCHANGE_RATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        exchangeRate: action.data.data,
+      };
+    case EXCHANGE.GET_EXCHANGE_RATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        exchangeRate: {},
+      };
+
+    case EXCHANGE.UPDATE_EXCHANGE_RATE:
+      return {
+        ...state,
+        loadingUpdate: true,
+      };
+    case EXCHANGE.UPDATE_EXCHANGE_RATE_SUCCESS:
+      return {
+        ...state,
+        loadingUpdate: false,
+        // exchangeRate: action.data.data,
+      };
+    case EXCHANGE.UPDATE_EXCHANGE_RATE_FAIL:
+      return {
+        ...state,
+        loadingUpdate: false,
+        // exchangeRate: {},
       };
 
     default:

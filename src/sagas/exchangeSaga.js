@@ -1,5 +1,10 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { createExchangeAPI, getListExchangeAPI } from "../service/exchange";
+import {
+  createExchangeAPI,
+  getListExchangeAPI,
+  getExchangeRateAPI,
+  updateExchangeRateAPI,
+} from "../service/exchange";
 import { EXCHANGE } from "../constant";
 
 function* createExchange(obj) {
@@ -23,7 +28,31 @@ function* getListExchange() {
   yield put({ type: EXCHANGE.GET_HISTORY_EXCHANGE_SUCCESS, data: resp.data });
 }
 
+function* getExchangeRate() {
+  const resp = yield call(getExchangeRateAPI);
+  if (resp.code !== 200) {
+    yield put({ type: EXCHANGE.GET_EXCHANGE_RATE_FAIL });
+    return;
+  }
+  yield put({ type: EXCHANGE.GET_EXCHANGE_RATE_SUCCESS, data: resp });
+}
+
+function* updateExchangeRate(obj) {
+  const dat = obj.data.data;
+  const hideEdit = obj.data.functionHideEdit;
+  const resp = yield call(updateExchangeRateAPI, dat);
+  if (resp.code !== 200) {
+    yield put({ type: EXCHANGE.UPDATE_EXCHANGE_RATE_FAIL, data: resp.message });
+    return;
+  }
+  yield put({ type: EXCHANGE.UPDATE_EXCHANGE_RATE_SUCCESS, data: resp.data });
+  hideEdit();
+  yield put({ type: EXCHANGE.GET_EXCHANGE_RATE });
+}
+
 export const exchangeSaga = [
   takeLatest(EXCHANGE.CREATE_EXCHANGE, createExchange),
   takeLatest(EXCHANGE.GET_HISTORY_EXCHANGE, getListExchange),
+  takeLatest(EXCHANGE.GET_EXCHANGE_RATE, getExchangeRate),
+  takeLatest(EXCHANGE.UPDATE_EXCHANGE_RATE, updateExchangeRate),
 ];

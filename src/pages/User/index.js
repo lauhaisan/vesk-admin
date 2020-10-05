@@ -4,6 +4,7 @@ import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
 import Notification from "../../components/Notification";
 import Filter from "./component/Filter";
+import ExchangeRate from "./component/ExchangeRate";
 import moment from "moment";
 import {
   Form,
@@ -48,11 +49,14 @@ class Users extends React.Component {
   }
 
   componentWillUnmount() {
-    const { updateStateReducer } = this.props;
+    const { updateStateReducer, updateExchangeReducer } = this.props;
     updateStateReducer({
       itemUser: {},
       editUserSuccessfully: "",
       messageError: "",
+    });
+    updateExchangeReducer({
+      isCreateExchangeSuccessfully: "",
     });
   }
 
@@ -110,9 +114,15 @@ class Users extends React.Component {
   };
 
   onChangeFormExchange = (key, value) => {
+    const { rate } = this.props;
     this.setState({
       [key]: value,
     });
+    if (key === "coint") {
+      this.setState({
+        point: Math.ceil(rate * value),
+      });
+    }
   };
 
   _hideModal = () => {
@@ -140,14 +150,14 @@ class Users extends React.Component {
     const { createExchange, linkContract } = this.props;
     const {
       itemUser: { userId = "" } = {},
-      coint,
+      coint: coin,
       point,
       messageExchange,
     } = this.state;
     const value = {
       userId,
       point,
-      coint,
+      coin,
       message: messageExchange,
       contract: linkContract,
     };
@@ -227,6 +237,7 @@ class Users extends React.Component {
       link,
       messageUpload,
       linkContract,
+      rate,
     } = this.props;
     const linkAvatar =
       link || itemUser.avatar || require("../../images/testAvatar.jpg");
@@ -490,15 +501,17 @@ class Users extends React.Component {
                   value={coint || 0}
                 />
               </FormGroup>
+              <div className="viewExchangeRate"> x {rate} =</div>
               <FormGroup legendText="">
                 <NumberInput
                   id="inputPoint"
-                  onChange={(event) =>
-                    this.onChangeFormExchange(
-                      "point",
-                      event.imaginaryTarget.valueAsNumber
-                    )
-                  }
+                  readOnly={true}
+                  // onChange={(event) =>
+                  //   this.onChangeFormExchange(
+                  //     "point",
+                  //     event.imaginaryTarget.valueAsNumber
+                  //   )
+                  // }
                   label="Point"
                   min={0}
                   step={1}
@@ -586,6 +599,12 @@ class Users extends React.Component {
         <TitlePage title="Users" />
         <div className="containerUserPage">
           <Accordion className="viewFilter">
+            <AccordionItem
+              open
+              title={<div className="viewFilter__title">Exchange Rate</div>}
+            >
+              <ExchangeRate />
+            </AccordionItem>
             <AccordionItem
               open
               title={
@@ -679,6 +698,7 @@ const mapStateToProps = ({
     loading: loadingCreateExchange,
     isCreateExchangeSuccessfully,
     messageCreateExchange,
+    exchangeRate: { rate = 0 } = {},
   } = {},
   upload: { loading: loadingUpload, link, messageUpload, linkContract } = {},
 }) => ({
@@ -697,6 +717,7 @@ const mapStateToProps = ({
   link,
   messageUpload,
   linkContract,
+  rate,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -716,6 +737,8 @@ const mapDispatchToProps = (dispatch) => ({
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
   searchListUser: (data) => dispatch({ type: LIST_USER.SEARCH_USER, data }),
+  updateExchangeReducer: (data) =>
+    dispatch({ type: EXCHANGE.UPDATE_EXCHANGE_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

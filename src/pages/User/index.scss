@@ -4,7 +4,7 @@
 }
 
 .viewFilter {
-  margin: 2rem 0px 0px;
+  // margin: 2rem 0px 0px;
   .bx--accordion__title {
     margin: 0px;
     z-index: 0;
@@ -36,6 +36,11 @@
 
 .formData {
   padding: 0rem 1rem;
+  .viewExchangeRate {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+  }
   .bx--number input[type="number"] {
     width: 11rem;
     &:focus {
