@@ -4,6 +4,7 @@ import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
 import Notification from "../../components/Notification";
 import Filter from "./component/Filter";
+import numeral from "numeral";
 import ExchangeRate from "./component/ExchangeRate";
 import moment from "moment";
 import {
@@ -115,12 +116,13 @@ class Users extends React.Component {
 
   onChangeFormExchange = (key, value) => {
     const { rate } = this.props;
+    const formatRate = numeral(rate).format("0.[00]");
     this.setState({
       [key]: value,
     });
     if (key === "coint") {
       this.setState({
-        point: Math.ceil(rate * value),
+        point: numeral(formatRate * value).format("0.[00]"),
       });
     }
   };
@@ -239,6 +241,8 @@ class Users extends React.Component {
       linkContract,
       rate,
     } = this.props;
+    const formatRate = numeral(rate).format("0.[00]");
+
     const linkAvatar =
       link || itemUser.avatar || require("../../images/testAvatar.jpg");
     const imgContract = linkContract || itemUser.contract;
@@ -501,7 +505,7 @@ class Users extends React.Component {
                   value={coint || 0}
                 />
               </FormGroup>
-              <div className="viewExchangeRate"> x {rate} =</div>
+              <div className="viewExchangeRate"> x {formatRate} =</div>
               <FormGroup legendText="">
                 <NumberInput
                   id="inputPoint"

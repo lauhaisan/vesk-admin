@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { NumberInput } from "carbon-components-react";
+import numeral from "numeral";
 import ButtonLoading from "../../../../components/ButtonLoading";
 import ButtonOutline from "../../../../components/ButtonOutline";
 import { EXCHANGE } from "../../../../constant";
@@ -70,6 +71,7 @@ class ExchangeRate extends Component {
   render() {
     const { isEdit, rate } = this.state;
     const { loadingUpdate, loading } = this.props;
+    const formatRate = numeral(rate).format("0.[00]");
     return (
       <div className="rootExchangeRate">
         {loading ? (
@@ -85,7 +87,7 @@ class ExchangeRate extends Component {
               label=""
               min={0}
               step={1}
-              value={rate}
+              value={formatRate}
             />
             <Fragment>
               {!isEdit ? (
