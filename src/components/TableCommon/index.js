@@ -63,13 +63,29 @@ class TableCommon extends React.Component {
     );
   };
 
-  renderValue = (nameHeader, value) => {
+  renderValue = (nameHeader, value, item) => {
     return nameHeader === "contract" && value ? (
       <a target="_blank" rel="noopener noreferrer" href={value}>
-        View Contract
+        View
       </a>
     ) : (
+      this.render1(value, item)
+    );
+  };
+
+  render1 = (value, item) => {
+    const { actionApprove = () => {} } = this.props;
+    return value !== "PENDING" ? (
       value
+    ) : (
+      <div>
+        <span>{value}</span>
+        <i
+          className="fas fa-vote-yea viewAction__icon viewAction__icon--edit"
+          style={{ marginLeft: "20px" }}
+          onClick={() => actionApprove(item)}
+        ></i>
+      </div>
     );
   };
 
@@ -82,7 +98,7 @@ class TableCommon extends React.Component {
             <TableCell key={id}>
               {header === "action"
                 ? this.renderAction(row)
-                : this.renderValue(header, value)}
+                : this.renderValue(header, value, row)}
             </TableCell>
           );
         })}

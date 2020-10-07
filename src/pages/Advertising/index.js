@@ -396,18 +396,18 @@ class Advertising extends React.Component {
         header: "Created",
         key: "createdAt",
       },
-      {
-        header: "Start",
-        key: "ShowStartAt",
-      },
-      {
-        header: "End",
-        key: "ShowEndAt",
-      },
-      {
-        header: "Position",
-        key: "Position",
-      },
+      // {
+      //   header: "Start",
+      //   key: "ShowStartAt",
+      // },
+      // {
+      //   header: "End",
+      //   key: "ShowEndAt",
+      // },
+      // {
+      //   header: "Position",
+      //   key: "Position",
+      // },
       {
         header: "Link Target",
         key: "LinkTarget",
