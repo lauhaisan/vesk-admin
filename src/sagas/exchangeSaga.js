@@ -4,6 +4,7 @@ import {
   getListExchangeAPI,
   getExchangeRateAPI,
   updateExchangeRateAPI,
+  approveExchangeAPI,
 } from "../service/exchange";
 import { EXCHANGE } from "../constant";
 
@@ -50,9 +51,23 @@ function* updateExchangeRate(obj) {
   yield put({ type: EXCHANGE.GET_EXCHANGE_RATE });
 }
 
+function* approveExchange(obj) {
+  const dat = obj.data.data;
+  const hideModal = obj.data.functionHideModal;
+  const resp = yield call(approveExchangeAPI, dat);
+  if (resp.code !== 200) {
+    yield put({ type: EXCHANGE.APPROVE_EXCHANGE_FAIL, data: resp.message });
+    return;
+  }
+  yield put({ type: EXCHANGE.APPROVE_EXCHANGE_SUCCESS, data: resp.data });
+  hideModal();
+  yield put({ type: EXCHANGE.GET_HISTORY_EXCHANGE });
+}
+
 export const exchangeSaga = [
   takeLatest(EXCHANGE.CREATE_EXCHANGE, createExchange),
   takeLatest(EXCHANGE.GET_HISTORY_EXCHANGE, getListExchange),
   takeLatest(EXCHANGE.GET_EXCHANGE_RATE, getExchangeRate),
   takeLatest(EXCHANGE.UPDATE_EXCHANGE_RATE, updateExchangeRate),
+  takeLatest(EXCHANGE.APPROVE_EXCHANGE, approveExchange),
 ];

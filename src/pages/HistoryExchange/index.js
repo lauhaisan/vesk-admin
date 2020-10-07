@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { EXCHANGE } from "../../constant";
 import TableCommon from "../../components/TableCommon";
 import CustomModal from "../../components/CustomModal";
+import Notification from "../../components/Notification";
 import { connect } from "react-redux";
 import "./index.scss";
 
@@ -17,6 +18,14 @@ class HistoryExchange extends Component {
   componentDidMount() {
     const { getHistoryExchange } = this.props;
     getHistoryExchange();
+  }
+
+  componentWillUnmount() {
+    const { updateExchangeReducer } = this.props;
+    updateExchangeReducer({
+      isApproveSuccessfully: "",
+      messageApprove: "",
+    });
   }
 
   actionApprove = ({ id }) => {
@@ -49,6 +58,7 @@ class HistoryExchange extends Component {
   };
 
   handleApprove = () => {
+    const { approveExchange } = this.props;
     const {
       itemExchange: {
         id = "",
@@ -59,11 +69,17 @@ class HistoryExchange extends Component {
       } = {},
     } = this.state;
     const payload = { id, point, coin, message, contract };
-    console.log("payload", payload);
+    approveExchange(payload, this.hideModal);
   };
 
   render() {
-    const { listExchange = [], loading, loadingApprove } = this.props;
+    const {
+      listExchange = [],
+      loading,
+      loadingApprove,
+      isApproveSuccessfully,
+      messageApprove,
+    } = this.props;
     const { openModalApprove } = this.state;
     const headerData = [
       {
@@ -105,22 +121,47 @@ class HistoryExchange extends Component {
           hideModal={this.hideModal}
           onSubmit={this.handleApprove}
           loading={loadingApprove}
-          textSubmit="Approve"
+          textSubmit="Save"
         />
+        {isApproveSuccessfully && (
+          <Notification
+            status="success"
+            title="Approve Exchange Successfully"
+          />
+        )}
+        {messageApprove && (
+          <Notification status="error" title={messageApprove} />
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({
-  exchange: { loading, listExchange = [] } = {},
+  exchange: {
+    loading,
+    listExchange = [],
+    loadingUpdate: loadingApprove,
+    isApproveSuccessfully,
+    messageApprove,
+  } = {},
 }) => ({
   loading,
   listExchange,
+  loadingApprove,
+  isApproveSuccessfully,
+  messageApprove,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getHistoryExchange: () => dispatch({ type: EXCHANGE.GET_HISTORY_EXCHANGE }),
+  approveExchange: (data, functionHideModal) =>
+    dispatch({
+      type: EXCHANGE.APPROVE_EXCHANGE,
+      data: { data, functionHideModal },
+    }),
+  updateExchangeReducer: (data) =>
+    dispatch({ type: EXCHANGE.UPDATE_EXCHANGE_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryExchange);

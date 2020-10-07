@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   listExchange: [],
   exchangeRate: {},
   loadingUpdate: false,
+  isApproveSuccessfully: "",
+  messageApprove: "",
 };
 
 const exchangeReducer = (state = INITIAL_STATE, action) => {
@@ -82,13 +84,32 @@ const exchangeReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loadingUpdate: false,
-        // exchangeRate: action.data.data,
       };
     case EXCHANGE.UPDATE_EXCHANGE_RATE_FAIL:
       return {
         ...state,
         loadingUpdate: false,
-        // exchangeRate: {},
+      };
+    case EXCHANGE.APPROVE_EXCHANGE:
+      return {
+        ...state,
+        loadingUpdate: true,
+        isApproveSuccessfully: "",
+        messageApprove: "",
+      };
+    case EXCHANGE.APPROVE_EXCHANGE_SUCCESS:
+      return {
+        ...state,
+        loadingUpdate: false,
+        isApproveSuccessfully: true,
+        messageApprove: "",
+      };
+    case EXCHANGE.APPROVE_EXCHANGE_FAIL:
+      return {
+        ...state,
+        loadingUpdate: false,
+        isApproveSuccessfully: false,
+        messageApprove: "Approve Exchange Failed",
       };
 
     default:

@@ -16,10 +16,13 @@ const getExchangeRateAPI = async () => {
 };
 
 const updateExchangeRateAPI = async (payload) => {
-  console.log("paylaod service", payload);
   const { idRate, rate } = payload;
   const URL_WITH_PARAMS = `${URL.UPDATE_EXCHANGE_RATE}/${idRate}`;
   return request(URL_WITH_PARAMS, true, "PUT", { rate });
+};
+
+const approveExchangeAPI = async (payload) => {
+  return request(URL.APPROVE_EXCHANGE, true, "POST", payload);
 };
 
 export {
@@ -27,4 +30,5 @@ export {
   getListExchangeAPI,
   getExchangeRateAPI,
   updateExchangeRateAPI,
+  approveExchangeAPI,
 };
