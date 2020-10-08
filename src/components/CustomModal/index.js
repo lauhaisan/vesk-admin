@@ -16,6 +16,7 @@ export default class index extends Component {
       loading,
       textSubmit,
     } = this.props;
+    const widthBtn = textSubmit === "Approve" ? "110px" : "90px";
     return (
       <Modal
         className="customModal"
@@ -45,7 +46,7 @@ export default class index extends Component {
               text={textSubmit}
               style={{
                 margin: "10px 0",
-                width: "90px",
+                width: widthBtn,
                 height: "47px",
               }}
             />

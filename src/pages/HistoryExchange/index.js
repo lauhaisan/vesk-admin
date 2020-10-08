@@ -43,16 +43,44 @@ class HistoryExchange extends Component {
 
   _renderContentModal = () => {
     const {
-      itemExchange: { point = 0, coin = 0, email = "", message = "" } = {},
+      itemExchange: {
+        point = 0,
+        coin = 0,
+        email = "",
+        message = "",
+        contract = "",
+      } = {},
     } = this.state;
+    const arr = [
+      { key: "Email", value: email },
+      { key: "Message", value: message },
+    ];
     return (
       <Fragment>
-        <p>Approve this exchange?</p>
-        <p>Email: {email}</p>
-        <p>Message: {message}</p>
-        <p>
-          Coin: {coin}, Point: {point}
-        </p>
+        {arr.map((item) => {
+          const { key, value } = item;
+          return (
+            <div key={key}>
+              <span className="approveExchange__title">{key}: </span>
+              <span className="approveExchange__value">{value}</span>
+            </div>
+          );
+        })}
+        <div>
+          <span className="approveExchange__title">Coin: </span>
+          <span className="approveExchange__value">{coin}</span>
+          <span className="approveExchange__title">, Point: </span>
+          <span className="approveExchange__value">{point}</span>
+        </div>
+        <div className="viewContract" style={{ marginTop: "20px" }}>
+          <a target="_blank" rel="noopener noreferrer" href={contract}>
+            <img
+              className="viewContract__img"
+              src={contract}
+              alt="img-contract"
+            />
+          </a>
+        </div>
       </Fragment>
     );
   };
@@ -117,16 +145,16 @@ class HistoryExchange extends Component {
         <CustomModal
           open={openModalApprove}
           contentModal={this._renderContentModal()}
-          title="Approve Exchange"
+          title="Approve Contract"
           hideModal={this.hideModal}
           onSubmit={this.handleApprove}
           loading={loadingApprove}
-          textSubmit="Save"
+          textSubmit="Approve"
         />
         {isApproveSuccessfully && (
           <Notification
             status="success"
-            title="Approve Exchange Successfully"
+            title="Approve Contract Successfully"
           />
         )}
         {messageApprove && (

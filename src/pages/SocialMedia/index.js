@@ -141,7 +141,7 @@ class SocialMedia extends React.Component {
     const payload = {
       ...itemMediaSocial,
       thumbnail: linkThumbnail || itemMediaSocial.thumbnail,
-      point: itemMediaSocial.pointForUserView,
+      point: itemMediaSocial.point || 100,
       start: "2020",
       end: "2020",
     };
@@ -254,28 +254,6 @@ class SocialMedia extends React.Component {
                 />
               </FormGroup>
             </div>
-            {titleModal === "Add New Social Media" && (
-              <div className="formData__row">
-                <FormGroup legendText="">
-                  <Select
-                    defaultValue="placeholder-item"
-                    helperText="Optional helper text"
-                    id="select-1"
-                    invalidText="A valid value is required"
-                    labelText="Select"
-                    onChange={(event) =>
-                      this.onChangeFormData("authorId", event.target.value)
-                    }
-                  >
-                    {listUser.map((item) => {
-                      return (
-                        <SelectItem text={item.userName} value={item.userId} />
-                      );
-                    })}
-                  </Select>
-                </FormGroup>
-              </div>
-            )}
 
             {titleModal !== "Add New Social Media" && (
               <div className="formData__row">
@@ -306,6 +284,44 @@ class SocialMedia extends React.Component {
               </div>
             )}
             <div className="formData__row">
+              {titleModal === "Add New Social Media" && (
+                <FormGroup legendText="">
+                  <Select
+                    style={{ width: "11rem" }}
+                    defaultValue="placeholder-item"
+                    id="select-1"
+                    invalidText="A valid value is required"
+                    labelText="Select Author"
+                    onChange={(event) =>
+                      this.onChangeFormData("authorId", event.target.value)
+                    }
+                  >
+                    {listUser.map((item) => {
+                      return (
+                        <SelectItem text={item.userName} value={item.userId} />
+                      );
+                    })}
+                  </Select>
+                </FormGroup>
+              )}
+              <FormGroup legendText="">
+                <NumberInput
+                  readOnly={isReview || titleModal === "Edit Social Media"}
+                  id="point"
+                  onChange={(event) =>
+                    this.onChangeFormData(
+                      "point",
+                      event.imaginaryTarget.valueAsNumber
+                    )
+                  }
+                  label="Point"
+                  min={titleModal === "Add New Social Media" ? 100 : 0}
+                  step={1}
+                  value={itemMediaSocial.point || 100}
+                />
+              </FormGroup>
+            </div>
+            <div className="formData__row">
               <FormGroup legendText="">
                 <NumberInput
                   readOnly={isReview}
@@ -316,6 +332,11 @@ class SocialMedia extends React.Component {
                       event.imaginaryTarget.valueAsNumber
                     )
                   }
+                  invalid={
+                    itemMediaSocial.pointForUserView >
+                    (itemMediaSocial.point || 100)
+                  }
+                  invalidText="Point For User View must be less than Point"
                   label="Point For User View"
                   min={1}
                   step={1}
@@ -488,7 +509,11 @@ class SocialMedia extends React.Component {
         key: "created",
       },
       {
-        header: "Poin For User View",
+        header: "Point",
+        key: "point",
+      },
+      {
+        header: "Point For User View",
         key: "pointForUserView",
       },
       {
@@ -501,6 +526,11 @@ class SocialMedia extends React.Component {
       },
       { header: "Action", key: "action" },
     ];
+
+    const defaultPoint = itemMediaSocial.point || 100;
+    const check =
+      titleModal === "Add New Social Media" &&
+      itemMediaSocial.pointForUserView > defaultPoint;
 
     return (
       <Fragment>
@@ -535,7 +565,7 @@ class SocialMedia extends React.Component {
           />
         </div>
         <CustomModal
-          isReview={isReview}
+          isReview={isReview || check}
           open={openModal}
           loading={loadingAction}
           contentModal={renderContentModal}
