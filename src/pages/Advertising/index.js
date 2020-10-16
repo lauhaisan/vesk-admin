@@ -15,10 +15,26 @@ import {
   Loading,
   Accordion,
   AccordionItem,
+  Select,
+  SelectItem,
 } from "carbon-components-react";
 import { ADVERTISING, UPLOAD } from "../../constant";
 import { connect } from "react-redux";
 import "./index.scss";
+
+const listPosition = [
+  { name: "Home", value: "HOME" },
+  { name: "Top Rate", value: "TOP_RATED" },
+  { name: "Most Popular", value: "MOST_POPULAR" },
+  { name: "Fix Bottom", value: "FIX_BOTTOM" },
+];
+
+const listStatus = [
+  { name: "PENDING", value: "PENDING" },
+  { name: "ACTIVE", value: "ACTIVE" },
+  { name: "INACTIVE", value: "INACTIVE" },
+  { name: "REJECT", value: "REJECT" },
+];
 
 class Advertising extends React.Component {
   constructor(props) {
@@ -126,7 +142,9 @@ class Advertising extends React.Component {
     const { itemAds, titleModal } = this.state;
     const payload = {
       ...itemAds,
-      imageUrl: linkAds || itemAds.ImageUrl,
+      imageUrl: linkAds || itemAds.imageUrl,
+      position: itemAds.position || "HOME",
+      status: itemAds.status || "ACTIVE",
     };
     if (titleModal === "Add New Advertising") {
       addNewAds(payload, this._hideModal);
@@ -202,7 +220,6 @@ class Advertising extends React.Component {
             <div className="formData__row">
               <FormGroup legendText="">
                 <TextInput
-                  // disabled={titleModal !== "Add New Advertising"}
                   id="inputName"
                   labelText="Name"
                   onChange={(event) =>
@@ -216,7 +233,7 @@ class Advertising extends React.Component {
                   value={itemAds.name || ""}
                 />
               </FormGroup>
-              <FormGroup legendText="">
+              {/* <FormGroup legendText="">
                 <TextInput
                   id="inputPosition"
                   labelText="Position"
@@ -230,14 +247,32 @@ class Advertising extends React.Component {
                   type="text"
                   value={itemAds.position || ""}
                 />
+              </FormGroup> */}
+              <FormGroup legendText="">
+                <Select
+                  disabled={titleModal !== "Add New Advertising"}
+                  style={{ width: "11rem" }}
+                  id="select-1"
+                  invalidText="A valid value is required"
+                  labelText="Select Position"
+                  onChange={(event) =>
+                    this.onChangeFormData("position", event.target.value)
+                  }
+                  value={itemAds.position || "HOME"}
+                >
+                  {listPosition.map((item) => {
+                    const { name = "", value = "" } = item;
+                    return <SelectItem text={name} value={value} />;
+                  })}
+                </Select>
               </FormGroup>
             </div>
-            <div className="formData__row">
-              {/* <FormGroup legendText="">
+            {/* <div className="formData__row">
+              <FormGroup legendText="">
                 <DatePicker
                   dateFormat="d/m/Y"
                   datePickerType="single"
-                  onChange={e => this.onChangeDatePicker("ShowStartAt", e)}
+                  onChange={(e) => this.onChangeDatePicker("ShowStartAt", e)}
                 >
                   <DatePickerInput
                     disabled={isReview}
@@ -253,7 +288,7 @@ class Advertising extends React.Component {
                 <DatePicker
                   dateFormat="d/m/Y"
                   datePickerType="single"
-                  onChange={e => this.onChangeDatePicker("ShowEndAt", e)}
+                  onChange={(e) => this.onChangeDatePicker("ShowEndAt", e)}
                 >
                   <DatePickerInput
                     disabled={isReview}
@@ -264,7 +299,7 @@ class Advertising extends React.Component {
                     value={itemAds.ShowEndAt || ""}
                   />
                 </DatePicker>
-              </FormGroup> */}
+              </FormGroup>
               <FormGroup legendText="">
                 <TextInput
                   id="inputStart"
@@ -295,23 +330,8 @@ class Advertising extends React.Component {
                   value={itemAds.ShowEndAt || ""}
                 />
               </FormGroup>
-            </div>
+            </div> */}
             <div className="formData__row">
-              <FormGroup legendText="">
-                <TextInput
-                  id="point"
-                  labelText="Point"
-                  onChange={(event) =>
-                    this.onChangeFormData("point", event.target.value)
-                  }
-                  required
-                  readOnly={isReview}
-                  light={true}
-                  placeholder="Point"
-                  type="text"
-                  value={itemAds.point || ""}
-                />
-              </FormGroup>
               <FormGroup legendText="">
                 <TextInput
                   id="inputLinkTarget"
@@ -327,22 +347,25 @@ class Advertising extends React.Component {
                   value={itemAds.linkTarget || ""}
                 />
               </FormGroup>
+              <FormGroup legendText="">
+                <Select
+                  disabled={titleModal === "Review Advertising"}
+                  style={{ width: "11rem" }}
+                  id="select-status"
+                  invalidText="A valid value is required"
+                  labelText="Status"
+                  onChange={(event) =>
+                    this.onChangeFormData("status", event.target.value)
+                  }
+                  value={itemAds.status || "ACTIVE"}
+                >
+                  {listStatus.map((item) => {
+                    const { name = "", value = "" } = item;
+                    return <SelectItem text={name} value={value} />;
+                  })}
+                </Select>
+              </FormGroup>
             </div>
-            {/* <FormGroup legendText="">
-              <TextInput
-                id="inputImageUrl"
-                labelText="Image Url"
-                onChange={(event) =>
-                  this.onChangeFormData("ImageUrl", event.target.value)
-                }
-                required
-                readOnly={isReview}
-                light={true}
-                placeholder="Image Url"
-                type="text"
-                value={itemAds.ImageUrl || ""}
-              />
-            </FormGroup> */}
             {(titleModal === "Edit Advertising" ||
               titleModal === "Add New Advertising") && (
               <div className="buttonUpload">
@@ -396,14 +419,6 @@ class Advertising extends React.Component {
         header: "Created",
         key: "createdAt",
       },
-      // {
-      //   header: "Start",
-      //   key: "ShowStartAt",
-      // },
-      // {
-      //   header: "End",
-      //   key: "ShowEndAt",
-      // },
       {
         header: "Position",
         key: "position",

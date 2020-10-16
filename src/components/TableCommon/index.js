@@ -75,17 +75,19 @@ class TableCommon extends React.Component {
   };
 
   render1 = (value, item) => {
-    const { actionApprove = () => {} } = this.props;
+    const { actionApprove = () => {}, title = "" } = this.props;
     return value !== "PENDING" ? (
       value
     ) : (
       <div>
         <span>{value}</span>
-        <i
-          className="fas fa-vote-yea viewAction__icon viewAction__icon--edit"
-          style={{ marginLeft: "20px" }}
-          onClick={() => actionApprove(item)}
-        ></i>
+        {title === "History Exchange" && (
+          <i
+            className="fas fa-vote-yea viewAction__icon viewAction__icon--edit"
+            style={{ marginLeft: "20px" }}
+            onClick={() => actionApprove(item)}
+          ></i>
+        )}
       </div>
     );
   };
