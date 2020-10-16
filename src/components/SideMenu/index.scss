@@ -90,6 +90,11 @@
       .itemMenu__text {
         margin-left: 1rem;
         display: none;
+        white-space: nowrap;
+        width: auto;
+        height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
         &--children {
           display: none;
           white-space: nowrap;
