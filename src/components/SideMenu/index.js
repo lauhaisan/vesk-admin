@@ -66,7 +66,7 @@ export default class SideMenu extends PureComponent {
               <span>Logo</span>
             </div>
           </div>
-          {/* <NavLink
+          <NavLink
             exact
             activeClassName={`${classNameMenu}__menu__itemMenu--active`}
             to="/"
@@ -74,7 +74,7 @@ export default class SideMenu extends PureComponent {
           >
             <i className="fas fa-home itemMenu__icon"></i>
             <span className="itemMenu__text">Home</span>
-          </NavLink> */}
+          </NavLink>
           <Fragment>
             <div className="menu__parent" onClick={this.handleClickUser}>
               <div className="menu__parent--iconText">
@@ -162,6 +162,14 @@ export default class SideMenu extends PureComponent {
             <i className="fas fa-address-book itemMenu__icon"></i>
             <span className="itemMenu__text">Contact</span>
           </NavLink> */}
+          <NavLink
+            activeClassName={`${classNameMenu}__menu__itemMenu--active`}
+            to="/create-website"
+            className={`${classNameMenu}__menu__itemMenu`}
+          >
+            <i className="far fa-window-maximize itemMenu__icon"></i>
+            <span className="itemMenu__text">Create Website</span>
+          </NavLink>
         </div>
       </div>
     );

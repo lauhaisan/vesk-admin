@@ -6,6 +6,7 @@ import { advertisingSaga } from "./advertisingSaga";
 import { socialMediaSaga } from "./socialMediaSaga";
 import { exchangeSaga } from "./exchangeSaga";
 import { uploadSaga } from "./uploadSaga";
+import { createWebsiteSaga } from "./createWebsiteSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     ...socialMediaSaga,
     ...exchangeSaga,
     ...uploadSaga,
+    ...createWebsiteSaga,
   ]);
 }

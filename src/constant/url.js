@@ -23,6 +23,7 @@ const URL = {
   GET_EXCHANGE_RATE: "/v1/vesk/rate-setting/search",
   UPDATE_EXCHANGE_RATE: "/v1/vesk/admin/rate-setting",
   APPROVE_EXCHANGE: "/v1/vesk/admin/exchange/approve",
+  GET_LIST_CREATE_WEB: "/v1/vesk/admin/website/search",
 };
 
 export default URL;

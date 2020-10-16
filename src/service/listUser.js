@@ -1,5 +1,6 @@
 import request from "../utils/request";
 import URL from "../constant/url";
+import queryString from "query-string";
 
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
@@ -23,4 +24,16 @@ const searchUserApi = async ({ email, userName }) => {
   return request(URL_WITH_PARAMS, true);
 };
 
-export { getListUserAPI, getUserByIdAPI, editUserAPI, searchUserApi };
+const getCreateWebAPI = async (payload) => {
+  const param = queryString.stringify(payload);
+  const URL_WITH_PARAMS = `${URL.GET_LIST_CREATE_WEB}?${param}`;
+  return request(URL_WITH_PARAMS, true);
+};
+
+export {
+  getListUserAPI,
+  getUserByIdAPI,
+  editUserAPI,
+  searchUserApi,
+  getCreateWebAPI,
+};

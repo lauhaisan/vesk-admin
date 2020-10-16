@@ -6,6 +6,7 @@ import advertisingReducer from "./advertisingReducer";
 import socialMediaReducer from "./socialMediaReducer";
 import exchangeReducer from "./exchangeReducer";
 import uploadReducer from "./uploadReducer";
+import createWebReducer from "./createWebReducer";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   socialMedia: socialMediaReducer,
   exchange: exchangeReducer,
   upload: uploadReducer,
+  createWeb: createWebReducer,
 });
 
 export default rootReducer;

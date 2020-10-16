@@ -64,7 +64,8 @@ class TableCommon extends React.Component {
   };
 
   renderValue = (nameHeader, value, item) => {
-    return nameHeader === "contract" && value ? (
+    const arrNameHeader = ["contract", "imageUrl"];
+    return arrNameHeader.indexOf(nameHeader) > -1 && value ? (
       <a target="_blank" rel="noopener noreferrer" href={value}>
         View
       </a>

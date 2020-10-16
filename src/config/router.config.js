@@ -10,7 +10,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 // import ComingSoon from "../pages/ComingSoon";
 const SocialMeida = lazy(() => import("../pages/SocialMedia"));
 const Advertising = lazy(() => import("../pages/Advertising"));
-// const Contact = lazy(() => import("../pages/Contact"));
+const CreateWebsite = lazy(() => import("../pages/CreateWebsite"));
 const Home = lazy(() => import("../pages/Home"));
 const Users = lazy(() => import("../pages/User"));
 const Profile = lazy(() => import("../pages/Profile"));
@@ -47,6 +47,12 @@ const routes = [
   //   layout: BasicLayout,
   //   component: Contact,
   // },
+  {
+    path: "/create-website",
+    exact: false,
+    layout: BasicLayout,
+    component: CreateWebsite,
+  },
   {
     path: "/profile",
     exact: false,

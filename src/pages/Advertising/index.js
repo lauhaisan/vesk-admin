@@ -126,7 +126,7 @@ class Advertising extends React.Component {
     const { itemAds, titleModal } = this.state;
     const payload = {
       ...itemAds,
-      ImageUrl: linkAds || itemAds.ImageUrl,
+      imageUrl: linkAds || itemAds.ImageUrl,
     };
     if (titleModal === "Add New Advertising") {
       addNewAds(payload, this._hideModal);
@@ -189,7 +189,7 @@ class Advertising extends React.Component {
       linkAds,
       messageUpload,
     } = this.props;
-    const imgAds = linkAds || itemAds.ImageUrl;
+    const imgAds = linkAds || itemAds.imageUrl;
 
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -221,14 +221,14 @@ class Advertising extends React.Component {
                   id="inputPosition"
                   labelText="Position"
                   onChange={(event) =>
-                    this.onChangeFormData("Position", event.target.value)
+                    this.onChangeFormData("position", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
                   placeholder="Position"
                   type="text"
-                  value={itemAds.Position || ""}
+                  value={itemAds.position || ""}
                 />
               </FormGroup>
             </div>
@@ -317,14 +317,14 @@ class Advertising extends React.Component {
                   id="inputLinkTarget"
                   labelText="Link Target"
                   onChange={(event) =>
-                    this.onChangeFormData("LinkTarget", event.target.value)
+                    this.onChangeFormData("linkTarget", event.target.value)
                   }
                   required
                   readOnly={isReview}
                   light={true}
                   placeholder="Link Target"
                   type="text"
-                  value={itemAds.LinkTarget || ""}
+                  value={itemAds.linkTarget || ""}
                 />
               </FormGroup>
             </div>
@@ -404,22 +404,23 @@ class Advertising extends React.Component {
       //   header: "End",
       //   key: "ShowEndAt",
       // },
-      // {
-      //   header: "Position",
-      //   key: "Position",
-      // },
       {
-        header: "Link Target",
-        key: "LinkTarget",
+        header: "Position",
+        key: "position",
       },
       {
-        header: "Image URL",
-        key: "ImageUrl",
+        header: "Link Target",
+        key: "linkTarget",
+      },
+      {
+        header: "Image",
+        key: "imageUrl",
       },
       {
         header: "Point",
         key: "point",
       },
+      { header: "Status", key: "status" },
       { header: "Action", key: "action" },
     ];
 
