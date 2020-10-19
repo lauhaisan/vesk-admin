@@ -275,9 +275,6 @@ class Advertising extends React.Component {
       total,
     } = this.props;
     const imgAds = linkAds || itemAds.imageUrl;
-
-    const checkId = itemAds && itemAds.id;
-
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
         {loadingGetAdsById ? (
@@ -549,7 +546,7 @@ class Advertising extends React.Component {
           />
         </div>
         <CustomModal
-          isReview={isReview || !checkId}
+          isReview={isReview || loadingGetAdsById}
           open={openModal}
           loading={loadingActionAds}
           contentModal={renderContentModal}
