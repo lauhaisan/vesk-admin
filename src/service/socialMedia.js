@@ -5,7 +5,9 @@ import queryString from "query-string";
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
 const getListSocialMediaAPI = async (payload) => {
-  return request(URL.GET_LIST_SOCIAL_MEDIA, true);
+  const param = queryString.stringify(payload);
+  const URL_WITH_PARAMS = `${URL.GET_LIST_SOCIAL_MEDIA}?${param}`;
+  return request(URL_WITH_PARAMS, true);
 };
 
 const getByIdAPI = async (payload) => {

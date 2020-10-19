@@ -32,6 +32,9 @@ class SocialMedia extends React.Component {
       titleModal: "",
       isReview: false,
       fileUpload: null,
+      isModeSearch: false,
+      keywordSearch: "",
+      currentPage: 1,
     };
   }
 
@@ -42,8 +45,25 @@ class SocialMedia extends React.Component {
     return null;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { total } = this.props;
+    const { total: prevTotal } = prevProps;
+    const { currentPage, isModeSearch } = this.state;
+    const { isModeSearch: prevIsModeSearch } = prevState;
+    if (isModeSearch !== prevIsModeSearch) {
+      this.setState({ currentPage: 1 });
+    }
+    if (total !== prevTotal) {
+      const totalPage = Math.ceil(total / 10);
+      const page = totalPage < currentPage ? currentPage - 1 : currentPage;
+      this.setState({
+        currentPage: page === 0 ? 1 : page,
+      });
+    }
+  }
+
   componentDidMount() {
-    this.handleGetListSocialMedia({});
+    this.handleGetListSocialMedia(1);
     this.handleGetListUser({});
   }
 
@@ -56,21 +76,42 @@ class SocialMedia extends React.Component {
     });
   }
 
-  handleGetListSocialMedia = (payload) => {
+  handleGetListSocialMedia = (page) => {
     const { getListSocialMedia } = this.props;
-    getListSocialMedia(payload);
+    this.setState({ currentPage: page });
+    getListSocialMedia({ page, limit: 10 });
   };
+
   handleGetListUser = (payload) => {
     const { getListUser } = this.props;
     getListUser(payload);
   };
+
   _resetFilter = () => {
-    this.handleGetListSocialMedia({});
+    this.setState(
+      {
+        isModeSearch: false,
+        keywordSearch: "",
+        currentPage: 1,
+      },
+      () => {
+        this.handleGetListSocialMedia(1);
+      }
+    );
   };
 
-  _search = (value) => {
+  _search = ({ name }) => {
+    this.setState({ keywordSearch: name, isModeSearch: true }, () => {
+      this.handleGetValueSearch(1);
+    });
+  };
+
+  handleGetValueSearch = (page) => {
     const { searchSocialMedia } = this.props;
-    searchSocialMedia(value);
+    const { keywordSearch } = this.state;
+    this.setState({ currentPage: page });
+    const payload = { name: keywordSearch, page, limit: 10 };
+    searchSocialMedia(payload);
   };
 
   openModalAddNewAdvertising = () => {
@@ -131,7 +172,13 @@ class SocialMedia extends React.Component {
   _handleSubmit = (event) => {
     event.preventDefault();
     const { editSocialMedia, addNewSocialMedia, linkThumbnail } = this.props;
-    const { itemMediaSocial, titleModal } = this.state;
+    const {
+      itemMediaSocial,
+      titleModal,
+      isModeSearch,
+      currentPage,
+      keywordSearch,
+    } = this.state;
     const arrayKey = ["pointForUserView", "timeForRecvCoin"];
     arrayKey.forEach((element) => {
       if (!itemMediaSocial[element]) {
@@ -146,16 +193,36 @@ class SocialMedia extends React.Component {
       end: "2020",
     };
     if (titleModal === "Add New Social Media") {
-      addNewSocialMedia(payload, this._hideModal);
+      addNewSocialMedia(
+        payload,
+        this._hideModal,
+        currentPage,
+        isModeSearch && keywordSearch
+      );
     } else {
-      editSocialMedia(payload, this._hideModal);
+      editSocialMedia(
+        payload,
+        this._hideModal,
+        currentPage,
+        isModeSearch && keywordSearch
+      );
     }
   };
 
   _handleDelete = () => {
-    const { itemMediaSocial } = this.state;
+    const {
+      itemMediaSocial,
+      isModeSearch,
+      keywordSearch,
+      currentPage,
+    } = this.state;
     const { deleteSocialMedia } = this.props;
-    deleteSocialMedia(itemMediaSocial, this._hideModal);
+    deleteSocialMedia(
+      itemMediaSocial,
+      this._hideModal,
+      currentPage,
+      isModeSearch && keywordSearch
+    );
   };
 
   _actionDelete = (item) => {
@@ -196,7 +263,7 @@ class SocialMedia extends React.Component {
   render() {
     const {
       openModal,
-
+      isModeSearch,
       titleModal,
       isReview,
       itemMediaSocial = {},
@@ -212,6 +279,7 @@ class SocialMedia extends React.Component {
       linkThumbnail,
       messageUpload,
       listUser = [],
+      total,
     } = this.props;
     const imgThumbnail = linkThumbnail || itemMediaSocial.thumbnail;
     const contentModal = (
@@ -551,7 +619,10 @@ class SocialMedia extends React.Component {
                 </div>
               }
             >
-              <Filter resetFilter={this._resetFilter} search={this._search} />
+              <Filter
+                resetFilter={isModeSearch ? this._resetFilter : () => {}}
+                search={this._search}
+              />
             </AccordionItem>
           </Accordion>
           <TableCommon
@@ -562,6 +633,13 @@ class SocialMedia extends React.Component {
             actionReview={this._actionReview}
             actionEdit={this._actionEdit}
             actionDelete={this._actionDelete}
+            total={total}
+            handlePagination={
+              !isModeSearch
+                ? this.handleGetListSocialMedia
+                : this.handleGetValueSearch
+            }
+            resetFirstPage={isModeSearch}
           />
         </div>
         <CustomModal
@@ -606,7 +684,7 @@ const mapStateToProps = ({
   socialMedia: {
     loading,
     listSocialMedia,
-    paging,
+    paging: { total } = {},
     loadingGetById,
     itemMediaSocial,
     messageError,
@@ -621,7 +699,7 @@ const mapStateToProps = ({
 }) => ({
   loading,
   listSocialMedia,
-  paging,
+  total,
   loadingGetById,
   itemMediaSocial,
   messageError,
@@ -639,27 +717,27 @@ const mapDispatchToProps = (dispatch) => ({
   getListSocialMedia: (data) =>
     dispatch({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data }),
   getById: (id) => dispatch({ type: SOCIAL_MEDIA.GET_BY_ID, data: { id } }),
-  editSocialMedia: (data, functionHideModal) =>
-    dispatch({
-      type: SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA,
-      data: { data, functionHideModal },
-    }),
   updateStateReducer: (data) =>
     dispatch({ type: SOCIAL_MEDIA.SET_STATE_REDUCER, data }),
-  deleteSocialMedia: (data, functionHideModal) =>
+  deleteSocialMedia: (data, functionHideModal, currentPage, keywordSearch) =>
     dispatch({
       type: SOCIAL_MEDIA.DELETE_SOCIAL_MEDIA,
-      data: { data, functionHideModal },
+      data: { data, functionHideModal, currentPage, keywordSearch },
     }),
-  addNewSocialMedia: (data, functionHideModal) =>
+  addNewSocialMedia: (data, functionHideModal, currentPage, keywordSearch) =>
     dispatch({
       type: SOCIAL_MEDIA.ADD_NEW,
-      data: { data, functionHideModal },
+      data: { data, functionHideModal, currentPage, keywordSearch },
+    }),
+  editSocialMedia: (data, functionHideModal, currentPage, keywordSearch) =>
+    dispatch({
+      type: SOCIAL_MEDIA.EDIT_SOCIAL_MEDIA,
+      data: { data, functionHideModal, currentPage, keywordSearch },
     }),
   searchSocialMedia: (data) =>
     dispatch({
       type: SOCIAL_MEDIA.SEARCH_SOCIAL_MEDIA,
-      data: { data },
+      data,
     }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
