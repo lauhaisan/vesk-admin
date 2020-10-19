@@ -10,26 +10,44 @@ import "./index.scss";
 class CreateWebsite extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isModeSearch: false,
+      objFilter: {},
+    };
   }
 
   componentDidMount() {
-    const { getListCreateWeb } = this.props;
-    getListCreateWeb({});
+    this.handleGetListCreateWebsite(1);
   }
 
   _resetFilter = () => {
-    const { getListCreateWeb } = this.props;
-    getListCreateWeb({});
+    this.setState(
+      {
+        isModeSearch: false,
+        objFilter: {},
+      },
+      () => {
+        this.handleGetListCreateWebsite(1);
+      }
+    );
   };
 
   _search = (value) => {
+    this.setState({ objFilter: value, isModeSearch: true }, () => {
+      this.handleGetListCreateWebsite(1);
+    });
+  };
+
+  handleGetListCreateWebsite = (page) => {
     const { getListCreateWeb } = this.props;
-    getListCreateWeb(value);
+    const { isModeSearch, objFilter } = this.state;
+    const payloadSearch = isModeSearch ? objFilter : {};
+    getListCreateWeb({ ...payloadSearch, page, limit: 10 });
   };
 
   render() {
-    const { loading, listCreateWeb = [] } = this.props;
+    const { loading, listCreateWeb = [], total } = this.props;
+    const { isModeSearch } = this.state;
     const headerData = [
       {
         header: "Email",
@@ -63,7 +81,10 @@ class CreateWebsite extends Component {
                 </div>
               }
             >
-              <Filter resetFilter={this._resetFilter} search={this._search} />
+              <Filter
+                resetFilter={isModeSearch ? this._resetFilter : () => {}}
+                search={this._search}
+              />
             </AccordionItem>
           </Accordion>
           <TableCommon
@@ -71,6 +92,9 @@ class CreateWebsite extends Component {
             rowData={listCreateWeb}
             headerData={headerData}
             loading={loading}
+            total={total}
+            handlePagination={this.handleGetListCreateWebsite}
+            resetFirstPage={isModeSearch}
           />
         </div>
       </Fragment>
@@ -78,9 +102,12 @@ class CreateWebsite extends Component {
   }
 }
 
-const mapStateToProps = ({ createWeb: { loading, listCreateWeb } = {} }) => ({
+const mapStateToProps = ({
+  createWeb: { loading, listCreateWeb, paging: { total } = {} } = {},
+}) => ({
   loading,
   listCreateWeb,
+  total,
 });
 
 const mapDispatchToProps = (dispatch) => ({

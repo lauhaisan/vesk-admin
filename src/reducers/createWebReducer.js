@@ -3,6 +3,7 @@ import { CREATE_WEBSITE } from "../constant";
 const INITIAL_STATE = {
   loading: false,
   listCreateWeb: [],
+  paging: {},
 };
 
 const createWebReducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +23,7 @@ const createWebReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         listCreateWeb: action.data.items,
+        paging: action.data.paging,
       };
     case CREATE_WEBSITE.CREATE_WEBSITE_FAIL:
       return {
