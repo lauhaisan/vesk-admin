@@ -11,8 +11,8 @@ const URL = {
   GET_USER_BY_ID: "/v1/vesk/public/users/userId",
   EDIT_USER: "/v1/vesk/admin/users",
 
-  GET_LIST_ADVERTISING: "/v1/vesk/public/ads",
-  ADMIN_CRUD_ADVERTISING: "/v1/vesk/admin/ads",
+  GET_LIST_ADVERTISING: "/v1/vesk/public/qac",
+  ADMIN_CRUD_ADVERTISING: "/v1/vesk/admin/qac",
 
   GET_LIST_SOCIAL_MEDIA: "/v1/vesk/public/e-social-media",
   ADMIN_CRUD_SOCIAL_MEDIA: "/v1/vesk/admin/e-social-media",
