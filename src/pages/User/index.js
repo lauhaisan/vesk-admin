@@ -35,6 +35,9 @@ class Users extends React.Component {
       point: 0,
       messageExchange: "",
       fileUpload: null,
+      isModeSearch: false,
+      objFilter: {},
+      currentPage: 1,
     };
   }
 
@@ -45,8 +48,25 @@ class Users extends React.Component {
     return null;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { total } = this.props;
+    const { total: prevTotal } = prevProps;
+    const { currentPage, isModeSearch } = this.state;
+    const { isModeSearch: prevIsModeSearch } = prevState;
+    if (isModeSearch !== prevIsModeSearch) {
+      this.setState({ currentPage: 1 });
+    }
+    if (total !== prevTotal) {
+      const totalPage = Math.ceil(total / 10);
+      const page = totalPage < currentPage ? currentPage - 1 : currentPage;
+      this.setState({
+        currentPage: page === 0 ? 1 : page,
+      });
+    }
+  }
+
   componentDidMount() {
-    this.handleGetListUser({});
+    this.handleGetListUser(1);
   }
 
   componentWillUnmount() {
@@ -61,18 +81,37 @@ class Users extends React.Component {
     });
   }
 
-  handleGetListUser = (payload) => {
+  handleGetListUser = (page) => {
+    this.setState({ currentPage: page });
     const { getListUser } = this.props;
-    getListUser(payload);
+    getListUser({ page, limit: 10 });
   };
 
   _resetFilter = () => {
-    this.handleGetListUser({});
+    this.setState(
+      {
+        isModeSearch: false,
+        objFilter: {},
+        currentPage: 1,
+      },
+      () => {
+        this.handleGetListUser(1);
+      }
+    );
   };
 
-  _search = (value) => {
+  _search = (objFilter) => {
+    this.setState({ objFilter, isModeSearch: true }, () => {
+      this.handleGetValueSearch(1);
+    });
+  };
+
+  handleGetValueSearch = (page) => {
+    const { objFilter } = this.state;
     const { searchListUser } = this.props;
-    searchListUser(value);
+    this.setState({ currentPage: page });
+    const payload = { ...objFilter, page, limit: 10 };
+    searchListUser(payload);
   };
 
   openModalAddUser = () => {
@@ -169,14 +208,25 @@ class Users extends React.Component {
   _handleSubmit = (event) => {
     event.preventDefault();
     const { editUser, link } = this.props;
-    const { itemUser, titleModal } = this.state;
+    const {
+      itemUser,
+      titleModal,
+      currentPage,
+      objFilter,
+      isModeSearch,
+    } = this.state;
     const payload = {
       ...itemUser,
       avatar: link || itemUser.avatar,
     };
     if (titleModal === "Add New User") {
     } else {
-      editUser(payload, this._hideModal);
+      editUser(
+        payload,
+        this._hideModal,
+        currentPage,
+        isModeSearch && objFilter
+      );
     }
   };
 
@@ -224,6 +274,7 @@ class Users extends React.Component {
       coint,
       point,
       messageExchange,
+      isModeSearch,
     } = this.state;
     const {
       loading,
@@ -240,7 +291,9 @@ class Users extends React.Component {
       messageUpload,
       linkContract,
       rate,
+      paging: { total } = {},
     } = this.props;
+    console.log("total", total);
     const formatRate = numeral(rate).format("0.[00]");
 
     const linkAvatar =
@@ -618,7 +671,10 @@ class Users extends React.Component {
                 </div>
               }
             >
-              <Filter resetFilter={this._resetFilter} search={this._search} />
+              <Filter
+                resetFilter={isModeSearch ? this._resetFilter : () => {}}
+                search={this._search}
+              />
             </AccordionItem>
           </Accordion>
           <TableCommon
@@ -629,6 +685,11 @@ class Users extends React.Component {
             actionReview={this._actionReview}
             actionEdit={this._actionEdit}
             actionExchange={this._actionExchange}
+            total={total}
+            handlePagination={
+              !isModeSearch ? this.handleGetListUser : this.handleGetValueSearch
+            }
+            resetFirstPage={isModeSearch}
           />
         </div>
         <CustomModal
@@ -727,8 +788,11 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch) => ({
   getUserInfo: (data) => dispatch({ type: LIST_USER.GET_USER_BY_ID, data }),
   getListUser: (data) => dispatch({ type: LIST_USER.GET_LIST_USER, data }),
-  editUser: (data, functionHideModal) =>
-    dispatch({ type: LIST_USER.EDIT_USER, data: { data, functionHideModal } }),
+  editUser: (data, functionHideModal, currentPage, objFilter) =>
+    dispatch({
+      type: LIST_USER.EDIT_USER,
+      data: { data, functionHideModal, currentPage, objFilter },
+    }),
   createExchange: (data, functionHideModal) =>
     dispatch({
       type: EXCHANGE.CREATE_EXCHANGE,

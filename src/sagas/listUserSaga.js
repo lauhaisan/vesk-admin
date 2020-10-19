@@ -8,7 +8,7 @@ import {
 import { LIST_USER } from "../constant";
 
 function* getListUser(object) {
-  const dat = object.data.data;
+  const dat = object.data;
   const resp = yield call(getListUserAPI, dat);
   if (resp.code !== 200) {
     yield put({ type: LIST_USER.GET_LIST_USER_FAIL, data: resp.message });
@@ -30,6 +30,8 @@ function* getUserById(obj) {
 function* editUser(obj) {
   const dat = obj.data.data;
   const hideModal = obj.data.functionHideModal;
+  const currentPage = obj.data.currentPage;
+  const objFilter = obj.data.objFilter;
   const resp = yield call(editUserAPI, dat);
   if (resp.code !== 200) {
     yield put({ type: LIST_USER.EDIT_USER_FAIL, data: resp.message });
@@ -37,7 +39,17 @@ function* editUser(obj) {
   }
   yield put({ type: LIST_USER.EDIT_USER_SUCCESS, data: resp.data });
   hideModal();
-  yield put({ type: LIST_USER.GET_LIST_USER, data: resp.data });
+  if (!objFilter) {
+    yield put({
+      type: LIST_USER.GET_LIST_USER,
+      data: { page: currentPage, limit: 10 },
+    });
+  } else {
+    yield put({
+      type: LIST_USER.SEARCH_USER,
+      data: { ...objFilter, page: currentPage, limit: 10 },
+    });
+  }
 }
 
 function* searchUser(object) {

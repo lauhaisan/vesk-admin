@@ -19,13 +19,31 @@ class TableCommon extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { resetFirstPage, total } = this.props;
+    const { currentPage } = this.state;
+    const {
+      resetFirstPage: resetFirstPageNextProps,
+      total: nextTotal,
+    } = prevProps;
+    if (resetFirstPage !== resetFirstPageNextProps) {
+      this.setState({ currentPage: 0 });
+    }
+    if (total !== nextTotal) {
+      const totalPage = Math.ceil(total / 10);
+      const page = totalPage === currentPage ? currentPage - 1 : currentPage;
+      this.setState({
+        currentPage: page,
+      });
+    }
+  }
+
   onChangePage = (value) => {
-    // const function pagination from prop:
-    // ex: const { handlePagination} = this.props
+    const { handlePagination = () => {} } = this.props;
     this.setState({
       currentPage: value,
     });
-    // Dispatch to handlePagination with param: value +1 because default value = 0
+    handlePagination(value + 1);
   };
 
   renderAction = (item) => {
@@ -162,7 +180,7 @@ class TableCommon extends React.Component {
             </TableContainer>
           )}
         />
-        {totalPage > 1 && (
+        {total > limit && (
           <PaginationNav
             className=""
             itemsShown={5}

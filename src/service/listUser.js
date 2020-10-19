@@ -5,7 +5,9 @@ import queryString from "query-string";
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
 const getListUserAPI = async (payload) => {
-  return request(URL.GET_LIST_USER, true);
+  const param = queryString.stringify(payload);
+  const URL_WITH_PARAMS = `${URL.GET_LIST_USER}?${param}`;
+  return request(URL_WITH_PARAMS, true);
 };
 
 const getUserByIdAPI = async (payload) => {
@@ -18,8 +20,8 @@ const editUserAPI = async (payload) => {
   return request(URL_WITH_PARAMS, true, "PUT", payload);
 };
 
-const searchUserApi = async ({ email, userName }) => {
-  const param = `email=${email}&userName=${userName}`;
+const searchUserApi = async (payload) => {
+  const param = queryString.stringify(payload);
   const URL_WITH_PARAMS = `${URL.EDIT_USER}/search?${param}`;
   return request(URL_WITH_PARAMS, true);
 };
