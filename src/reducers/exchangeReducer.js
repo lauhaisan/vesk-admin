@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   isCreateExchangeSuccessfully: "",
   messageCreateExchange: "",
   listExchange: [],
+  paging: {},
   exchangeRate: {},
   loadingUpdate: false,
   isApproveSuccessfully: "",
@@ -49,6 +50,7 @@ const exchangeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         listExchange: action.data.items,
+        paging: action.data.paging,
       };
     case EXCHANGE.GET_HISTORY_EXCHANGE_FAIL:
       return {

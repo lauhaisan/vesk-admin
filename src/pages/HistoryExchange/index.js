@@ -16,8 +16,7 @@ class HistoryExchange extends Component {
   }
 
   componentDidMount() {
-    const { getHistoryExchange } = this.props;
-    getHistoryExchange();
+    this.handleGetListHistoryExchange(1);
   }
 
   componentWillUnmount() {
@@ -27,6 +26,11 @@ class HistoryExchange extends Component {
       messageApprove: "",
     });
   }
+
+  handleGetListHistoryExchange = (page) => {
+    const { getHistoryExchange } = this.props;
+    getHistoryExchange({ page, limit: 10 });
+  };
 
   actionApprove = ({ id }) => {
     const { listExchange = [] } = this.props;
@@ -107,6 +111,7 @@ class HistoryExchange extends Component {
       loadingApprove,
       isApproveSuccessfully,
       messageApprove,
+      total,
     } = this.props;
     const { openModalApprove } = this.state;
     const headerData = [
@@ -141,6 +146,8 @@ class HistoryExchange extends Component {
           headerData={headerData}
           loading={loading}
           actionApprove={this.actionApprove}
+          handlePagination={this.handleGetListHistoryExchange}
+          total={total}
         />
         <CustomModal
           open={openModalApprove}
@@ -172,6 +179,7 @@ const mapStateToProps = ({
     loadingUpdate: loadingApprove,
     isApproveSuccessfully,
     messageApprove,
+    paging: { total } = {},
   } = {},
 }) => ({
   loading,
@@ -179,10 +187,12 @@ const mapStateToProps = ({
   loadingApprove,
   isApproveSuccessfully,
   messageApprove,
+  total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getHistoryExchange: () => dispatch({ type: EXCHANGE.GET_HISTORY_EXCHANGE }),
+  getHistoryExchange: (data) =>
+    dispatch({ type: EXCHANGE.GET_HISTORY_EXCHANGE, data }),
   approveExchange: (data, functionHideModal) =>
     dispatch({
       type: EXCHANGE.APPROVE_EXCHANGE,

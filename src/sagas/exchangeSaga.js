@@ -20,8 +20,9 @@ function* createExchange(obj) {
   hideModal();
 }
 
-function* getListExchange() {
-  const resp = yield call(getListExchangeAPI);
+function* getListExchange(obj) {
+  const { data } = obj;
+  const resp = yield call(getListExchangeAPI, data);
   if (resp.code !== 200) {
     yield put({ type: EXCHANGE.GET_HISTORY_EXCHANGE_FAIL, data: resp.message });
     return;
