@@ -293,7 +293,6 @@ class Users extends React.Component {
       rate,
       paging: { total } = {},
     } = this.props;
-    console.log("total", total);
     const formatRate = numeral(rate).format("0.[00]");
 
     const linkAvatar =

@@ -96,7 +96,6 @@ function* deleteSocialMedia(obj) {
   const currentPage = obj.data.currentPage;
   const keywordSearch = obj.data.keywordSearch;
   const { paging: { total } = {} } = yield select(stateSocialMedia);
-  console.log("total", total);
   const resp = yield call(deleteSocialMediaAPI, dat);
   if (resp.code !== 200) {
     yield put({
@@ -124,7 +123,6 @@ function* deleteSocialMedia(obj) {
       data: { name: keywordSearch, page, limit: 10 },
     });
   }
-  // yield put({ type: SOCIAL_MEDIA.GET_LIST_SOCIAL_MEDIA, data: resp.data });
 }
 
 function* searchSocialMedia(obj) {

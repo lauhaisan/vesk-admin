@@ -5,7 +5,9 @@ import queryString from "query-string";
 // request( param1: url, param2: isAuth, param3: method = "GET", param4: payload)
 
 const getListAdsAPI = async (payload) => {
-  return request(URL.GET_LIST_ADVERTISING, true);
+  const param = queryString.stringify(payload);
+  const URL_WITH_PARAMS = `${URL.GET_LIST_ADVERTISING}?${param}`;
+  return request(URL_WITH_PARAMS, true);
 };
 
 const getAdsByIdAPI = async (payload) => {

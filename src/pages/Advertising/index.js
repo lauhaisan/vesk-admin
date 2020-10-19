@@ -44,6 +44,9 @@ class Advertising extends React.Component {
       titleModal: "",
       isReview: false,
       fileUpload: null,
+      isModeSearch: false,
+      keywordSearch: "",
+      currentPage: 1,
     };
   }
 
@@ -55,7 +58,24 @@ class Advertising extends React.Component {
   }
 
   componentDidMount() {
-    this.handleGetListAds({});
+    this.handleGetListAds(1);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { total } = this.props;
+    const { total: prevTotal } = prevProps;
+    const { currentPage, isModeSearch } = this.state;
+    const { isModeSearch: prevIsModeSearch } = prevState;
+    if (isModeSearch !== prevIsModeSearch) {
+      this.setState({ currentPage: 1 });
+    }
+    if (total !== prevTotal) {
+      const totalPage = Math.ceil(total / 10);
+      const page = totalPage < currentPage ? currentPage - 1 : currentPage;
+      this.setState({
+        currentPage: page === 0 ? 1 : page,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -67,18 +87,37 @@ class Advertising extends React.Component {
     });
   }
 
-  handleGetListAds = (payload) => {
+  handleGetListAds = (page) => {
     const { getListAds } = this.props;
-    getListAds(payload);
+    this.setState({ currentPage: page });
+    getListAds({ page, limit: 10 });
   };
 
   _resetFilter = () => {
-    this.handleGetListAds({});
+    this.setState(
+      {
+        isModeSearch: false,
+        keywordSearch: "",
+        currentPage: 1,
+      },
+      () => {
+        this.handleGetListAds(1);
+      }
+    );
   };
 
-  _search = (value) => {
+  _search = ({ name }) => {
+    this.setState({ keywordSearch: name, isModeSearch: true }, () => {
+      this.handleGetValueSearch(1);
+    });
+  };
+
+  handleGetValueSearch = (page) => {
     const { searchListAds } = this.props;
-    searchListAds(value);
+    const { keywordSearch } = this.state;
+    this.setState({ currentPage: page });
+    const payload = { name: keywordSearch, page, limit: 10 };
+    searchListAds(payload);
   };
 
   openModalAddNewAdvertising = () => {
@@ -139,7 +178,13 @@ class Advertising extends React.Component {
   _handleSubmit = (event) => {
     event.preventDefault();
     const { editAds, addNewAds, linkAds } = this.props;
-    const { itemAds, titleModal } = this.state;
+    const {
+      itemAds,
+      titleModal,
+      isModeSearch,
+      currentPage,
+      keywordSearch,
+    } = this.state;
     const payload = {
       ...itemAds,
       imageUrl: linkAds || itemAds.imageUrl,
@@ -147,16 +192,31 @@ class Advertising extends React.Component {
       status: itemAds.status || "ACTIVE",
     };
     if (titleModal === "Add New Advertising") {
-      addNewAds(payload, this._hideModal);
+      addNewAds(
+        payload,
+        this._hideModal,
+        currentPage,
+        isModeSearch && keywordSearch
+      );
     } else {
-      editAds(payload, this._hideModal);
+      editAds(
+        payload,
+        this._hideModal,
+        currentPage,
+        isModeSearch && keywordSearch
+      );
     }
   };
 
   _handleDelete = () => {
-    const { itemAds } = this.state;
+    const { itemAds, isModeSearch, keywordSearch, currentPage } = this.state;
     const { deleteAds } = this.props;
-    deleteAds(itemAds, this._hideModal);
+    deleteAds(
+      itemAds,
+      this._hideModal,
+      currentPage,
+      isModeSearch && keywordSearch
+    );
   };
 
   _actionDelete = (item) => {
@@ -195,7 +255,13 @@ class Advertising extends React.Component {
   };
 
   render() {
-    const { openModal, titleModal, isReview, itemAds } = this.state;
+    const {
+      openModal,
+      titleModal,
+      isReview,
+      itemAds,
+      isModeSearch,
+    } = this.state;
     const {
       loading,
       listAds = [],
@@ -206,8 +272,11 @@ class Advertising extends React.Component {
       loadingUpload,
       linkAds,
       messageUpload,
+      total,
     } = this.props;
     const imgAds = linkAds || itemAds.imageUrl;
+
+    const checkId = itemAds && itemAds.id;
 
     const contentModal = (
       <div style={{ height: "auto", width: "100%" }}>
@@ -262,7 +331,7 @@ class Advertising extends React.Component {
                 >
                   {listPosition.map((item) => {
                     const { name = "", value = "" } = item;
-                    return <SelectItem text={name} value={value} />;
+                    return <SelectItem key={value} text={name} value={value} />;
                   })}
                 </Select>
               </FormGroup>
@@ -361,7 +430,7 @@ class Advertising extends React.Component {
                 >
                   {listStatus.map((item) => {
                     const { name = "", value = "" } = item;
-                    return <SelectItem text={name} value={value} />;
+                    return <SelectItem key={value} text={name} value={value} />;
                   })}
                 </Select>
               </FormGroup>
@@ -458,7 +527,10 @@ class Advertising extends React.Component {
                 </div>
               }
             >
-              <Filter resetFilter={this._resetFilter} search={this._search} />
+              <Filter
+                resetFilter={isModeSearch ? this._resetFilter : () => {}}
+                search={this._search}
+              />
             </AccordionItem>
           </Accordion>
           <TableCommon
@@ -469,10 +541,15 @@ class Advertising extends React.Component {
             actionReview={this._actionReview}
             actionEdit={this._actionEdit}
             actionDelete={this._actionDelete}
+            total={total}
+            handlePagination={
+              !isModeSearch ? this.handleGetListAds : this.handleGetValueSearch
+            }
+            resetFirstPage={isModeSearch}
           />
         </div>
         <CustomModal
-          isReview={isReview}
+          isReview={isReview || !checkId}
           open={openModal}
           loading={loadingActionAds}
           contentModal={renderContentModal}
@@ -518,6 +595,7 @@ const mapStateToProps = ({
     loadingGetAdsById,
     loadingActionAds,
     actionAdsSuccessfully,
+    paging: { total } = {},
   } = {},
   upload: { loading: loadingUpload, messageUpload, linkContract: linkAds } = {},
 }) => ({
@@ -532,31 +610,35 @@ const mapStateToProps = ({
   loadingUpload,
   messageUpload,
   linkAds,
+  total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getListAds: (data) => dispatch({ type: ADVERTISING.GET_LIST_ADS, data }),
+  searchListAds: (data) => dispatch({ type: ADVERTISING.SEARCH_ADS, data }),
   getAdsById: (id) =>
     dispatch({ type: ADVERTISING.GET_ADS_BY_ID, data: { id } }),
-  editAds: (data, functionHideModal) =>
-    dispatch({ type: ADVERTISING.EDIT_ADS, data: { data, functionHideModal } }),
-  updateStateReducer: (data) =>
-    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data }),
-  deleteAds: (data, functionHideModal) =>
-    dispatch({
-      type: ADVERTISING.DELETE_ADS,
-      data: { data, functionHideModal },
-    }),
-  addNewAds: (data, functionHideModal) =>
+  addNewAds: (data, functionHideModal, currentPage, keywordSearch) =>
     dispatch({
       type: ADVERTISING.ADD_NEW_ADS,
-      data: { data, functionHideModal },
+      data: { data, functionHideModal, currentPage, keywordSearch },
+    }),
+  editAds: (data, functionHideModal, currentPage, keywordSearch) =>
+    dispatch({
+      type: ADVERTISING.EDIT_ADS,
+      data: { data, functionHideModal, currentPage, keywordSearch },
+    }),
+  deleteAds: (data, functionHideModal, currentPage, keywordSearch) =>
+    dispatch({
+      type: ADVERTISING.DELETE_ADS,
+      data: { data, functionHideModal, currentPage, keywordSearch },
     }),
   uploadImage: (data) =>
     dispatch({ type: UPLOAD.UPLOAD_IMAGE, data: { data } }),
   updateUploadReducer: (data) =>
     dispatch({ type: UPLOAD.UPDATE_STATE_UPLOAD_REDUCER, data }),
-  searchListAds: (data) => dispatch({ type: ADVERTISING.SEARCH_ADS, data }),
+  updateStateReducer: (data) =>
+    dispatch({ type: ADVERTISING.SET_STATE_REDUCER, data }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertising);
